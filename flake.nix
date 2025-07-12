@@ -30,12 +30,12 @@
           # Import the previous configuration.nix we used,
           # so the old configuration file still takes effect
           ./configuration.nix
+          ./preservation.nix
           inputs.daeuniverse.nixosModules.dae
           inputs.daeuniverse.nixosModules.daed
           inputs.chaotic.nixosModules.default
           inputs.lanzaboote.nixosModules.lanzaboote
           inputs.home-manager.nixosModules.home-manager
-          inputs.preservation.nixosModules.default
         ];
       };
     };

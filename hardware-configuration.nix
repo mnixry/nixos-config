@@ -77,14 +77,33 @@ in
       enable = true;
       pkiBundle = "/var/lib/sbctl";
     };
+    tmp.cleanOnBoot = true;
   };
 
   fileSystems = {
     "/" = {
+      device = "tmpfs";
+      fsType = "tmpfs";
+      # set mode to 755, otherwise systemd will set it to 777, which cause problems.
+      # relatime: Update inode access times relative to modify or change time.
+      options = [
+        "relatime"
+        "mode=755"
+      ];
+    };
+    "/.btr_pool" = {
       device = "/dev/mapper/${luksName}";
       fsType = "btrfs";
+      # btrfs's top-level subvolume, internally has an id 5
+      # we can access all other subvolumes from this subvolume.
+      options = [ "subvolid=5" ];
+    };
+    "/tmp" = {
+      device = "/dev/mapper/${luksName}";
+      fsType = "btrfs";
+      neededForBoot = true;
       options = [
-        "subvol=@"
+        "subvol=@tmp"
         "compress=zstd"
       ];
     };
@@ -148,7 +167,10 @@ in
 
   swapDevices = [ { device = "/swap/swapfile"; } ];
 
-  services.btrfs.autoScrub.enable = true;
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [ "/.btr_pool" ];
+  };
   services.beesd.filesystems = {
     "${luksName}" = {
       spec = "/dev/mapper/${luksName}";

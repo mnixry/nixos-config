@@ -22,7 +22,6 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs."linuxPackages_cachyos-lto";
   boot.kernel.sysctl."net.ipv4.tcp_congestion_control" = "bbr";
-  boot.tmp.useTmpfs = true;
 
   services.scx.enable = true;
   services.scx.scheduler = "scx_lavd";
@@ -225,6 +224,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mix = {
     isNormalUser = true;
+    initialHashedPassword = "$gy$j9T$5Oax3RFzgwFa0qQdVLktl.$pKJKEnCVf6TBcJZL3cWV7yIxUDhFhj9iYJgHC5ujzH0";
     description = "HexMix";
     extraGroups = [
       "networkmanager"
