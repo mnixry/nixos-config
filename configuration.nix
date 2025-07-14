@@ -18,6 +18,8 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  # do not need to keep too much generations
+  boot.loader.systemd-boot.configurationLimit = 10;
 
   # Use latest kernel.
   boot.kernelPackages = pkgs."linuxPackages_cachyos-lto";
@@ -25,32 +27,6 @@
 
   services.scx.enable = true;
   services.scx.scheduler = "scx_lavd";
-
-  #   specialisation = {
-  #     nvidia.configuration = {
-  #       # Nvidia Configuration
-  #       services.xserver.videoDrivers = [
-  #         "modesetting"
-  #         "nvidia"
-  #       ];
-  #       hardware.graphics.enable = true;
-  #       # Optionally, you may need to select the appropriate driver version for your specific GPU.
-  #       hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
-  #       # nvidia-drm.modeset=1 is required for some wayland compositors, e.g. sway
-  #       hardware.nvidia.modesetting.enable = true;
-  #       hardware.nvidia.prime = {
-  #         offload = {
-  #           enable = true;
-  #           enableOffloadCmd = true;
-  #         };
-  #         #         sync.enable = true;
-  #         # Bus ID of the NVIDIA GPU. You can find it using lspci, either under 3D or VGA
-  #         nvidiaBusId = "PCI:1:0:0";
-  #         # Bus ID of the Intel GPU. You can find it using lspci, either under 3D or VGA
-  #         intelBusId = "PCI:0:2:0";
-  #       };
-  #     };
-  #   };
 
   networking.hostName = "mix-laptop-21tl"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -155,20 +131,6 @@
     };
   };
 
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
-
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
   services.dae = {
     enable = true;
     openFirewall = {
@@ -221,44 +183,6 @@
     ModelPressurePad=1
   '';
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.mix = {
-    isNormalUser = true;
-    initialHashedPassword = "$gy$j9T$5Oax3RFzgwFa0qQdVLktl.$pKJKEnCVf6TBcJZL3cWV7yIxUDhFhj9iYJgHC5ujzH0";
-    description = "HexMix";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "tss"
-    ];
-    packages = with pkgs; [
-      fastfetch
-      kdePackages.kate
-      kdePackages.yakuake
-      htop
-      nixd
-      nixfmt-rfc-style
-      ungoogled-chromium
-      #  thunderbird
-    ];
-    shell = pkgs.fish;
-  };
-
-  programs.fish.enable = true;
-
-  # Install firefox.
-  programs.firefox.enable = true;
-
-  programs.starship = {
-    enable = true;
-    settings = {
-      add_newline = false;
-      aws.disabled = true;
-      gcloud.disabled = true;
-      line_break.disabled = true;
-    };
-  };
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -275,6 +199,19 @@
       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
     ];
   };
+
+  # do garbage collection weekly to keep disk usage low
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 1w";
+  };
+
+  # Optimise storage
+  # you can also optimise the store manually via:
+  #    nix-store --optimise
+  # https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-auto-optimise-store
+  nix.settings.auto-optimise-store = true;
 
   security.tpm2.enable = true;
   security.tpm2.pkcs11.enable = true; # expose /run/current-system/sw/lib/libtpm2_pkcs11.so

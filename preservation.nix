@@ -38,7 +38,7 @@
       "/etc/NetworkManager/system-connections"
       "/etc/ssh"
       "/etc/nix/inputs"
-      "/etc/nixos"
+      #       "/etc/nixos"
 
       # my secrets
       "/etc/agenix/"
@@ -54,7 +54,7 @@
       }
       "/var/lib/sbctl" # lanzaboote - secure boot
       # containers
-      # "/var/lib/docker"
+      "/var/lib/docker"
       "/var/lib/cni"
       "/var/lib/containers"
 
