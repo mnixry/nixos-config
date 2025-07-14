@@ -24,26 +24,22 @@
   outputs =
     { self, nixpkgs, ... }@inputs:
     let
-      vars = import ./vars { inherit (inputs) libs; };
+      vars = import ./vars;
+      extraLibs = import ./libs { inherit (inputs.nixpkgs) lib; };
     in
     {
-      nixosConfigurations.mix-laptop-21tl = nixpkgs.lib.nixosSystem {
+      nixosConfigurations."${vars.network.hostname}" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
           inherit inputs;
           inherit vars;
+          inherit extraLibs;
         };
         modules = [
-          # Import the previous configuration.nix we used,
-          # so the old configuration file still takes effect
-          ./configuration.nix
+          ./system
+          ./services
+          ./desktop
           ./preservation.nix
-          ./virtualisation
-          ./user
-          inputs.daeuniverse.nixosModules.dae
-          inputs.daeuniverse.nixosModules.daed
-          inputs.chaotic.nixosModules.default
-          inputs.lanzaboote.nixosModules.lanzaboote
           # make home-manager as a module of nixos
           # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
           inputs.home-manager.nixosModules.home-manager
@@ -51,10 +47,9 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "hm-backup";
-            # TODO replace ryan with your own username
             home-manager.users."${vars.user.name}" = import ./home;
-            home-manager.extraSpecialArgs = { inherit vars; };
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+            home-manager.extraSpecialArgs = { inherit vars; };
           }
         ];
       };
