@@ -1,4 +1,4 @@
-{ extraLibs, ... }:
+{ pkgs, extraLibs, ... }:
 {
   imports = extraLibs.scanPaths ./.;
   # Enable CUPS to print documents.
@@ -18,5 +18,11 @@
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     #media-session.enable = true;
+  };
+
+  services.fprintd = {
+    enable = true;
+    tod.enable = true;
+    tod.driver = pkgs.libfprint-2-tod1-goodix;
   };
 }

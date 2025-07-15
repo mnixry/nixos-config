@@ -1,10 +1,15 @@
 {
   config,
   pkgs,
+  lib,
+  inputs,
   vars,
+  extraLibs,
   ...
 }:
 {
+  imports = extraLibs.scanPaths ./. ++ [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
+
   # TODO please change the username & home directory to your own
   home.username = "${vars.user.name}";
   home.homeDirectory = "/home/${vars.user.name}";
@@ -26,7 +31,6 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
-    kdePackages.kate
     kdePackages.yakuake
 
     fastfetch
@@ -71,8 +75,6 @@
     # it provides the command `nom` works just like `nix`
     # with more details log output
     nix-output-monitor
-    nixd
-    nixfmt-rfc-style
 
     # productivity
     hugo # static site generator
@@ -164,15 +166,6 @@
       name = "kvantum";
       package = pkgs.utterly-nord-plasma;
     };
-  };
-
-  programs.obs-studio = {
-    enable = true;
-    plugins = [
-      pkgs.obs-studio-plugins.wlrobs
-      pkgs.obs-studio-plugins.obs-backgroundremoval
-      pkgs.obs-studio-plugins.obs-pipewire-audio-capture
-    ];
   };
 
   programs.ssh = {
