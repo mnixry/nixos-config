@@ -8,7 +8,7 @@
   ...
 }:
 {
-  imports = extraLibs.scanPaths ./. ++ [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
+  imports = [ inputs.chaotic.homeManagerModules.default ] ++ extraLibs.scanPaths ./.;
 
   # TODO please change the username & home directory to your own
   home.username = "${vars.user.name}";
@@ -111,6 +111,11 @@
 
   programs.fish = {
     enable = true;
+    generateCompletions = true;
+    interactiveShellInit = ''
+      # Disable the greeting message.
+      set fish_greeting
+    '';
   };
 
   # starship - an customizable prompt for any shell
@@ -138,34 +143,6 @@
   programs.chromium = {
     enable = true;
     package = pkgs.ungoogled-chromium;
-  };
-
-  home.pointerCursor = {
-    gtk.enable = true;
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Ice";
-    size = 24;
-  };
-
-  gtk = {
-    enable = true;
-    iconTheme = {
-      package = pkgs.tela-icon-theme;
-      name = "Tela-dark";
-    };
-    theme = {
-      package = pkgs.orchis-theme;
-      name = "Orchis-Dark";
-    };
-  };
-
-  qt = {
-    enable = true;
-    platformTheme.name = "qt5ct";
-    style = {
-      name = "kvantum";
-      package = pkgs.utterly-nord-plasma;
-    };
   };
 
   programs.ssh = {

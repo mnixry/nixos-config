@@ -60,15 +60,6 @@ in
         "rw"
       ];
     };
-    "/home" = {
-      device = "/dev/mapper/${luksName}";
-      fsType = "btrfs";
-      neededForBoot = true;
-      options = [
-        "subvol=@home"
-        "compress=zstd"
-      ];
-    };
     "/persistent" = {
       device = "/dev/mapper/${luksName}";
       fsType = "btrfs";

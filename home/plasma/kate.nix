@@ -35,7 +35,6 @@
                 (builtins.getFlake "${flakeRoot}").nixosConfigurations.${vars.network.hostname}.options.home-manager.users.value.${vars.user.name}
               '';
             };
-
         };
       };
     };
