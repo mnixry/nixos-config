@@ -292,12 +292,13 @@
           file = ".config/zoom.conf";
           how = "symlink";
         }
+        {
+          file = ".config/kwinoutputconfig.json";
+          how = "symlink";
+        }
       ];
     };
   };
-
-  systemd.tmpfiles.settings.preservation."/persistent/home/${vars.user.name}".d.mode =
-    lib.mkForce "0700"; # ugly workaround
 
   # systemd-machine-id-commit.service would fail but it is not relevant
   # in this specific setup for a persistent machine-id so we disable it
