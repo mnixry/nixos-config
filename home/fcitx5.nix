@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   i18n.inputMethod = {
     enable = true;
@@ -122,20 +122,26 @@
     };
   };
 
-  xdg.dataFile."fcitx5/rime/default.custom.yaml".text = lib.generators.toYAML { } {
-    patch = {
-      __include = "rime_ice_suggestion:/";
-      schema_list = [ { schema = "rime_ice"; } ];
-      ascii_composer.switch_key = {
-        # commit_code | commit_text | inline_ascii | clear | noop
-        Shift_L = "commit_code";
-        Shift_R = "commit_code";
+  xdg.dataFile."fcitx5/rime/default.custom.yaml".source =
+    let
+      toYAML = (pkgs.formats.yaml { }).generate "default.custom.yaml";
+    in
+    toYAML {
+      patch = {
+        __include = "rime_ice_suggestion:/";
+        schema_list = [ { schema = "rime_ice"; } ];
+        ascii_composer.switch_key = {
+          # commit_code | commit_text | inline_ascii | clear | noop
+          Shift_L = "commit_code";
+          Shift_R = "commit_code";
+        };
+        menu.page_size = 6;
+        switcher.hotkeys = [ "Control+F4" ];
       };
-      menu.page_size = 6;
-      switcher.hotkeys = [ "Control+F4" ];
     };
-  };
 
-  programs.plasma.configFile.kwinrc.Wayland.InputMethod =
-    "/run/current-system/sw/share/applications/fcitx5-wayland-launcher.desktop";
+  programs.plasma.configFile.kwinrc."Wayland"."InputMethod" = {
+    value = "/run/current-system/sw/share/applications/fcitx5-wayland-launcher.desktop";
+    shellExpand = true;
+  };
 }

@@ -7,13 +7,19 @@
 }:
 {
   home.packages = with pkgs; [
-    kdePackages.kate
     nixd
     nixfmt-rfc-style
   ];
 
   programs.kate = {
     enable = true;
+    package = pkgs.kdePackages.kate.overrideAttrs (_: {
+      version = "git";
+      src = builtins.fetchGit {
+        url = "https://invent.kde.org/utilities/kate.git";
+        rev = "762d7ad454630a511b67f5bf9705e712e3821b62";
+      };
+    });
     lsp.customServers = {
       nix = {
         command = [ "nixd" ];

@@ -144,26 +144,11 @@
         ".local/share/nvim"
         ".local/state/nvim"
 
-        # doom-emacs
-        # "org" # org files
-        # ".config/emacs"
-        # ".local/share/doom"
-        # ".local/share/emacs"
-
-        # Joplin
-        ".config/joplin" # tui client
-        ".config/Joplin" # joplin-desktop
-
         # ".local/share/jupyter"
 
         # ======================================
         # Cloud Native
         # ======================================
-        {
-          # pulumi - infrastructure as code
-          directory = ".pulumi";
-          mode = "0700";
-        }
         {
           directory = ".aws";
           mode = "0700";
@@ -210,22 +195,6 @@
         ".local/share/keyrings"
 
         # ======================================
-        # Games / Media
-        # ======================================
-
-        ".steam"
-        ".config/blender"
-        ".config/LDtk"
-
-        ".local/share/Steam"
-        ".local/share/PrismLauncher"
-
-        ".local/share/tiled"
-        ".local/share/GOG.com"
-        ".local/share/StardewValley"
-        ".local/share/feral-interactive"
-
-        # ======================================
         # Instant Messaging
         # ======================================
         ".config/QQ"
@@ -236,21 +205,18 @@
         # ======================================
         ".config/remmina"
         ".config/freerdp"
-        ".zoom"
-
         ".local/share/remmina"
 
         # ======================================
         # browsers
         # ======================================
         ".mozilla"
-        ".config/google-chrome"
+        ".config/chromium"
 
         # ======================================
         # CLI data
         # ======================================
         ".local/share/atuin"
-        ".local/share/zoxide"
         ".local/share/direnv"
         ".local/share/k9s"
 
@@ -269,9 +235,6 @@
         # Audio
         ".config/pulse"
         ".local/state/wireplumber"
-
-        # Digital Painting
-        ".local/share/krita"
       ];
       files = [
         {
@@ -283,14 +246,6 @@
           how = "symlink";
           # create parent directory automatically
           configureParent = true;
-        }
-        {
-          file = ".config/zoomus.conf";
-          how = "symlink";
-        }
-        {
-          file = ".config/zoom.conf";
-          how = "symlink";
         }
         {
           file = ".config/kwinoutputconfig.json";
