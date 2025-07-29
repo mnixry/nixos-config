@@ -65,6 +65,7 @@
 
   xdg.portal = {
     enable = true;
+    config.common.default = "*";
     xdgOpenUsePortal = true;
     extraPortals = with pkgs; [
       kdePackages.xdg-desktop-portal-kde

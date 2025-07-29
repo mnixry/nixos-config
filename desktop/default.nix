@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, extraLibs, ... }:
 {
-  imports = [ ./user.nix ];
+  imports = extraLibs.scanPaths ./.;
 
   fonts = {
     enableDefaultPackages = true;

@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  home.programs = with pkgs; [ kdePackages.yakuake ];
+  home.packages = with pkgs; [ kdePackages.yakuake ];
 
   programs.konsole = {
     enable = true;

@@ -24,8 +24,14 @@
       };
     };
 
+    spectacle.shortcuts.launch = "F12";
+
     configFile = {
       baloofilerc."Basic Settings"."Indexing-Enabled" = false;
+      kwalletrc = {
+        "Wallet"."Enabled" = false;
+        "Wallet"."First Use" = false;
+      };
     };
 
     fonts =
