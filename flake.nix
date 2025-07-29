@@ -14,6 +14,10 @@
       url = "github:nix-community/lanzaboote/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ragenix = {
+      url = "github:yaxitech/ragenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     daeuniverse = {
       url = "github:daeuniverse/flake.nix";
       inputs.nixpkgs.follows = "nixpkgs";
