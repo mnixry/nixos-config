@@ -1,6 +1,6 @@
 {
   lib,
-
+  config,
   inputs,
   modulesPath,
   ...
