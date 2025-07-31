@@ -63,16 +63,6 @@
     };
   };
 
-  xdg.portal = {
-    enable = true;
-    config.common.default = "*";
-    xdgOpenUsePortal = true;
-    extraPortals = with pkgs; [
-      kdePackages.xdg-desktop-portal-kde
-      xdg-desktop-portal-gtk
-    ];
-  };
-
   xdg.configFile."qt6ct/qt6ct.conf".text = lib.generators.toINI { } {
     Appearance = {
       color_scheme_path = "${pkgs.materia-kde-theme}/share/color-schemes/MateriaDark.colors";

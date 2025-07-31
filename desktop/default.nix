@@ -55,4 +55,6 @@
       };
     };
   };
+
+  services.nixseparatedebuginfod.enable = true;
 }
