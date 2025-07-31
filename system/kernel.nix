@@ -24,4 +24,6 @@
     scheduler = "scx_lavd";
     package = pkgs.scx_git.full;
   };
+
+  chaotic.mesa-git.enable = true;
 }

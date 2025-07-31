@@ -24,7 +24,7 @@
       };
     };
 
-    spectacle.shortcuts.launch = "F12";
+    spectacle.shortcuts.launch = "F1";
 
     configFile = {
       baloofilerc."Basic Settings"."Indexing-Enabled" = false;
@@ -48,7 +48,7 @@
         };
         general = mkGeneralFont 10;
         menu = mkGeneralFont 10;
-        small = mkGeneralFont 10;
+        small = mkGeneralFont 8;
         toolbar = mkGeneralFont 10;
         windowTitle = mkGeneralFont 10;
       };

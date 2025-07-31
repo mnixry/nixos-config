@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   vars,
@@ -6,33 +7,39 @@
   ...
 }:
 {
-  home.packages = with pkgs; [
-    nixd
-    nixfmt-rfc-style
-  ];
-
   programs.kate = {
     enable = true;
     package = pkgs.kdePackages.kate.overrideAttrs (_: {
-      version = "git";
-      src = builtins.fetchGit {
-        url = "https://invent.kde.org/utilities/kate.git";
-        rev = "762d7ad454630a511b67f5bf9705e712e3821b62";
-      };
+      patches = [
+        (pkgs.fetchpatch {
+          name = "lsp-workspace-configuration-support.patch";
+          url = "https://invent.kde.org/utilities/kate/-/commit/4446f148d340176aeda2ac3980f7b04a0b9ec7a8.patch";
+          hash = "sha256-M9HLvHxWVgLJy5Zp61F0sTYUMvSYuBD3LsGOaiD1eDk=";
+        })
+      ];
     });
     lsp.customServers = {
+      bash = {
+        command = [
+          (lib.getExe pkgs.bash-language-server)
+          "start"
+        ];
+        root = "";
+        url = "https://github.com/bash-lsp/bash-language-server";
+        highlightingModeRegex = "^Bash$";
+      };
       nix = {
-        command = [ "nixd" ];
+        command = [ (lib.getExe pkgs.nixd) ];
         url = "https://github.com/nix-community/nixd";
         highlightingModeRegex = "^Nix$";
-        settings.nixd = {
-          nixpkgs.expr = "import <nixpkgs> {}";
-          formatting.command = [ "${lib.getExe pkgs.nixfmt-rfc-style}" ];
-          options =
-            let
-              flakeRoot = extraLibs.relativeToRoot "./.";
-            in
-            {
+        settings.nixd =
+          let
+            flakeRoot = extraLibs.relativeToRoot "./.";
+          in
+          {
+            nixpkgs.expr = "import <nixpkgs> {}";
+            formatting.command = [ (lib.getExe pkgs.nixfmt-rfc-style) ];
+            options = {
               nixos.expr = ''
                 let configs = (builtins.getFlake "${flakeRoot}").nixosConfigurations;
                 in (builtins.head (builtins.attrValues configs)).options
@@ -41,8 +48,32 @@
                 (builtins.getFlake "${flakeRoot}").nixosConfigurations.${vars.network.hostname}.options.home-manager.users.value.${vars.user.name}
               '';
             };
-        };
+          };
+      };
+      json = {
+        command = [
+          (lib.getExe pkgs.vscode-json-languageserver)
+          "--stdio"
+        ];
+        url = "https://github.com/microsoft/vscode/tree/main/extensions/json-language-features/server";
+        highlightingModeRegex = "^JSON$";
+      };
+      yaml = {
+        command = [
+          (lib.getExe pkgs.yaml-language-server)
+          "--stdio"
+        ];
+        url = "https://github.com/redhat-developer/yaml-language-server";
+        highlightingModeRegex = "^YAML$";
       };
     };
   };
+
+  programs.plasma.configFile.katerc."lspclient"."AllowedServerCommandLines" =
+    lib.strings.concatStringsSep ","
+      (
+        map ({ value, ... }: builtins.elemAt value.command 0) (
+          lib.attrsToList config.programs.kate.lsp.customServers
+        )
+      );
 }

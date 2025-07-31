@@ -26,6 +26,7 @@
     containers.portainer-ce = {
       # Pulls from docker hub.
       image = "portainer/portainer-ce:alpine-sts";
+      serviceName = "portainer";
       # Drive mappings to system folders.
       volumes = [
         # This is where portainer-ce stores it's internal data and
@@ -42,5 +43,9 @@
       autoStart = true;
       pull = "always";
     };
+  };
+
+  systemd.services."portainer" = {
+    after = [ "dae.service" ];
   };
 }
