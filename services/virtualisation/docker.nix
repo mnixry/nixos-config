@@ -46,6 +46,6 @@
   };
 
   systemd.services."portainer" = {
-    after = [ "dae.service" ];
+    requires = [ "dae.service" ];
   };
 }

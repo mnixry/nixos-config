@@ -23,6 +23,13 @@
       package = pkgs.materia-theme;
       name = "Materia-dark";
     };
+    gtk3.extraCss =
+      let
+        cfg3 = config.gtk.gtk3;
+      in
+      ''
+        @import url("file://${cfg3.theme.package}/share/themes/${cfg3.theme.name}/gtk-3.0/gtk.css");
+      '';
   };
 
   programs.plasma.workspace = {
