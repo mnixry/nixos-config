@@ -5,6 +5,10 @@
     iftop # network monitoring
   ];
 
+  home.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+  };
+
   programs.htop = {
     enable = true;
     settings = {
@@ -66,7 +70,7 @@
         (bar "LeftCPUs2")
         (bar "Memory")
         (bar "Swap")
-        (text "Zram")
+        (bar "Zram")
       ]
     )
     // (

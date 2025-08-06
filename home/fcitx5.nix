@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   i18n.inputMethod = {
     enable = true;
@@ -99,9 +99,7 @@
             # Font = "Noto Sans CJK SC 12";
             # MenuFont = "Sans Serif 12";
             # TrayFont = "Sans Serif 12";
-            Theme = "FluentLight";
-            DarkTheme = "FluentDark"; # FluentDark-solid/mellow-youlan-dark
-            UseDarkTheme = true; # Follow system dark theme settings
+            Theme = "FluentDark"; # FluentDark-solid/mellow-youlan-dark
           };
           clipboard = {
             globalSection = {
@@ -141,7 +139,7 @@
     };
 
   programs.plasma.configFile.kwinrc."Wayland"."InputMethod" = {
-    value = "/run/current-system/sw/share/applications/fcitx5-wayland-launcher.desktop";
+    value = "${config.home.profileDirectory}/share/applications/fcitx5-wayland-launcher.desktop";
     shellExpand = true;
   };
 }

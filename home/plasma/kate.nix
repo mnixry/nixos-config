@@ -67,6 +67,7 @@
         highlightingModeRegex = "^YAML$";
       };
     };
+    editor.font = config.programs.plasma.fonts.fixedWidth;
   };
 
   programs.plasma.configFile.katerc."lspclient"."AllowedServerCommandLines" =

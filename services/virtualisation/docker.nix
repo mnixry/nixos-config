@@ -14,7 +14,6 @@
       experimental = true;
       ipv6 = true;
       userland-proxy = false;
-      #       default-runtime = "youki";
       runtimes.youki.path = lib.getExe pkgs.youki;
     };
   };
@@ -41,7 +40,6 @@
       ];
       ports = [ "127.0.0.1:9443:9443" ];
       autoStart = true;
-      pull = "always";
     };
   };
 

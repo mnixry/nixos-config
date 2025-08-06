@@ -4,10 +4,19 @@
   ...
 }:
 {
+  programs.bat = {
+    enable = true;
+    extraPackages = with pkgs.bat-extras; [
+      batdiff
+      batman
+      batgrep
+      batwatch
+    ];
+  };
+  programs.eza.enable = true;
+
   home.packages = with pkgs; [
-    bat
     xcp
-    eza
     libqalculate
     gtrash
     inxi
@@ -15,16 +24,17 @@
 
   home.shellAliases = {
     # shell
-    cat = "${lib.getExe pkgs.bat} -p";
-    cp = "${lib.getExe pkgs.xcp}";
-    la = "${lib.getExe pkgs.eza} -lah --icons --git --group --modified";
-    rm = "${lib.getExe pkgs.gtrash} put";
-    rm-empty = "${lib.getExe pkgs.gtrash} find --rm";
-    rm-restore = "${lib.getExe pkgs.gtrash} restore";
-    bc = "${lib.getExe pkgs.libqalculate}";
-    inxi = "${lib.getExe pkgs.inxi} -Fz";
+    cat = "bat -p";
+    cp = "xcp";
+    la = "eza -lah --icons --git --group --modified";
+    rm = "gtrash put";
+    rm-empty = "gtrash find --rm";
+    rm-restore = "gtrash restore";
+    bc = "libqalculate";
+    inxi = "inxi -Fz";
     beep = ''echo -en "\007"'';
     journalctl-1h = ''journalctl -p err..alert --since "60 min ago"'';
+    man = "batman";
 
     # network
     ip = "ip --color=auto";

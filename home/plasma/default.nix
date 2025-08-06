@@ -29,7 +29,7 @@
     configFile = {
       baloofilerc."Basic Settings"."Indexing-Enabled" = false;
       kwalletrc = {
-        "Wallet"."Enabled" = false;
+        "Wallet"."Enabled" = true;
         "Wallet"."First Use" = false;
       };
     };
