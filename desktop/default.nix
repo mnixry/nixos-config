@@ -36,10 +36,10 @@
         ];
         sansSerif = [
           "IBM Plex Sans"
-          "Noto Sans CJK SC"
-          "Noto Sans CJK TC"
-          "Noto Sans CJK JP"
-          "Noto Sans CJK KR"
+          "IBM Plex Sans SC"
+          "IBM Plex Sans TC"
+          "IBM Plex Sans JP"
+          "IBM Plex Sans KR"
           "Noto Color Emoji"
           "Noto Emoji"
         ];
@@ -57,4 +57,5 @@
   };
 
   services.nixseparatedebuginfod.enable = true;
+  programs.nix-ld.enable = true;
 }

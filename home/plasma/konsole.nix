@@ -1,23 +1,20 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
+let
+  defaultProfileName = "Normal";
+in
 {
   home.packages = with pkgs; [ kdePackages.yakuake ];
 
   programs.konsole = {
     enable = true;
-    defaultProfile = "normal";
-    profiles.normal = {
-      name = "normal";
+    defaultProfile = defaultProfileName;
+    profiles."${defaultProfileName}" = {
+      name = defaultProfileName;
       colorScheme = "MateriaDark";
-      font = {
-        name = "Monospace";
-      };
       extraConfig = {
         "Appearance"."UseFontLineChararacters" = true;
         "Terminal Features"."BellMode" = 2;
-        "Scorlling" = {
-          "HistoryMode" = 1;
-          "HistorySize" = 10 * 1000;
-        };
+        "Scorlling"."HistoryMode" = 2;
       };
     };
   };
@@ -25,7 +22,7 @@
   programs.plasma.configFile = {
     yakuakerc = {
       "Dialogs"."FirstRun" = false;
-      "Desktop Entry"."DefaultProfile" = "normal.profile";
+      "Desktop Entry"."DefaultProfile" = "${defaultProfileName}.profile";
       "Appearance"."Skin" = "materia-dark";
       "Window" = {
         "Height" = 72;
@@ -37,7 +34,7 @@
   xdg.autostart = {
     enable = true;
     entries = [
-      "${pkgs.kdePackages.yakuake}/share/applications/org.kde.yakuake.desktop"
+      "${config.home.profileDirectory}/share/applications/org.kde.yakuake.desktop"
     ];
   };
 }

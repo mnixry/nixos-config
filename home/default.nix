@@ -1,4 +1,5 @@
 {
+  lib,
   config,
   pkgs,
   inputs,
@@ -96,26 +97,13 @@
     enableFishIntegration = true;
   };
 
+  xdg.mimeApps.enable = true;
+
   # basic configuration of git, please change to your own
   programs.git = {
     enable = true;
     userName = "${vars.user.fullname}";
     userEmail = "${vars.user.email}";
-  };
-
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox-devedition;
-    policies = {
-      DisableFirefoxStudies = true;
-      DisablePocket = true;
-      DisableTelemetry = true;
-    };
-  };
-
-  programs.chromium = {
-    enable = true;
-    package = pkgs.ungoogled-chromium;
   };
 
   programs.ssh = {
