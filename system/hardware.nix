@@ -1,6 +1,5 @@
 {
   lib,
-  config,
   inputs,
   modulesPath,
   ...
@@ -17,18 +16,21 @@
   hardware.intelgpu.driver = "xe";
   hardware.nvidia = {
     open = true;
-    nvidiaSettings = lib.mkDefault true;
-    modesetting.enable = lib.mkDefault true;
     primeBatterySaverSpecialisation = true;
+    powerManagement = {
+      enable = true;
+      finegrained = true;
+    };
     prime = {
-      offload.enable = lib.mkDefault true;
-      intelBusId = lib.mkDefault "PCI:0:2:0";
-      nvidiaBusId = lib.mkDefault "PCI:1:0:0";
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
     };
   };
 
+  specialisation.battery-saver.configuration = {
+    powerManagement.powertop.enable = true;
+  };
   powerManagement.enable = true;
-  #   powerManagement.powertop.enable = true;
 
   services = {
     fwupd.enable = true;

@@ -1,8 +1,6 @@
 { pkgs, inputs, ... }:
 {
   imports = [ inputs.niri.nixosModules.niri ];
-
-  chaotic.mesa-git.enable = true;
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
 
   # Enable the X11 windowing system.
