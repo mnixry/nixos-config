@@ -1,9 +1,10 @@
 {
-  pkgs,
+  lib,
+  telegram-desktop,
+  buildEnv,
   mkNixPak,
   nixpakModules,
   makeDesktopItem,
-  ...
 }:
 let
   wrapped = mkNixPak {
@@ -15,13 +16,12 @@ let
           nixpakModules.gui-base
           nixpakModules.network
         ];
-        app.package = pkgs.telegram-desktop;
+        app.package = telegram-desktop;
         flatpak = {
           appId = "org.telegram.desktop";
         };
         dbus = {
           enable = true;
-          args = [ "--log" ];
           policies = {
             "org.gnome.Mutter.IdleMonitor" = "talk";
             "org.freedesktop.Notifications" = "talk";
@@ -34,9 +34,9 @@ let
         };
       };
   };
-  exePath = pkgs.lib.getExe wrapped.config.script;
+  exePath = lib.getExe wrapped.config.script;
 in
-pkgs.buildEnv {
+buildEnv {
   inherit (wrapped.config.script) name meta passthru;
   paths = [
     wrapped.config.script

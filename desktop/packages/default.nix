@@ -9,10 +9,6 @@ let
         inherit (pkgs) lib;
         inherit pkgs;
       };
-      safeBind = sloth: realdir: mapdir: [
-        (sloth.mkdir (sloth.concat' sloth.appDataDir realdir))
-        (sloth.concat' sloth.homeDir mapdir)
-      ];
     };
 in
 {
@@ -20,6 +16,7 @@ in
     (final: prev: {
       nixpaks = {
         telegram = wrapper prev ./nixpaks-telegram.nix;
+        larksuite = wrapper prev ./nixpaks-larksuite.nix;
       };
     })
   ];
