@@ -162,6 +162,7 @@
         # language package managers
         # ======================================
         ".local/share/pnpm/store" # PNPM Store
+        ".local/share/go" # Customized go path
         #         ".npm" # typsescript/javascript
         #         "go"
         #         ".cargo" # rust

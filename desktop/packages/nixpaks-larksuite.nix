@@ -17,9 +17,7 @@ let
       hash = "sha256-zaVptVQxCHO/8zMX93nXtxtq4g6QNtzQLOIK8ds0XXs=";
     };
     installPhase = (lib.replaceString "feishu" "lark" prev.installPhase) + ''
-      wrapProgram $out/opt/bytedance/lark/bytedance-lark \
-        --prefix PATH : ${lib.makeBinPath [ coreutils ]} \
-        --add-flags "--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true"
+      wrapProgram $out/opt/bytedance/lark/bytedance-lark --prefix PATH : ${lib.makeBinPath [ coreutils ]}
     '';
     meta.mainProgram = "bytedance-lark";
   });
@@ -42,9 +40,15 @@ let
             "org.freedesktop.secrets" = "talk";
             "org.gnome.keyring" = "talk";
             "org.gnome.ScreenSaver" = "talk";
+            "org.freedesktop.Notifications" = "talk";
+            "org.kde.StatusNotifierWatcher" = "talk";
+            "com.canonical.AppMenu.Registrar" = "talk";
+            "com.canonical.indicator.application" = "talk";
+            "org.ayatana.indicator.application" = "talk";
           };
         };
         bubblewrap = {
+          sockets.x11 = true;
           bind.rw = [ sloth.xdgDownloadDir ];
         };
       };

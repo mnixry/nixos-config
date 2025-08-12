@@ -1,0 +1,4 @@
+{ extraLibs, ... }:
+{
+  imports = extraLibs.scanPaths ./.;
+}
