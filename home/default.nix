@@ -28,6 +28,11 @@
   #     xxx
   # '';
 
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+  };
+
   # Packages that should be installed to the user profile.
   home.packages =
     with pkgs;
@@ -98,24 +103,6 @@
   };
 
   xdg.mimeApps.enable = true;
-
-  # basic configuration of git, please change to your own
-  programs.git = {
-    enable = true;
-    userName = "${vars.user.fullname}";
-    userEmail = "${vars.user.email}";
-  };
-
-  programs.ssh = {
-    enable = true;
-    compression = true;
-    matchBlocks."github.com" = {
-      host = "github.com";
-      hostname = "ssh.github.com";
-      port = 443;
-      user = "git";
-    };
-  };
 
   dconf.settings = {
     "org/virt-manager/virt-manager/connections" = {

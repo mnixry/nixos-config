@@ -190,6 +190,10 @@
           directory = ".local/share/kwalletd";
           mode = "0700";
         }
+        {
+          directory = ".config/Bitwarden";
+          mode = "0700";
+        }
 
         ".local/share/password-store"
         # gnmome keyrings

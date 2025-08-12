@@ -32,4 +32,15 @@
         shell.disabled = false;
       };
   };
+
+  programs.atuin = {
+    enable = true;
+    enableBashIntegration = true;
+    enableFishIntegration = true;
+    daemon.enable = true;
+    settings = {
+      sync_frequency = 0;
+      inline_height = 10;
+    };
+  };
 }

@@ -21,6 +21,7 @@
       "tss"
     ];
     shell = pkgs.fish;
+    packages = with pkgs; [ bitwarden-desktop ];
   };
 
   security.pam.services."${vars.user.name}".kwallet = {
