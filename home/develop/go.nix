@@ -1,10 +1,12 @@
 { config, pkgs, ... }:
 {
-  programs.go = rec {
+  programs.go = {
     enable = true;
     telemetry.mode = "off";
-    goPath = "${config.xdg.dataHome}/go";
-    goBin = "${goPath}/bin";
+    env = rec {
+      goPath = "${config.xdg.dataHome}/go";
+      goBin = "${goPath}/bin";
+    };
   };
 
   home = {
@@ -22,6 +24,6 @@
       impl
       revive
     ];
-    sessionPath = [ config.programs.go.goBin ];
+    sessionPath = [ config.programs.go.env.goBin ];
   };
 }

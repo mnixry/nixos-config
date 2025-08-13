@@ -247,12 +247,6 @@
           how = "symlink";
         }
         {
-          file = ".local/share/fish/fish_history";
-          how = "symlink";
-          # create parent directory automatically
-          configureParent = true;
-        }
-        {
           file = ".config/kwinoutputconfig.json";
           how = "symlink";
         }
