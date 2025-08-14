@@ -4,7 +4,6 @@ let
   wrapper =
     pkgs: path:
     pkgs.callPackage path {
-      inherit (nixpak) nixpakModules;
       mkNixPak = nixpak.lib.nixpak {
         inherit (pkgs) lib;
         inherit pkgs;

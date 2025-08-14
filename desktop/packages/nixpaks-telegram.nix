@@ -3,22 +3,18 @@
   telegram-desktop,
   buildEnv,
   mkNixPak,
-  nixpakModules,
   makeDesktopItem,
 }:
 let
+  appId = "org.telegram.desktop";
   wrapped = mkNixPak {
     config =
       { ... }:
       {
-        imports = [
-          ./nixpaks-common.nix
-          nixpakModules.gui-base
-          nixpakModules.network
-        ];
+        imports = [ ./nixpaks-common.nix ];
         app.package = telegram-desktop;
         flatpak = {
-          appId = "org.telegram.desktop";
+          appId = appId;
         };
         dbus = {
           enable = true;
@@ -41,12 +37,12 @@ buildEnv {
   paths = [
     wrapped.config.script
     (makeDesktopItem {
-      name = "telegram";
+      name = appId;
       desktopName = "Telegram";
       comment = "New era of messaging";
       tryExec = "${exePath}";
       exec = "${exePath} -- %u";
-      icon = "org.telegram.desktop";
+      icon = appId;
       terminal = false;
       type = "Application";
       categories = [
@@ -68,6 +64,9 @@ buildEnv {
         "sms"
         "tdesktop"
       ];
+      extraConfig = {
+        X-Flatpak = appId;
+      };
     })
   ];
 }

@@ -5,10 +5,10 @@
   fetchurl,
   buildEnv,
   mkNixPak,
-  nixpakModules,
   makeDesktopItem,
 }:
 let
+  appId = "com.larksuite.suite";
   larksuite = feishu.overrideAttrs (prev: {
     pname = "lark";
     version = "7.46.11";
@@ -17,22 +17,20 @@ let
       hash = "sha256-zaVptVQxCHO/8zMX93nXtxtq4g6QNtzQLOIK8ds0XXs=";
     };
     installPhase = (lib.replaceString "feishu" "lark" prev.installPhase) + ''
-      wrapProgram $out/opt/bytedance/lark/bytedance-lark --prefix PATH : ${lib.makeBinPath [ coreutils ]}
+      wrapProgram $out/opt/bytedance/lark/bytedance-lark \
+        --prefix PATH : ${lib.makeBinPath [ coreutils ]} \
+        --add-flags "--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true --wayland-text-input-version=3"
     '';
     meta.mainProgram = "bytedance-lark";
   });
   wrapped = mkNixPak {
     config =
-      { sloth, ... }:
+      { ... }:
       {
-        imports = [
-          ./nixpaks-common.nix
-          nixpakModules.gui-base
-          nixpakModules.network
-        ];
+        imports = [ ./nixpaks-common.nix ];
         app.package = larksuite;
         flatpak = {
-          appId = "com.larksuite.suite";
+          appId = appId;
         };
         dbus = {
           enable = true;
@@ -40,16 +38,13 @@ let
             "org.freedesktop.secrets" = "talk";
             "org.gnome.keyring" = "talk";
             "org.gnome.ScreenSaver" = "talk";
+            "org.freedesktop.StatusNotifierItem.*" = "talk";
             "org.freedesktop.Notifications" = "talk";
             "org.kde.StatusNotifierWatcher" = "talk";
             "com.canonical.AppMenu.Registrar" = "talk";
             "com.canonical.indicator.application" = "talk";
             "org.ayatana.indicator.application" = "talk";
           };
-        };
-        bubblewrap = {
-          sockets.x11 = true;
-          bind.rw = [ sloth.xdgDownloadDir ];
         };
       };
   };
@@ -60,7 +55,7 @@ buildEnv {
   paths = [
     wrapped.config.script
     (makeDesktopItem {
-      name = "bytedance-lark";
+      name = appId;
       desktopName = "Lark";
       genericName = "Lark";
       comment = "Lark is a next-generation office suite that integrates messaging, schedule management, collaborative documents, video meeting, and various apps in one platform.";
@@ -77,6 +72,9 @@ buildEnv {
         "x-scheme-handler/lark"
         "x-scheme-handler/x-lark"
       ];
+      extraConfig = {
+        X-Flatpak = appId;
+      };
     })
   ];
 }
