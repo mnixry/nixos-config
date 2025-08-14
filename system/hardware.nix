@@ -27,6 +27,17 @@
     };
   };
 
+  specialisation.intel-xe.configuration = {
+    boot.kernelParams =
+      let
+        deviceId = "7d51";
+      in
+      [
+        "i915.force_probe=!${deviceId}"
+        "xe.force_probe=${deviceId}"
+      ];
+  };
+
   specialisation.battery-saver.configuration = {
     powerManagement.powertop.enable = true;
   };

@@ -2,11 +2,12 @@
   lib,
   pkgs,
   vars,
+  inputs,
   extraLibs,
   ...
 }:
 {
-  imports = extraLibs.scanPaths ./.;
+  imports = [ inputs.lix-module.nixosModules.default ] ++ extraLibs.scanPaths ./.;
 
   networking.hostName = "${vars.network.hostname}";
   networking.networkmanager.enable = true;
