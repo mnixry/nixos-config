@@ -9,50 +9,45 @@
 {
   imports = [ inputs.lix-module.nixosModules.default ] ++ extraLibs.scanPaths ./.;
 
-  networking.hostName = "${vars.network.hostname}";
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "${vars.network.hostname}";
+    networkmanager.enable = true;
+    # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+    # (the default) this is the recommended approach. When using systemd-networkd it's
+    # still possible to use this option, but it's recommended to use it in conjunction
+    # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+    useDHCP = lib.mkDefault true;
+    # networking.interfaces.enp0s31f6.useDHCP = lib.mkDefault true;
+    # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
+  };
+
+  nix = {
+    # do garbage collection weekly to keep disk usage low
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 1w";
+    };
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      # Optimise storage
+      # you can also optimise the store manually via:
+      #    nix-store --optimise
+      # https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-auto-optimise-store
+      auto-optimise-store = true;
+    };
+  };
+
+  nixpkgs = {
+    hostPlatform = lib.mkDefault "x86_64-linux";
+    # Allow unfree packages
+    config.allowUnfree = true;
+  };
+
   zramSwap.enable = true;
-
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-  # (the default) this is the recommended approach. When using systemd-networkd it's
-  # still possible to use this option, but it's recommended to use it in conjunction
-  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp0s31f6.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
-
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    substituters = [
-      "https://cache.garnix.io"
-      #       "https://mirrors.cernet.edu.cn/nix-channels/store"
-    ];
-    trusted-public-keys = [
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-    ];
-    trusted-users = [ "${vars.user.name}" ];
-  };
-
-  # do garbage collection weekly to keep disk usage low
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 1w";
-  };
-
-  # Optimise storage
-  # you can also optimise the store manually via:
-  #    nix-store --optimise
-  # https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-auto-optimise-store
-  nix.settings.auto-optimise-store = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

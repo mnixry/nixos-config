@@ -1,6 +1,4 @@
 {
-  lib,
-  config,
   pkgs,
   inputs,
   vars,
@@ -8,7 +6,7 @@
   ...
 }:
 {
-  imports = [ inputs.chaotic.homeManagerModules.default ] ++ extraLibs.scanPaths ./.;
+  imports = extraLibs.scanPaths ./.;
 
   home.username = "${vars.user.name}";
   home.homeDirectory = "/home/${vars.user.name}";
