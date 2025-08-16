@@ -13,6 +13,23 @@
     (inputs.nixos-hardware + "/common/cpu/intel/meteor-lake")
   ];
 
+  services.xserver.videoDrivers = [
+    "nvidia"
+    "displaylink"
+  ];
+  nixpkgs.overlays = [
+    (self: super: {
+      displaylink = super.displaylink.overrideAttrs (_: {
+        version = "6.1.1-17";
+        src = super.fetchurl {
+          name = "displaylink-611.zip";
+          url = "https://www.synaptics.com/sites/default/files/exe_files/2025-04/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu6.1.1-EXE.zip";
+          hash = "sha256-yiIw6UDOLV1LujxhAVsfjIA5he++8W022+EK/OZTwXI=";
+        };
+      });
+    })
+  ];
+
   hardware.intelgpu.driver = "xe";
   hardware.nvidia = {
     open = true;

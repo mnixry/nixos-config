@@ -44,7 +44,7 @@
           "Noto Emoji"
         ];
         monospace = [
-          "JetBrainsMono Nerd Fonts"
+          "JetBrainsMono Nerd Font"
           "Sarasa Term SC"
           "Sarasa Term TC"
           "Sarasa Term J"

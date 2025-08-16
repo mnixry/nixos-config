@@ -1,8 +1,19 @@
 { inputs, pkgs, ... }:
+let
+  linuxPackages = pkgs.linuxPackages_cachyos-lto.cachyOverride { mArch = "GENERIC_V3"; };
+  kernelPackages = linuxPackages.extend (
+    lpself: lpsuper: {
+      evdi = lpsuper.evdi.overrideAttrs (oldAttrs: {
+        # fix missing discarded-qualifiers warning under Clang
+        env.NIX_CFLAGS_COMPILE = "${oldAttrs.env.NIX_CFLAGS_COMPILE} -Wno-unknown-warning-option";
+      });
+    }
+  );
+in
 {
   imports = [ inputs.chaotic.nixosModules.default ];
 
-  boot.kernelPackages = pkgs.linuxPackages_cachyos-lto.cachyOverride { mArch = "GENERIC_V3"; };
+  boot.kernelPackages = kernelPackages;
   boot.kernel.sysctl =
     let
       MB = 1024 * 1024;

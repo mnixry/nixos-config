@@ -10,6 +10,14 @@ in
     defaultProfile = defaultProfileName;
     profiles."${defaultProfileName}" = {
       name = defaultProfileName;
+      font =
+        let
+          inherit (config.programs.plasma.fonts) fixedWidth;
+        in
+        {
+          name = fixedWidth.family;
+          size = fixedWidth.pointSize;
+        };
       colorScheme = "MateriaDark";
       extraConfig = {
         "Appearance"."UseFontLineChararacters" = true;

@@ -26,9 +26,7 @@
       video-sync = "display-resample";
       tscale = "oversample";
       sub-auto = "fuzzy";
-      hwdec = "vaapi";
-      gpu-api = "opengl";
-      gpu-context = "wayland";
+      hwdec = "auto-safe";
       vo = "gpu";
     };
     bindings =
