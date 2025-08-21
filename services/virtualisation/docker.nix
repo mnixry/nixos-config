@@ -9,11 +9,12 @@
     enable = true;
     storageDriver = "btrfs";
     liveRestore = true;
-    extraPackages = [ pkgs.youki ];
+    package = pkgs.docker.override (args: {
+      buildxSupport = true;
+    });
     daemon.settings = {
       experimental = true;
       ipv6 = true;
-      userland-proxy = false;
       runtimes.youki.path = lib.getExe pkgs.youki;
     };
   };
