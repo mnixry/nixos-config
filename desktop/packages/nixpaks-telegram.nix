@@ -4,6 +4,7 @@
   buildEnv,
   mkNixPak,
   makeDesktopItem,
+  ...
 }:
 let
   appId = "org.telegram.desktop";

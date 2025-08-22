@@ -6,6 +6,7 @@
   stdenv,
   buildEnv,
   mkNixPak,
+  mkAppWrapper,
   makeDesktopItem,
 }:
 let
@@ -15,21 +16,13 @@ let
       { sloth, ... }:
       {
         imports = [ ./nixpaks-common.nix ];
-        app = {
-          package = qq.overrideAttrs (_: {
-            postInstall = ''
-              wrapProgram $out/bin/qq \
-                --prefix LD_LIBRARY_PATH : "${
-                  lib.makeLibraryPath [
-                    libX11
-                    libkrb5
-                    stdenv.cc.cc
-                  ]
-                }"
-            '';
-            meta.mainProgram = "qq";
-          });
-          binPath = lib.getExe' qq "qq";
+        app.package = mkAppWrapper qq {
+          binPath = "bin/qq";
+          prefixLibraries = [
+            libX11
+            libkrb5
+            stdenv.cc.cc
+          ];
         };
         flatpak = {
           appId = appId;

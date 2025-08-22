@@ -2,12 +2,51 @@
 let
   inherit (inputs) nixpak;
   wrapper =
-    pkgs: path:
+    prev: path:
+    let
+      pkgs = prev;
+      inherit (pkgs) lib;
+    in
     pkgs.callPackage path {
       mkNixPak = nixpak.lib.nixpak {
-        inherit (pkgs) lib;
         inherit pkgs;
+        inherit lib;
       };
+      mkAppWrapper =
+        package:
+        {
+          binPath ? "bin/${builtins.baseNameOf (lib.getExe package)}",
+          prefixPathes ? with pkgs; [
+            xdg-utils
+            kdePackages.kde-cli-tools
+          ],
+          prefixLibraries ? with pkgs; [ xorg.libX11 ],
+          extraWrapperArgs ? [ ],
+        }:
+        let
+          mainProgram = builtins.baseNameOf binPath;
+          prefixPathesArg = lib.optionals (builtins.length prefixPathes > 0) [
+            "--prefix"
+            "PATH"
+            ":"
+            "${lib.makeBinPath prefixPathes}"
+          ];
+          prefixLibrariesArg = lib.optionals (builtins.length prefixLibraries > 0) [
+            "--prefix"
+            "LD_LIBRARY_PATH"
+            ":"
+            "${lib.makeLibraryPath prefixLibraries}"
+          ];
+          makeWrapperArgs = prefixPathesArg ++ prefixLibrariesArg ++ extraWrapperArgs;
+        in
+        (pkgs.runCommandLocal "nixpak-app-wrapper-${mainProgram}"
+          {
+            inherit (package) passthru;
+            nativeBuildInputs = [ pkgs.makeWrapper ];
+            meta = { inherit mainProgram; };
+          }
+          ''makeWrapper '${package}/${binPath}' "$out/bin/${mainProgram}" ${lib.escapeShellArgs makeWrapperArgs}''
+        );
     };
 in
 {

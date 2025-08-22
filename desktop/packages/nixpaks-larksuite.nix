@@ -1,10 +1,10 @@
 {
   lib,
-  coreutils,
   feishu,
   fetchurl,
   buildEnv,
   mkNixPak,
+  mkAppWrapper,
   makeDesktopItem,
 }:
 let
@@ -16,11 +16,7 @@ let
       url = "https://sf16-sg.larksuitecdn.com/obj/lark-artifact-storage/34c30532/Lark-linux_x64-7.46.11.deb";
       hash = "sha256-zaVptVQxCHO/8zMX93nXtxtq4g6QNtzQLOIK8ds0XXs=";
     };
-    installPhase = (lib.replaceString "feishu" "lark" prev.installPhase) + ''
-      wrapProgram $out/opt/bytedance/lark/bytedance-lark \
-        --prefix PATH : ${lib.makeBinPath [ coreutils ]} \
-        --add-flags "--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true --wayland-text-input-version=3"
-    '';
+    installPhase = lib.replaceString "feishu" "lark" prev.installPhase;
     meta.mainProgram = "bytedance-lark";
   });
   wrapped = mkNixPak {
@@ -28,7 +24,13 @@ let
       { ... }:
       {
         imports = [ ./nixpaks-common.nix ];
-        app.package = larksuite;
+        app.package = mkAppWrapper larksuite {
+          binPath = "opt/bytedance/lark/lark";
+          extraWrapperArgs = [
+            "--add-flags"
+            "--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true --wayland-text-input-version=3"
+          ];
+        };
         flatpak = {
           appId = appId;
         };
