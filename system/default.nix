@@ -2,12 +2,11 @@
   lib,
   pkgs,
   vars,
-  inputs,
   extraLibs,
   ...
 }:
 {
-  imports = [ inputs.lix-module.nixosModules.default ] ++ extraLibs.scanPaths ./.;
+  imports = extraLibs.scanPaths ./.;
 
   networking = {
     hostName = "${vars.network.hostname}";
@@ -21,7 +20,20 @@
     # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
   };
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      inherit (final.lixPackageSets.stable)
+        nixpkgs-review
+        nix-direnv
+        nix-eval-jobs
+        nix-fast-build
+        colmena
+        ;
+    })
+  ];
+
   nix = {
+    package = pkgs.lixPackageSets.stable.lix;
     # do garbage collection weekly to keep disk usage low
     gc = {
       automatic = true;
