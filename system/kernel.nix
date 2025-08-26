@@ -29,6 +29,15 @@ in
       "net.ipv4.tcp_wmem" = "${mkKB 4} ${mkKB 128} ${mkMB 32}";
       "net.ipv4.tcp_adv_win_scale" = "-2";
     };
+  boot.initrd = {
+    compressor = "zstd";
+    compressorArgs = [
+      "--long"
+      "--ultra"
+      "-22"
+      "-T0"
+    ];
+  };
 
   services.scx = {
     enable = true;

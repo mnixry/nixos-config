@@ -89,7 +89,8 @@ in
   services.beesd.filesystems = {
     "${luksName}" = {
       spec = "/dev/mapper/${luksName}";
-      extraOptions = [ "--loadavg-target=5.0" ];
+      verbosity = "info";
+      extraOptions = [ "--thread-count=8" ];
     };
   };
 }
