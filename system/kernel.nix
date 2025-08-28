@@ -42,6 +42,5 @@ in
   services.scx = {
     enable = true;
     scheduler = "scx_lavd";
-    package = pkgs.scx_git.full;
   };
 }

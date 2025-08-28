@@ -23,7 +23,10 @@
 
   programs.ssh = {
     enable = true;
-    compression = true;
+    enableDefaultConfig = false;
+    matchBlocks."*" = {
+      compression = true;
+    };
     matchBlocks."github.com" = {
       host = "github.com";
       hostname = "ssh.github.com";
