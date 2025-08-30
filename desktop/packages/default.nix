@@ -51,6 +51,7 @@ let
 in
 {
   nixpkgs.overlays = [
+    inputs.rust-overlay.overlays.default
     (final: prev: {
       nixpaks = {
         telegram = wrapper prev ./nixpaks-telegram.nix;

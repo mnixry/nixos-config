@@ -1,6 +1,6 @@
 { vars, ... }:
 let
-  luksName = vars.hardware.luksName;
+  inherit (vars.hardware) luksName;
 in
 {
   boot.tmp.cleanOnBoot = true;
@@ -86,11 +86,24 @@ in
     enable = true;
     fileSystems = [ "/.btr_pool" ];
   };
+
+  nixpkgs.overlays = [
+    (final: super: {
+      bees = super.bees.overrideAttrs (prev: {
+        version = "git";
+        src = super.fetchFromGitHub {
+          owner = "Zygo";
+          repo = "bees";
+          rev = "master";
+          hash = "sha256-tmnezl6NejhVwxuDoWR0SHxaEs3u/Mi8ZB9GbHZ0YqU=";
+        };
+      });
+    })
+  ];
   services.beesd.filesystems = {
     "${luksName}" = {
       spec = "/dev/mapper/${luksName}";
-      verbosity = "info";
-      extraOptions = [ "--thread-count=8" ];
+      verbosity = "debug";
     };
   };
 }

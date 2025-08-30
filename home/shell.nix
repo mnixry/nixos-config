@@ -1,5 +1,12 @@
-{ lib, pkgs, ... }:
 {
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
+{
+  imports = [ inputs.nix-index-database.homeModules.nix-index ];
+
   programs.fish = {
     enable = true;
     generateCompletions = true;
@@ -42,5 +49,11 @@
       sync_frequency = 0;
       inline_height = 10;
     };
+  };
+
+  programs.nix-index = {
+    enable = true;
+    enableBashIntegration = true;
+    enableFishIntegration = true;
   };
 }
