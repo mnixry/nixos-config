@@ -57,6 +57,7 @@ in
         telegram = wrapper prev ./nixpaks-telegram.nix;
         larksuite = wrapper prev ./nixpaks-larksuite.nix;
         qq = wrapper prev ./nixpaks-qq.nix;
+        spotify = wrapper prev ./nixpaks-spotify.nix;
       };
     })
   ];

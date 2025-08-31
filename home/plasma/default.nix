@@ -4,7 +4,7 @@
   ...
 }:
 {
-  imports = [ inputs.plasma-manager.homeManagerModules.plasma-manager ] ++ extraLibs.scanPaths ./.;
+  imports = [ inputs.plasma-manager.homeModules.plasma-manager ] ++ extraLibs.scanPaths ./.;
 
   programs.plasma = {
     enable = true;
