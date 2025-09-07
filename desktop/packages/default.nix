@@ -16,10 +16,7 @@ let
         package:
         {
           binPath ? "bin/${builtins.baseNameOf (lib.getExe package)}",
-          prefixPathes ? with pkgs; [
-            xdg-utils
-            kdePackages.kde-cli-tools
-          ],
+          prefixPathes ? with pkgs; [ flatpak-xdg-utils ],
           prefixLibraries ? with pkgs; [ xorg.libX11 ],
           extraWrapperArgs ? [ ],
         }:

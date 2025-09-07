@@ -10,6 +10,10 @@
     nixfmt-rfc-style
 
     dive
+
+    androidenv.androidPkgs.platform-tools
+
+    tokei
   ];
 
   programs.awscli = {

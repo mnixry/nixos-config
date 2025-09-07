@@ -50,7 +50,7 @@
   qt = {
     enable = true;
     style.name = "kvantum";
-    platformTheme.name = "kde6";
+    platformTheme.name = "kde";
   };
 
   programs.kvantum = {
