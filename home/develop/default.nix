@@ -11,7 +11,8 @@
 
     dive
 
-    androidenv.androidPkgs.platform-tools
+    android-tools
+    scrcpy
 
     tokei
   ];

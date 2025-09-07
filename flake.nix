@@ -8,8 +8,7 @@
       url = "github:NixOS/nixos-hardware/master";
       flake = false;
     };
-    # https://github.com/nix-community/preservation/pull/16
-    preservation.url = "github:nix-community/preservation/default-user-ownership";
+    preservation.url = "github:nix-community/preservation";
     lanzaboote = {
       url = "github:nix-community/lanzaboote/master";
       inputs.nixpkgs.follows = "nixpkgs";

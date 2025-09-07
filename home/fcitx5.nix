@@ -11,8 +11,8 @@
         (fcitx5-rime.override {
           rimeDataPkgs = [
             rime-ice
-            fcitx5-pinyin-moegirl
-            fcitx5-pinyin-zhwiki
+            rime-moegirl
+            rime-zhwiki
           ];
         })
       ];

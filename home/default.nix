@@ -93,8 +93,6 @@
       ethtool
       pciutils # lspci
       usbutils # lsusb
-
-      nixpaks.spotify
     ]
     ++ [ inputs.pwndbg.packages.${pkgs.system}.default ];
 
