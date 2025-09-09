@@ -2,11 +2,12 @@
   lib,
   pkgs,
   vars,
+  inputs,
   extraLibs,
   ...
 }:
 {
-  imports = extraLibs.scanPaths ./.;
+  imports = [ inputs.determinate.nixosModules.default ] ++ extraLibs.scanPaths ./.;
 
   networking = {
     hostName = "${vars.network.hostname}";
@@ -20,20 +21,7 @@
     # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
   };
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      inherit (final.lixPackageSets.stable)
-        nixpkgs-review
-        nix-direnv
-        nix-eval-jobs
-        nix-fast-build
-        colmena
-        ;
-    })
-  ];
-
   nix = {
-    package = pkgs.lixPackageSets.stable.lix;
     # do garbage collection weekly to keep disk usage low
     gc = {
       automatic = true;
@@ -44,12 +32,15 @@
       experimental-features = [
         "nix-command"
         "flakes"
+        "parallel-eval"
       ];
       # Optimise storage
       # you can also optimise the store manually via:
       #    nix-store --optimise
       # https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-auto-optimise-store
       auto-optimise-store = true;
+      lazy-trees = true;
+      eval-cores = 0;
     };
   };
 
