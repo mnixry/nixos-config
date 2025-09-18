@@ -1,9 +1,13 @@
 { inputs, pkgs, ... }:
 let
-  linuxPackages = pkgs.linuxPackages_cachyos-gcc.override (super: {
+  linuxPackages = pkgs.linuxPackages_cachyos.override (super: {
     stdenv = pkgs.impureUseNativeOptimizations super.stdenv;
   });
-  kernelPackages = linuxPackages.cachyOverride { mArch = "NATIVE"; };
+  kernelPackages = (linuxPackages.cachyOverride { mArch = "NATIVE"; }).extend (
+    lpself: lpsuper: {
+      inherit (pkgs.linuxPackages_cachyos-gcc) evdi;
+    }
+  );
 in
 {
   imports = [ inputs.chaotic.nixosModules.default ];

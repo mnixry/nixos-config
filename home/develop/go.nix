@@ -10,14 +10,14 @@
     telemetry.mode = "off";
     env =
       lib.attrsets.mapAttrs (name: value: lib.getExe' pkgs.gccgo value) {
-        "ar" = "ar";
-        "cc" = "gcc";
-        "cxx" = "g++";
-        "gccgo" = "gccgo";
+        AR = "ar";
+        CC = "gcc";
+        CXX = "g++";
+        GCCGO = "gccgo";
       }
       // rec {
-        goPath = "${config.xdg.dataHome}/go";
-        goBin = "${goPath}/bin";
+        GOPATH = "${config.xdg.dataHome}/go";
+        GOBIN = "${GOPATH}/bin";
       };
   };
 
@@ -36,6 +36,6 @@
       impl
       revive
     ];
-    sessionPath = [ config.programs.go.env.goBin ];
+    sessionPath = [ config.programs.go.env.GOBIN ];
   };
 }
