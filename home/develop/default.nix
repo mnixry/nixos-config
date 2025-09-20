@@ -8,6 +8,8 @@
 
     nixd
     nixfmt-rfc-style
+    nixfmt-tree
+    alejandra
 
     dive
 
