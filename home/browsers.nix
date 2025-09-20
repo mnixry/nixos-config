@@ -6,7 +6,7 @@
 }:
 
 {
-  xdg.mimeApps.defaultApplications = config.lib.xdg.mimeAssociations [
+  xdg.mimeApps.defaultApplicationPackages = [
     config.programs.firefox.package
   ];
 

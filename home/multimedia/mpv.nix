@@ -5,7 +5,7 @@
   ...
 }:
 {
-  xdg.mimeApps.defaultApplications = config.lib.xdg.mimeAssociations [ config.programs.mpv.package ];
+  xdg.mimeApps.defaultApplicationPackages = [ config.programs.mpv.package ];
 
   programs.mpv = {
     enable = true;
