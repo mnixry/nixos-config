@@ -3,6 +3,7 @@
   home.packages = with pkgs; [
     iotop # io monitoring
     iftop # network monitoring
+    nvtopPackages.full # gpu monitoring
   ];
 
   home.sessionVariables = {

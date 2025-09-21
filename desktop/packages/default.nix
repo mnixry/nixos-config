@@ -56,6 +56,7 @@ in
         qq = wrapper prev ./nixpaks-qq.nix;
         spotify = wrapper prev ./nixpaks-spotify.nix;
       };
+      pkgsNoConfig = import prev.path { inherit (prev) system; };
     })
   ];
 }

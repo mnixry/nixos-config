@@ -29,6 +29,10 @@
       });
     })
   ];
+  nixpkgs.config = {
+    cudaSupport = true;
+    cudaForwardCompat = true;
+  };
 
   hardware.intelgpu.driver = "xe";
   hardware.nvidia = {

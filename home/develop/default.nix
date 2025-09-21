@@ -5,13 +5,20 @@
   home.packages = with pkgs; [
     gcc_multi
     clang-tools
+    man-pages
+    man-pages-posix
 
     nixd
     nixfmt-rfc-style
     nixfmt-tree
-    alejandra
+
+    git-filter-repo
+    git-graph
+
+    hashcat
 
     dive
+    buildah
 
     android-tools
     scrcpy
