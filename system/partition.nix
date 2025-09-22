@@ -37,7 +37,7 @@ in
       neededForBoot = true;
       options = [
         "subvol=@nix"
-        "compress-force=zstd:1"
+        "compress-force=zstd"
         "noatime"
       ];
     };

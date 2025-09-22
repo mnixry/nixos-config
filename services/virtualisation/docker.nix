@@ -19,6 +19,14 @@
     };
   };
 
+  virtualisation.containers = {
+    enable = true;
+    registries.search = [
+      "docker.io"
+      "quay.io"
+    ];
+  };
+
   users.users."${vars.user.name}".extraGroups = [ "docker" ];
 
   virtualisation.oci-containers = {

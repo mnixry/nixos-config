@@ -55,6 +55,7 @@ in
         larksuite = wrapper prev ./nixpaks-larksuite.nix;
         qq = wrapper prev ./nixpaks-qq.nix;
         spotify = wrapper prev ./nixpaks-spotify.nix;
+        wpsoffice = wrapper prev ./nixpaks-wpsoffice.nix;
       };
       pkgsNoConfig = import prev.path { inherit (prev) system; };
     })

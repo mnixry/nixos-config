@@ -1,4 +1,4 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [ rust-bin.stable.latest.default ];
+  home.packages = with pkgs; [ rust-bin.stable.latest.complete ];
 }

@@ -1,1 +1,16 @@
-/result
+# Ignore everything
+*
+
+# But not these files...
+!/.gitignore
+
+!*.nix
+!flake.lock
+
+!README.md
+!LICENSE
+
+# !Makefile
+
+# ...even if they are in subdirectories
+!*/

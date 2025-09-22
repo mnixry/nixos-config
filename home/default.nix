@@ -93,6 +93,8 @@
       ethtool
       pciutils # lspci
       usbutils # lsusb
+
+      nixpaks.wpsoffice
     ]
     ++ [ inputs.pwndbg.packages.${pkgs.system}.default ];
 
