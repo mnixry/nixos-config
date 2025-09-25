@@ -95,6 +95,7 @@
       usbutils # lsusb
 
       nixpaks.wpsoffice
+      kdePackages.filelight
     ]
     ++ [ inputs.pwndbg.packages.${pkgs.system}.default ];
 

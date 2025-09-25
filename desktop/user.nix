@@ -28,4 +28,5 @@
     enable = true;
     package = pkgs.kdePackages.kwallet-pam;
   };
+  services.dbus.packages = with pkgs; [ kdePackages.kwallet ];
 }
