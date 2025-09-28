@@ -54,6 +54,7 @@
         ''/nix/store/.*'' # command contains /nix/store
         ''--cookie[=\s]+.+'' # command contains cookie
       ];
+      store_failed = false;
     };
   };
 

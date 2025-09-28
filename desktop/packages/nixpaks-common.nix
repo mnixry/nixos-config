@@ -11,7 +11,7 @@
 
   gpu = {
     enable = true;
-    provider = lib.mkForce "nixos";
+    provider = "nixos";
   };
 
   dbus =

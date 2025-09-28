@@ -20,11 +20,11 @@
   nixpkgs.overlays = [
     (self: super: {
       displaylink = super.displaylink.overrideAttrs (_: {
-        version = "6.1.1-17";
+        version = "6.2.0-30";
         src = super.fetchurl {
-          name = "displaylink-611.zip";
-          url = "https://www.synaptics.com/sites/default/files/exe_files/2025-04/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu6.1.1-EXE.zip";
-          hash = "sha256-yiIw6UDOLV1LujxhAVsfjIA5he++8W022+EK/OZTwXI=";
+          name = "displaylink-62.zip";
+          url = "https://www.synaptics.com/sites/default/files/exe_files/2025-09/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu6.2-EXE.zip";
+          hash = "sha256-JQO7eEz4pdoPkhcn9tIuy5R4KyfsCniuw6eXw/rLaYE=";
         };
       });
     })
