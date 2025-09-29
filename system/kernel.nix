@@ -5,7 +5,7 @@ let
   });
   kernelPackages = (linuxPackages.cachyOverride { mArch = "NATIVE"; }).extend (
     lpself: lpsuper: {
-      inherit (pkgs.linuxPackages_cachyos-gcc) evdi;
+      inherit (pkgs.linuxPackages_cachyos-gcc) evdi nvidiaPackages;
     }
   );
 in
