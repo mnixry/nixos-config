@@ -1,0 +1,38 @@
+name: Nix Build CI
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "scripts/**"
+      - "**.md"
+      - "**.nu"
+      - "Justfile"
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - "scripts/**"
+      - "**.md"
+      - "**.nu"
+      - "Justfile"
+
+jobs:
+  checks:
+    name: Check build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@main
+      - uses: wimpysworld/nothing-but-nix@main
+      - uses: DeterminateSystems/determinate-nix-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Apply Nix Settings
+        run: |
+          nix build .#nix-conf
+          cat ./result | sudo tee -a /etc/nix/nix.custom.conf
+          sudo systemctl restart nix-daemon.service
+      - name: Run Nix Build
+        run: |
+          nix build .#toplevel --print-build-logs

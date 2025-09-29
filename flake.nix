@@ -54,14 +54,16 @@
   };
 
   outputs =
-    { nixpkgs, ... }@inputs:
+    { self, nixpkgs, ... }@inputs:
     let
+      inherit (nixpkgs) lib;
       vars = import ./vars;
       specialArgs = {
         inherit inputs;
         inherit vars;
-        extraLibs = import ./libs { inherit (inputs.nixpkgs) lib; };
+        extraLibs = import ./libs { inherit lib; };
       };
+      forAllSystems = lib.genAttrs nixpkgs.lib.systems.flakeExposed;
     in
     {
       nixosConfigurations."${vars.network.hostname}" = nixpkgs.lib.nixosSystem {
@@ -85,5 +87,32 @@
           }
         ];
       };
+      packages = forAllSystems (
+        system:
+        let
+          inherit (self.nixosConfigurations."${vars.network.hostname}") config;
+          inherit (nixpkgs) lib;
+          pkgs = import nixpkgs { inherit system; };
+          pick = set: names: with lib; filterAttrs (name: _: elem name names) set;
+          toNixConf =
+            (pkgs.formats.nixConf rec {
+              package = config.nix.package.out;
+              inherit (package) version;
+            }).generate;
+        in
+        {
+          nix-conf = toNixConf "nix.custom.conf" (
+            pick config.nix.settings [
+              "eval-cores"
+              "experimental-features"
+              "lazy-trees"
+              "substituters"
+              "trusted-public-keys"
+              "trusted-substituters"
+            ]
+          );
+          inherit (config.system.build) toplevel;
+        }
+      );
     };
 }

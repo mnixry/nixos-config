@@ -95,7 +95,7 @@ in
           owner = "Zygo";
           repo = "bees";
           rev = "master";
-          hash = "sha256-tmnezl6NejhVwxuDoWR0SHxaEs3u/Mi8ZB9GbHZ0YqU=";
+          hash = "sha256-2Kx9cQOCPWYJZOstGle4FothAx40qFOeUDlyKGmIQ9k=";
         };
       });
     })
