@@ -87,19 +87,7 @@ in
     fileSystems = [ "/.btr_pool" ];
   };
 
-  nixpkgs.overlays = [
-    (final: super: {
-      bees = super.bees.overrideAttrs (prev: {
-        version = "git";
-        src = super.fetchFromGitHub {
-          owner = "Zygo";
-          repo = "bees";
-          rev = "master";
-          hash = "sha256-2Kx9cQOCPWYJZOstGle4FothAx40qFOeUDlyKGmIQ9k=";
-        };
-      });
-    })
-  ];
+  nixpkgs.overlays = [ (final: super: { bees = super.bees_git; }) ];
   services.beesd.filesystems = {
     "${luksName}" = {
       spec = "/dev/mapper/${luksName}";
