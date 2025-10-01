@@ -6,13 +6,15 @@
       postInstall =
         let
           electron = lib.getExe pkgs.electron;
+          cursor-agent = lib.getExe pkgs.cursor-cli;
         in
         ''
-          sed -i \
-            -e "/ELECTRON=/iVSCODE_PATH='$out/lib/cursor'" \
-            -e 's|^ELECTRON=.*|ELECTRON=${electron}|' \
-            -e 's|ELECTRON_RUN_AS_NODE=1 "$ELECTRON" "$CLI" "$@"|ELECTRON_RUN_AS_NODE=1 "$ELECTRON" "$CLI" --app "$VSCODE_PATH/resources/app" "$@"|' \
-            "$out/bin/cursor"
+          substituteInPlace "$out/bin/cursor" \
+            --replace-fail '~/.local/bin/cursor-agent' '${cursor-agent}' \
+            --replace-fail '$VSCODE_PATH/cursor' '${electron}' \
+            --replace-fail \
+              'ELECTRON_RUN_AS_NODE=1 \"$ELECTRON\" \"$CLI\"'\
+              'ELECTRON_RUN_AS_NODE=1 \"$ELECTRON\" \"$CLI\" --app \"$VSCODE_PATH/resources/app\"'
         '';
     }))
   ];
