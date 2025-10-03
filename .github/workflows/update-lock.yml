@@ -1,0 +1,77 @@
+name: Nix Flake Lock Update
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  update-lock:
+    name: Update Nix Flake Lock
+    runs-on: ubuntu-latest
+    env:
+      COMMIT_MSG_SUBJECT: "automated flake lock maintenance at"
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}
+      cancel-in-progress: true
+
+    steps:
+      - uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          LATEST_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          LAST_REAL_COMMIT_SHA=$(git rev-parse HEAD)
+          if [[ "$LATEST_COMMIT_MESSAGE" =~ ^${COMMIT_MSG_SUBJECT}.* ]]; then
+            echo "Previous commit is a maintenance commit. Resetting to the one before it."
+            git reset --hard HEAD~1
+            LAST_REAL_COMMIT_SHA=$(git rev-parse HEAD)
+            echo "Reset complete. Current HEAD is now at ${LAST_REAL_COMMIT_SHA}"
+          else
+            echo "Previous commit is a manmade commit. Proceeding."
+          fi
+      - uses: wimpysworld/nothing-but-nix@main
+      - uses: DeterminateSystems/determinate-nix-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Update Flake Lock
+        id: update-lock
+        run: |
+          set -eo pipefail
+          {
+            echo "command_output<<EOF"
+            nix flake update --quiet 2>&1
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+          if git diff --quiet; then
+            echo "No changes to commit."
+            echo "lock_updated=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "lock_updated=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Apply Nix Settings
+        if: steps.update-lock.outputs.lock_updated == 'true'
+        run: |
+          nix build .#nix-conf
+          cat ./result | sudo tee -a /etc/nix/nix.custom.conf
+          sudo systemctl restart nix-daemon.service
+      - name: Run Nix Build
+        id: build
+        if: steps.update-lock.outputs.lock_updated == 'true'
+        continue-on-error: true
+        run: |
+          nix build .#toplevel --print-build-logs
+      - name: Commit Changes
+        if: steps.build.outcome == 'success'
+        env:
+          COMMIT_MSG_BODY: ${{ steps.update-lock.outputs.command_output }}
+        run: |
+          git add flake.lock
+          COMMIT_TIME=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          git commit -m "${COMMIT_MSG_SUBJECT} ${COMMIT_TIME}" -m "${COMMIT_MSG_BODY}"
+          git push --force-with-lease || echo "No changes to commit."
