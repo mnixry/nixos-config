@@ -4,25 +4,7 @@ let
     stdenv = pkgs.impureUseNativeOptimizations super.stdenv;
   });
   kernelPackages = (linuxPackages.cachyOverride { mArch = "NATIVE"; }).extend (
-    lpself: lpsuper:
-    let
-      inherit (pkgs.linuxPackages_cachyos-gcc) evdi;
-    in
-    {
-      evdi = evdi.overrideAttrs (prev: rec {
-        version = "1.14.11";
-        src = pkgs.fetchFromGitHub {
-          owner = "DisplayLink";
-          repo = "evdi";
-          tag = "v${version}";
-          hash = "sha256-SxYUhu76vwgCQgjOYVpvdWsFpNcyzuSjZe3x/v566VU=";
-        };
-        prePatch = (prev.prePatch or "") + ''
-          substituteInPlace module/Makefile \
-            --replace-fail '/etc/os-release' '/dev/null'
-        '';
-      });
-    }
+    lpself: lpsuper: { inherit (pkgs.linuxPackages_cachyos-gcc) evdi nvidiaPackages; }
   );
 in
 {

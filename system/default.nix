@@ -34,6 +34,9 @@
         "flakes"
         "parallel-eval"
       ];
+      substituters = [
+        "https://nix-cache.shizuku.workers.dev"
+      ];
       # Optimise storage
       # you can also optimise the store manually via:
       #    nix-store --optimise

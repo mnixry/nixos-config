@@ -23,6 +23,9 @@
 
       "riscv32-linux"
       "riscv64-linux"
+
+      "wasm32-wasi"
+      "wasm64-wasi"
     ];
   };
 }
