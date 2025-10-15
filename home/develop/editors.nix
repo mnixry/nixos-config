@@ -17,6 +17,7 @@
               'ELECTRON_RUN_AS_NODE=1 \"$ELECTRON\" \"$CLI\" --app \"$VSCODE_PATH/resources/app\"'
         '';
     }))
+    (jetbrains.datagrip.override { forceWayland = true; })
   ];
   programs.vscode.enable = true;
 }
