@@ -11,6 +11,7 @@
   };
 
   programs.fish.enable = true;
+  programs.wireshark.enable = true;
   users.users."${vars.user.name}" = {
     isNormalUser = true;
     initialHashedPassword = "${vars.user.initialHashedPassword}";
@@ -19,6 +20,7 @@
       "networkmanager"
       "wheel"
       "tss"
+      "wireshark"
     ];
     shell = pkgs.fish;
     packages = with pkgs; [ bitwarden-desktop ];

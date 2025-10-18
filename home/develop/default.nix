@@ -3,6 +3,9 @@
   imports = extraLibs.scanPaths ./.;
 
   home.packages = with pkgs; [
+    imhex
+    wireshark
+
     gcc_multi
     clang-tools
     man-pages
