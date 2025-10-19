@@ -2,7 +2,7 @@
 let
   kernelPackages =
     with pkgs;
-    (linuxPackages_cachyos.cachyOverride { mArch = "GENERIC_V3"; }).extend (
+    (linuxPackages_cachyos-lto.cachyOverride { mArch = "GENERIC_V3"; }).extend (
       lpself: lpsuper: { inherit (linuxPackages_cachyos-gcc) evdi; }
     );
 in
