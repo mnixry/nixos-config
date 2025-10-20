@@ -15,7 +15,11 @@
     daemon.settings = {
       experimental = true;
       ipv6 = true;
-      runtimes.youki.path = lib.getExe pkgs.youki;
+      runtimes = {
+        youki.path = lib.getExe pkgs.youki;
+        kata.path = lib.getExe' pkgs.kata-runtime "kata-runtime";
+      };
+      features.containerd-snapshotter = true;
     };
   };
 
