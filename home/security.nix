@@ -14,11 +14,12 @@
     pinentry.package = pkgs.pinentry-qt;
   };
 
-  # basic configuration of git, please change to your own
   programs.git = {
     enable = true;
-    userName = "${vars.user.fullname}";
-    userEmail = "${vars.user.email}";
+    settings.user = {
+      name = "${vars.user.fullname}";
+      email = "${vars.user.email}";
+    };
   };
 
   programs.ssh = {
