@@ -12,6 +12,9 @@
   programs.eza.enable = true;
 
   home.packages = with pkgs; [
+    (lib.hiPrio uutils-coreutils-noprefix)
+    (lib.hiPrio uutils-diffutils)
+    (lib.hiPrio uutils-findutils)
     xcp
     libqalculate
     gtrash
