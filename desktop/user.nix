@@ -12,6 +12,7 @@
 
   programs.fish.enable = true;
   programs.wireshark.enable = true;
+  programs.traceroute.enable = true;
   users.users."${vars.user.name}" = {
     isNormalUser = true;
     initialHashedPassword = "${vars.user.initialHashedPassword}";

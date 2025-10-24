@@ -1,11 +1,9 @@
 {
   pkgs,
-  lib,
   inputs,
   vars,
   ...
 }:
-
 {
   imports = [
     inputs.preservation.nixosModules.default
@@ -188,6 +186,10 @@
         }
         {
           directory = ".local/share/kwalletd";
+          mode = "0700";
+        }
+        {
+          directory = ".local/share/networkmanagement";
           mode = "0700";
         }
         {
