@@ -119,6 +119,7 @@
         # ======================================
         # IDE / Editors
         # ======================================
+        ".config/imhex/config"
 
         # neovim plugins(wakatime & copilot)
         ".wakatime"

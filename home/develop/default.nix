@@ -1,13 +1,15 @@
-{ pkgs, extraLibs, ... }:
+{
+  pkgs,
+  lib,
+  extraLibs,
+  ...
+}:
 {
   imports = extraLibs.scanPaths ./.;
 
   home.packages = with pkgs; [
-    imhex
-    wireshark
-
-    gcc_multi
-    clang-tools
+    (lib.hiPrio gcc_multi)
+    libclang
     man-pages
     man-pages-posix
 
@@ -19,9 +21,12 @@
     git-graph
 
     hashcat
+    imhex
+    wireshark
 
     dive
     buildah
+    hadolint
 
     android-tools
     scrcpy
