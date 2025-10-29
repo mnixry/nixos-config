@@ -1,8 +1,4 @@
-{
-  pkgs,
-  vars,
-  ...
-}:
+{ pkgs, vars, ... }:
 {
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -24,9 +20,9 @@
       "wireshark"
     ];
     shell = pkgs.fish;
-    packages = with pkgs; [ bitwarden-desktop ];
   };
 
+  environment.defaultPackages = with pkgs; [ bitwarden-desktop ];
   security.pam.services."${vars.user.name}".kwallet = {
     enable = true;
     package = pkgs.kdePackages.kwallet-pam;

@@ -1,4 +1,9 @@
-{ pkgs, extraLibs, ... }:
+{
+  config,
+  pkgs,
+  extraLibs,
+  ...
+}:
 {
   imports = extraLibs.scanPaths ./.;
 
@@ -56,7 +61,7 @@
     };
   };
 
-  services.nixseparatedebuginfod.enable = true;
+  services.nixseparatedebuginfod2.enable = true;
   programs.nix-ld = {
     enable = true;
     libraries = with pkgs; [
