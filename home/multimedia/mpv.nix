@@ -106,7 +106,7 @@
         sha256 = "sha256-6AD9xtC3oAar4y9AhAUksIyGi9XsZrlDZlAuMNYp9ME=";
       };
     in
-    pkgs.runCommandNoCC "unzip-anime4k-shaders"
+    pkgs.runCommand "unzip-anime4k-shaders"
       {
         buildInputs = [ pkgs.unzip ];
         preferLocalBuild = true;

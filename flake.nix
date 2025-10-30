@@ -13,6 +13,7 @@
     lanzaboote = {
       url = "github:nix-community/lanzaboote/master";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.follows = "rust-overlay";
     };
     nixpak = {
       url = "github:nixpak/nixpak";

@@ -6,7 +6,7 @@
     enableDefaultPackages = true;
     packages = with pkgs; [
       # builtin families
-      ubuntu_font_family
+      ubuntu-classic
       liberation_ttf
       # monospace families
       nerd-fonts.jetbrains-mono
