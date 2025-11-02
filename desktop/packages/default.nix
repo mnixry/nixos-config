@@ -59,6 +59,7 @@ in
         wemeet = wrapper prev ./nixpaks-wemeet.nix;
       };
       pkgsNoConfig = import prev.path { inherit (prev) system; };
+      ida-pro = prev.callPackage ./ida-pro.nix { };
     })
   ];
 }

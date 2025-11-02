@@ -9,7 +9,10 @@
 
   home.packages = with pkgs; [
     (lib.hiPrio gcc_multi)
-    libclang
+    (lib.hiPrio clang-tools)
+    clang_multi
+    bear
+    patchelf
     man-pages
     man-pages-posix
 
@@ -23,6 +26,8 @@
     hashcat
     imhex
     wireshark
+    bpftrace
+    ida-pro
 
     dive
     buildah

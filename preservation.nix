@@ -120,6 +120,7 @@
         # IDE / Editors
         # ======================================
         ".config/imhex/config"
+        ".idapro"
 
         # neovim plugins(wakatime & copilot)
         ".wakatime"
