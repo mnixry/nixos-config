@@ -11,6 +11,7 @@
     (lib.hiPrio gcc_multi)
     (lib.hiPrio clang-tools)
     clang_multi
+    libllvm
     bear
     patchelf
     man-pages
@@ -37,6 +38,9 @@
     scrcpy
 
     tokei
+    graphviz
+    ffmpeg
+    caddy
   ];
 
   programs.awscli = {

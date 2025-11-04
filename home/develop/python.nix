@@ -32,6 +32,7 @@ in
 {
   home.packages = with pkgs; [
     (mkNixLDwrappedPackage python3)
+    (mkNixLDwrappedPackage pypy3)
   ];
 
   programs.pdm = {

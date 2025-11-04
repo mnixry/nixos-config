@@ -5,7 +5,7 @@
     extraPackages = with pkgs.bat-extras; [
       batdiff
       batman
-      # batgrep (https://github.com/NixOS/nixpkgs/issues/454391)
+      batgrep
       batwatch
     ];
   };

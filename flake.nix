@@ -13,7 +13,6 @@
     lanzaboote = {
       url = "github:nix-community/lanzaboote/master";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay";
     };
     nixpak = {
       url = "github:nixpak/nixpak";
@@ -68,7 +67,6 @@
     in
     {
       nixosConfigurations."${vars.network.hostname}" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         specialArgs = specialArgs;
         modules = [
           ./system
