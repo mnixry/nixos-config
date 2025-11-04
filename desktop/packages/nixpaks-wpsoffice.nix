@@ -1,7 +1,7 @@
 {
   lib,
+  pkgs,
   wpsoffice-cn,
-  coreutils,
   buildEnv,
   mkNixPak,
   mkAppWrapper,
@@ -16,7 +16,10 @@ let
         imports = [ ./nixpaks-common.nix ];
         app.package = mkAppWrapper wpsoffice-cn {
           binPath = "bin/wps";
-          prefixPathes = [ coreutils ];
+          prefixPathes = with pkgs; [
+            coreutils
+            glib # provides "gsettings"
+          ];
         };
         flatpak = {
           inherit appId;

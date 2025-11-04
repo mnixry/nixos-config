@@ -237,6 +237,11 @@
       (sloth.concat' sloth.xdgConfigHome "/fontconfig")
       (sloth.concat' sloth.xdgConfigHome "/dconf")
 
+      [
+        (lib.getExe pkgs.bashInteractive)
+        "/bin/sh"
+      ]
+
       # Use system font settings instead
       "/etc/fonts"
       "/etc/localtime"
