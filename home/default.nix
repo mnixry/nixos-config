@@ -99,7 +99,7 @@
       nixpaks.wemeet
       kdePackages.filelight
     ]
-    ++ [ inputs.pwndbg.packages.${pkgs.system}.default ];
+    ++ [ inputs.pwndbg.packages.${pkgs.stdenv.hostPlatform.system}.default ];
 
   home.shell = {
     enableFishIntegration = true;

@@ -11,7 +11,7 @@
       enable = true;
       port = 12345;
     };
-    package = inputs.daeuniverse.packages."${pkgs.system}".dae-unstable;
+    package = inputs.daeuniverse.packages."${pkgs.stdenv.hostPlatform.system}".dae-unstable;
     configFile = "/etc/dae/config.dae";
     /*
       default options

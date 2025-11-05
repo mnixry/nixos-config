@@ -58,7 +58,7 @@ in
         wpsoffice = wrapper prev ./nixpaks-wpsoffice.nix;
         wemeet = wrapper prev ./nixpaks-wemeet.nix;
       };
-      pkgsNoConfig = import prev.path { inherit (prev) system; };
+      pkgsNoConfig = import prev.path { inherit (prev.stdenv.hostPlatform) system; };
       ida-pro = prev.callPackage ./ida-pro.nix { };
     })
   ];
