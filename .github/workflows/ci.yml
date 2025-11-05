@@ -26,6 +26,9 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: rampage
+          mnt-safe-haven: 6144
       - uses: DeterminateSystems/determinate-nix-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
         with:
@@ -40,3 +43,21 @@ jobs:
       - name: Run Nix Build
         run: |
           nix build .#toplevel --print-build-logs
+      - name: Run Nix Store Optimizations
+        run: |
+          nix store optimise
+          nix store gc
+      - name: Upload to S3 Bucket
+        env:
+          NIX_CACHE_URI: "s3://${{ secrets.NIX_CACHE_S3_BUCKET }}?endpoint=${{ secrets.NIX_CACHE_S3_ENDPOINT }}"
+          AWS_CREDENTIALS: |
+            [default]
+            aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          NIX_SIGN_SECRET_KEY: "${{ secrets.NIX_SIGN_SECRET_KEY }}"
+        run: |
+          echo "${NIX_SIGN_SECRET_KEY}" > ~/.nix-sign-secret.key
+          nix store sign --key-file ~/.nix-sign-secret.key --recursive ./result
+          mkdir -p ~/.aws
+          echo "${AWS_CREDENTIALS}" > ~/.aws/credentials
+          nix copy --verbose --to "${NIX_CACHE_URI}" ./result

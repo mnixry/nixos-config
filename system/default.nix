@@ -49,6 +49,9 @@
       substituters = [
         "https://nix-cache.shizuku.workers.dev"
       ];
+      trusted-public-keys = [
+        "nix-cache.shizuku.workers.dev-1:maTaI8jIrMNr7Mv+j0FS8sTvGgOTae7pP1OaVljjI6w="
+      ];
       # Optimise storage
       # you can also optimise the store manually via:
       #    nix-store --optimise
