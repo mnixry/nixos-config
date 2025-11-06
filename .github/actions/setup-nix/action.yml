@@ -25,11 +25,6 @@ runs:
         hatchet-protocol: rampage
         mnt-safe-haven: 6144
     - uses: DeterminateSystems/determinate-nix-action@main
-    - uses: DeterminateSystems/magic-nix-cache-action@main
-      with:
-        diff-store: true
-        use-flakehub: false
-        diagnostic-endpoint: ""
     - name: Upload Nix cache to S3 Bucket
       uses: gacts/run-and-post-run@main
       env:

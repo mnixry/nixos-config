@@ -47,7 +47,7 @@
         "parallel-eval"
       ];
       substituters = [
-        "https://nix-cache.shizuku.workers.dev"
+        "https://nix-cache.any-mix.eu.org" # nix-cache.shizuku.workers.dev-1
       ];
       trusted-public-keys = [
         "nix-cache.shizuku.workers.dev-1:maTaI8jIrMNr7Mv+j0FS8sTvGgOTae7pP1OaVljjI6w="
