@@ -1,0 +1,20 @@
+name: NixOS Build
+description: Build NixOS system closure with caching
+
+runs:
+  using: "composite"
+  steps:
+    - name: Apply Nix Settings
+      shell: bash
+      run: |
+        nix build .#nix-conf
+        cat ./result | sudo tee -a /etc/nix/nix.custom.conf
+        sudo systemctl restart nix-daemon.service
+    - name: Run Nix Build
+      uses: gacts/run-and-post-run@main
+      with:
+        run: |
+          nix build .#toplevel --print-build-logs
+        post: |
+          nix store optimise
+          nix store gc

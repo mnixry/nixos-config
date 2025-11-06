@@ -1,0 +1,46 @@
+name: Setup Nix
+description: Setup Nix with caching
+
+inputs:
+  nix-cache-uri:
+    description: The URI of the Nix cache
+    required: true
+  aws-credentials:
+    description: The AWS credentials
+    required: true
+  nix-sign-secret-key:
+    description: The Nix sign secret key
+    required: true
+  free-space:
+    description: Whether to free space before building
+    required: false
+    default: "true"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: wimpysworld/nothing-but-nix@main
+      if: inputs.free-space == 'true'
+      with:
+        hatchet-protocol: rampage
+        mnt-safe-haven: 6144
+    - uses: DeterminateSystems/determinate-nix-action@main
+    - uses: DeterminateSystems/magic-nix-cache-action@main
+      with:
+        diff-store: true
+        use-flakehub: false
+        diagnostic-endpoint: ""
+    - name: Upload Nix cache to S3 Bucket
+      uses: gacts/run-and-post-run@main
+      env:
+        NIX_CACHE_URI: ${{ inputs.nix-cache-uri }}
+        AWS_CREDENTIALS: ${{ inputs.aws-credentials }}
+        NIX_SIGN_SECRET_KEY: ${{ inputs.nix-sign-secret-key }}
+      with:
+        run: |
+          echo "${NIX_SIGN_SECRET_KEY}" > ~/.nix-sign-secret.key
+          mkdir -p ~/.aws
+          echo "${AWS_CREDENTIALS}" > ~/.aws/credentials
+        post: |
+          nix store sign --key-file ~/.nix-sign-secret.key --all
+          nix copy --to "${NIX_CACHE_URI}" --all

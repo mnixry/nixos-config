@@ -2,7 +2,7 @@ name: Nix Flake Lock Update
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 16 * * *"
   workflow_dispatch:
 
 jobs:
@@ -35,16 +35,14 @@ jobs:
           else
             echo "Previous commit is a manmade commit. Proceeding."
           fi
-      - uses: wimpysworld/nothing-but-nix@main
+      - uses: ./.github/actions/setup-nix
         with:
-          hatchet-protocol: rampage
-          mnt-safe-haven: 6144
-      - uses: DeterminateSystems/determinate-nix-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
-        with:
-          diff-store: true
-          use-flakehub: false
-          diagnostic-endpoint: ""
+          nix-cache-uri: "s3://${{ secrets.NIX_CACHE_S3_BUCKET }}?endpoint=${{ secrets.NIX_CACHE_S3_ENDPOINT }}"
+          aws-credentials: |
+            [default]
+            aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          nix-sign-secret-key: "${{ secrets.NIX_SIGN_SECRET_KEY }}"
       - name: Update Flake Lock
         id: update-lock
         run: |
@@ -61,18 +59,9 @@ jobs:
           else
             echo "lock_updated=true" >> "$GITHUB_OUTPUT"
           fi
-      - name: Apply Nix Settings
-        if: steps.update-lock.outputs.lock_updated == 'true'
-        run: |
-          nix build .#nix-conf
-          cat ./result | sudo tee -a /etc/nix/nix.custom.conf
-          sudo systemctl restart nix-daemon.service
-      - name: Run Nix Build
+      - uses: ./.github/actions/nixos-build
         id: build
         if: steps.update-lock.outputs.lock_updated == 'true'
-        continue-on-error: true
-        run: |
-          nix build .#toplevel --print-build-logs
       - name: Commit Changes
         if: steps.build.outcome == 'success'
         env:
@@ -82,23 +71,3 @@ jobs:
           COMMIT_TIME=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
           git commit -m "${COMMIT_MSG_SUBJECT} ${COMMIT_TIME}" -m "${COMMIT_MSG_BODY}"
           git push --force-with-lease || echo "No changes to commit."
-      - name: Run Nix Store Optimizations
-        if: steps.build.outcome == 'success'
-        run: |
-          nix store optimise
-          nix store gc
-      - name: Upload to S3 Bucket
-        if: steps.build.outcome == 'success'
-        env:
-          NIX_CACHE_URI: "s3://${{ secrets.NIX_CACHE_S3_BUCKET }}?endpoint=${{ secrets.NIX_CACHE_S3_ENDPOINT }}"
-          AWS_CREDENTIALS: |
-            [default]
-            aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          NIX_SIGN_SECRET_KEY: "${{ secrets.NIX_SIGN_SECRET_KEY }}"
-        run: |
-          echo "${NIX_SIGN_SECRET_KEY}" > ~/.nix-sign-secret.key
-          nix store sign --key-file ~/.nix-sign-secret.key --recursive ./result
-          mkdir -p ~/.aws
-          echo "${AWS_CREDENTIALS}" > ~/.aws/credentials
-          nix copy --verbose --to "${NIX_CACHE_URI}" ./result
