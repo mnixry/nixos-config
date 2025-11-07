@@ -104,6 +104,7 @@
   home.shell = {
     enableFishIntegration = true;
   };
+  services.remmina.enable = true;
 
   xdg.mimeApps.enable = true;
 
