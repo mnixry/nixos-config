@@ -63,6 +63,7 @@
 
       # misc
       cowsay
+      xeyes
       file
       which
       tree

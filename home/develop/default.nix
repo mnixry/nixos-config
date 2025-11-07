@@ -60,4 +60,25 @@
   programs.awscli = {
     enable = true;
   };
+
+  programs.ghidra = {
+    enable = true;
+    waylandSupport = true;
+    extensions = builtins.attrValues;
+    preferences =
+      let
+        themeFile = pkgs.fetchurl {
+          url = "https://github.com/zackelia/ghidra-dark-theme/raw/refs/heads/main/ghidra-dark.theme";
+          hash = "sha256-ajjMtMpIAFxIHxMbAezISRv3u2ORO8sgcp7Rv2JKiKc=";
+        };
+      in
+      {
+        "GhidraShowWhatsNew" = false;
+        "SHOW.HELP.NAVIGATION.AID" = true;
+        "SHOW_TIPS" = true;
+        "TIP_INDEX" = 0;
+        "USER_AGREEMENT" = "ACCEPT";
+        "Theme" = "File:${themeFile}";
+      };
+  };
 }
