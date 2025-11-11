@@ -72,6 +72,7 @@
       gawk
       zstd
       gnupg
+      lrzsz
 
       # nix related
       #

@@ -50,6 +50,7 @@
 
     # Miscellaneous tools
     tokei
+    onefetch
     graphviz
     ffmpeg
     caddy
