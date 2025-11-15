@@ -11,10 +11,10 @@ let
   appId = "com.larksuite.suite";
   larksuite = feishu.overrideAttrs (prev: {
     pname = "lark";
-    version = "7.46.11";
+    version = "7.50.14";
     src = fetchurl {
-      url = "https://sf16-sg.larksuitecdn.com/obj/lark-artifact-storage/34c30532/Lark-linux_x64-7.46.11.deb";
-      hash = "sha256-zaVptVQxCHO/8zMX93nXtxtq4g6QNtzQLOIK8ds0XXs=";
+      url = "https://sf16-sg.larksuitecdn.com/obj/lark-artifact-storage/31c1c2ee/Lark-linux_x64-7.50.14.deb";
+      hash = "sha256-cI0qDNG0McQtby1tzdVm5ixiGMuIvuNofALKKphVtS0=";
     };
     installPhase = lib.replaceString "feishu" "lark" prev.installPhase;
     meta.mainProgram = "bytedance-lark";

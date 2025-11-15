@@ -42,15 +42,6 @@
 
   programs.atuin = {
     enable = true;
-    package = pkgs.atuin.overrideAttrs (_: {
-      patches = [
-        (pkgs.fetchpatch {
-          name = "fix-fish-up-binding.patch";
-          url = "https://github.com/atuinsh/atuin/commit/cc2b7170290d699f7021483df3fd9ca1afe8bc43.patch";
-          hash = "sha256-V/mSaUxn6RJwwaPwoYeyxt2b8cj5f7pU5oUE88k76M8=";
-        })
-      ];
-    });
     enableBashIntegration = true;
     enableFishIntegration = true;
     daemon.enable = true;

@@ -29,11 +29,12 @@
 
     # CTF tools
     hashcat
-    imhex
+    pkgsStable.imhex
     wireshark
     bpftrace
     ida-pro
     (cutter.withPlugins builtins.attrValues)
+    detect-it-easy
 
     # Container tools
     dive
@@ -65,7 +66,7 @@
   programs.ghidra = {
     enable = true;
     waylandSupport = true;
-    extensions = builtins.attrValues;
+    # extensions = builtins.attrValues;
     preferences =
       let
         themeFile = pkgs.fetchurl {

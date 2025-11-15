@@ -1,6 +1,19 @@
-{ vars, ... }:
+{
+  lib,
+  pkgs,
+  vars,
+  ...
+}:
 let
   inherit (vars.hardware) luksName;
+  cores =
+    with lib;
+    (pipe "nproc --all > $out" [
+      (pkgs.runCommandLocal "cpu-cores" { })
+      readFile
+      strings.trim
+      toIntBase10
+    ]);
 in
 {
   boot.tmp.cleanOnBoot = true;
@@ -92,6 +105,7 @@ in
     "${luksName}" = {
       spec = "/dev/mapper/${luksName}";
       verbosity = "debug";
+      extraOptions = [ "--loadavg-target=${toString cores}" ];
     };
   };
 }

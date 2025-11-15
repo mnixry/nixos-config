@@ -11,7 +11,7 @@
         # obs-nvfbc
         obs-teleport
         # obs-hyperion
-        droidcam-obs
+        # droidcam-obs
         obs-vkcapture
         obs-gstreamer
         input-overlay
