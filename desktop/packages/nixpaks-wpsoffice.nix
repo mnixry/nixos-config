@@ -43,6 +43,10 @@ let
             xdgPicturesDir
             xdgVideosDir
           ];
+          env = {
+            QT_IM_MODULE = "fcitx";
+            SDL_IM_MODULE = "fcitx";
+          };
         };
       };
   };

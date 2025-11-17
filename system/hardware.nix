@@ -71,6 +71,10 @@
       touchpad.naturalScrolling = true;
     };
   };
+  hardware.logitech.wireless = {
+    enable = true;
+    enableGraphical = true;
+  };
 
   environment.etc."libinput/local-overrides.quirks".text = lib.mkForce ''
     [Lenovo ThinkBook 16 G7+ IAH touchpad]

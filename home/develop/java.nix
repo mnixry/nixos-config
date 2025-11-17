@@ -1,14 +1,13 @@
 { lib, pkgs, ... }:
 let
   defaultJdk = pkgs.zulu.override { enableJavaFX = true; };
-  mkJdkOverride = pkg: pkg.override { jdk = defaultJdk; };
 in
 {
   home.packages = (
     with pkgs;
     [
       defaultJdk
-      (mkJdkOverride jadx)
+      (jadx.override { inherit (jetbrains) jdk; })
     ]
   );
   home.shellAliases = (

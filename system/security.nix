@@ -24,10 +24,11 @@ let
         # complain about executions that are not in the current system.
         # this means someone got some executable on the machine that we didn't ship.
         # this is most likely malicious
-
       '';
 in
 {
+  users.mutableUsers = false;
+
   security.sudo-rs = {
     enable = true;
     execWheelOnly = true;
@@ -88,6 +89,7 @@ in
   ++ [ ];
 
   systemd.sockets."systemd-journald-audit".wantedBy = [ "sockets.target" ];
+  systemd.services."audit-rules-nixos".after = [ "suid-sgid-wrappers.service" ];
 
   security.auditd.enable = true;
 }
