@@ -29,7 +29,7 @@
 
     # CTF tools
     hashcat
-    pkgsStable.imhex
+    imhex
     wireshark
     bpftrace
     ida-pro

@@ -16,9 +16,9 @@ in
       let
         matched = builtins.match "zulu([[:digit:]]+)" name;
         version = lib.elemAt matched 0;
-        package = lib.getExe (pkgs.${name}.override { enableJavaFX = true; });
+        package = builtins.tryEval (lib.getExe (pkgs.${name}.override { enableJavaFX = true; }));
       in
-      acc // lib.optionalAttrs (matched != null) { "java${version}" = package; }
+      acc // lib.optionalAttrs (matched != null && package.success) { "java${version}" = package.value; }
     ) { } (builtins.attrNames pkgs)
   );
 }

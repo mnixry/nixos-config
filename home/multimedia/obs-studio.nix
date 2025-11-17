@@ -3,7 +3,7 @@
   programs.obs-studio = {
     enable = pkgs.stdenv.isx86_64;
     plugins =
-      with pkgs.obs-studio-plugins;
+      with pkgs.pkgsNoConfig.obs-studio-plugins;
       [
         # screen capture
         wlrobs

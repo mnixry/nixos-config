@@ -104,7 +104,7 @@ in
   services.beesd.filesystems = {
     "${luksName}" = {
       spec = "/dev/mapper/${luksName}";
-      verbosity = "debug";
+      # verbosity = "debug";
       extraOptions = [ "--loadavg-target=${toString cores}" ];
     };
   };

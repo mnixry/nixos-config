@@ -61,6 +61,7 @@ jobs:
           fi
       - uses: ./.github/actions/nixos-build
         id: build
+        continue-on-error: true
         if: steps.update-lock.outputs.lock_updated == 'true'
       - name: Commit Changes
         if: steps.build.outcome == 'success'
