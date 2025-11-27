@@ -33,6 +33,7 @@
     wireshark
     bpftrace
     ida-pro
+    ida-pro-mcp
     (cutter.withPlugins builtins.attrValues)
     detect-it-easy
 
