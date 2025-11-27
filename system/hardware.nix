@@ -96,5 +96,7 @@
   boot.kernelModules = [
     "kvm-intel"
     "xe"
+    "hid-logitech-dj"
+    "hid-logitech-hidpp"
   ];
 }

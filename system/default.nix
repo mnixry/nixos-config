@@ -7,7 +7,7 @@
   ...
 }:
 {
-  imports = [ inputs.determinate.nixosModules.default ] ++ extraLibs.scanPaths ./.;
+  imports = extraLibs.scanPaths ./.;
 
   networking = {
     hostName = "${vars.network.hostname}";
@@ -34,6 +34,8 @@
   };
 
   nix = {
+    package = inputs.determinate-nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    channel.enable = false;
     # do garbage collection weekly to keep disk usage low
     gc = {
       automatic = true;
@@ -64,7 +66,6 @@
 
   nixpkgs = {
     hostPlatform = lib.mkDefault "x86_64-linux";
-    # Allow unfree packages
     config.allowUnfree = true;
   };
 
