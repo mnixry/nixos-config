@@ -30,10 +30,29 @@ let
     };
 in
 {
-  home.packages = with pkgs; [
-    (mkNixLDwrappedPackage python3)
-    (mkNixLDwrappedPackage pypy3)
-    (mkNixLDwrappedPackage python3Packages.pipx)
+  home.packages = [
+    (mkNixLDwrappedPackage (
+      pkgs.python3.withPackages (
+        ps: with ps; [
+          pipx
+          ptpython
+          virtualenv
+
+          numpy
+          pandas
+
+          requests
+          httpx
+          rich
+
+          sympy
+          cryptography
+          pycryptodome
+          gmpy2
+        ]
+      )
+    ))
+    (mkNixLDwrappedPackage pkgs.pypy3)
   ];
 
   programs.pdm = {
