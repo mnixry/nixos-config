@@ -4,5 +4,6 @@
     nixpaks.telegram
     nixpaks.larksuite
     nixpaks.qq
+    nixpaks.wechat
   ];
 }

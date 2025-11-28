@@ -54,6 +54,7 @@ in
         telegram = wrapper prev ./nixpaks-telegram.nix;
         larksuite = wrapper prev ./nixpaks-larksuite.nix;
         qq = wrapper prev ./nixpaks-qq.nix;
+        wechat = wrapper prev ./nixpaks-wechat.nix;
         spotify = wrapper prev ./nixpaks-spotify.nix;
         wpsoffice = wrapper prev ./nixpaks-wpsoffice.nix;
         wemeet = wrapper prev ./nixpaks-wemeet.nix;
