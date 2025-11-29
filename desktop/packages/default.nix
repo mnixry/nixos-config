@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, extraLibs, ... }:
 let
   inherit (inputs) nixpak;
   wrapper =
@@ -59,7 +59,7 @@ in
         wpsoffice = wrapper prev ./nixpaks-wpsoffice.nix;
         wemeet = wrapper prev ./nixpaks-wemeet.nix;
       };
-      ida-pro = prev.callPackage ./ida-pro.nix { };
+      ida-pro = prev.callPackage ./ida-pro.nix { inherit (extraLibs) base64Decode; };
       ida-pro-mcp = prev.callPackage ./ida-pro-mcp.nix { };
       pkgsNoConfig = import prev.path { inherit (prev.stdenv.hostPlatform) system; };
       pkgsStable = import inputs.nixpkgs-stable { inherit (prev.stdenv.hostPlatform) system; };

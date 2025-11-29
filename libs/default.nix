@@ -1,5 +1,6 @@
 { lib, ... }:
-{
+(import ./base64.nix { inherit lib; })
+// {
   attrs = import ./attrs.nix { inherit lib; };
   # use path relative to the root of the project
   relativeToRoot = lib.path.append ../.;
