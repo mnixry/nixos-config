@@ -32,7 +32,10 @@ let
           };
           shareIpc = true;
           tmpfs = [ "/var/tmp" ];
-          bind.ro = [ "/etc/passwd" ];
+          bind.ro = [
+            "/etc/passwd"
+            "/etc/machine-id"
+          ];
           bind.rw = with sloth; [
             [
               (mkdir (concat' appDir "/kingsoft"))

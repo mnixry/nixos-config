@@ -30,8 +30,23 @@ let
             wayland = lib.mkForce false;
             x11 = true;
           };
-          bind.ro = [ "/etc/passwd" ];
-          bind.rw = with sloth; [ xdgDownloadDir ];
+          bind.ro = [
+            "/etc/passwd"
+            "/etc/machine-id"
+          ];
+          bind.rw = with sloth; [
+            xdgDownloadDir
+            [
+              (mkdir (concat' appDir "/xwechat_files"))
+              (concat' homeDir "/xwechat_files")
+            ]
+          ];
+          env = {
+            QT_QPA_PLATFORM = "xcb";
+            QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+            QT_IM_MODULE = "fcitx";
+            GTK_IM_MODULE = "fcitx";
+          };
         };
       };
   };
