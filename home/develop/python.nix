@@ -49,11 +49,15 @@ in
           cryptography
           pycryptodome
           gmpy2
+
+          pwntools
+          ropper
         ]
       )
     ))
     (mkNixLDwrappedPackage pkgs.pypy3)
-  ];
+  ]
+  ++ (with pkgs; [ ruff ]);
 
   programs.pdm = {
     enable = true;

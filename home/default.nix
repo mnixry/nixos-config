@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   inputs,
   vars,
@@ -33,8 +34,7 @@
 
   # Packages that should be installed to the user profile.
   home.packages =
-    with pkgs;
-    [
+    (with pkgs; [
       fastfetch
       nnn # terminal file manager
 
@@ -100,14 +100,17 @@
       nixpaks.wpsoffice
       nixpaks.wemeet
       kdePackages.filelight
+    ])
+    ++ [
+      (pkgs.callPackage "${inputs.pwndbg}/nix/pwndbg.nix" {
+        inputs = inputs.pwndbg.inputs // {
+          self = inputs.pwndbg;
+        };
+      })
     ]
-    ++ [ inputs.pwndbg.packages.${pkgs.stdenv.hostPlatform.system}.default ];
+    ++ lib.filter (value: lib.isDerivation value) (builtins.attrValues pkgs.unixtools);
 
-  home.shell = {
-    enableFishIntegration = true;
-  };
   services.remmina.enable = true;
-
   xdg.mimeApps.enable = true;
 
   dconf.settings = {

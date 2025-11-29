@@ -7,6 +7,8 @@
 {
   imports = [ inputs.nix-index-database.homeModules.nix-index ];
 
+  home.shell.enableFishIntegration = true;
+
   programs.fish = {
     enable = true;
     generateCompletions = true;

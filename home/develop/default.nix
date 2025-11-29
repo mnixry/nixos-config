@@ -47,6 +47,7 @@
     scrcpy
 
     # Database tools
+    duckdb
     sqlite
     sqlitebrowser
 
