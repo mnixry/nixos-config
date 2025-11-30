@@ -19,7 +19,9 @@ let
     ];
 in
 rec {
+  mod = base: mod: base - (mod * (base / mod));
   mod2 = lib.bitAnd 1;
+  mod3 = base: mod base 3;
   mod4 = lib.bitAnd 3;
   mod8 = lib.bitAnd 7;
 
@@ -33,7 +35,7 @@ rec {
       base;
 
   padRight =
-    len: str: pad:
+    len: pad: str:
     let
       diff = len - (lib.stringLength str);
     in
@@ -93,10 +95,73 @@ rec {
         acc: char: acc ++ lib.optional (builtins.hasAttr char charsetMap) (builtins.getAttr char charsetMap)
       ) [ ])
       (content: decode { inherit content; })
-      (data: map (val: "\\u${padRight 4 (lib.toHexString val) "0"}") data)
+      (data: map (val: "\\u${padRight 4 "0" (lib.toHexString val)}") data)
       lib.strings.concatStrings
       (total: builtins.fromJSON "\"${total}\"")
     ];
 
   base64Decode = base64DecodeWithCharset "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+  base64EncodeWithCharset =
+    charset:
+    let
+      charsetList = lib.stringToCharacters charset;
+    in
+    input:
+    lib.pipe input [
+      lib.stringToCharacters
+      (lib.imap0 (
+        i: c: {
+          inherit i;
+          c = lib.strings.charToInt c;
+        }
+      ))
+      (lib.foldl' (
+        acc:
+        { i, c }:
+        if (mod3 i) == 0 then
+          acc ++ [ (bitShift c 16) ]
+        else if (mod3 i) == 1 then
+          (lib.dropEnd 1 acc) ++ [ (lib.bitOr (lib.last acc) (bitShift c 8)) ]
+        else if (mod3 i) == 2 then
+          (lib.dropEnd 1 acc) ++ [ (lib.bitOr (lib.last acc) c) ]
+        else
+          throw "Unreachable"
+      ) [ ])
+      (groups: map (lib.toBaseDigits 64) groups)
+      (
+        groups:
+        map (
+          chars:
+          lib.pipe chars [
+            (map (lib.elemAt charsetList))
+            lib.strings.concatStrings
+            (padRight 4 (lib.elemAt charsetList 0))
+          ]
+        ) groups
+      )
+      (
+        groups:
+        let
+          length = lib.lists.length groups;
+          remain = mod3 (lib.stringLength input);
+        in
+        lib.concatImapStrings (
+          i: group:
+          if i == length then
+            if remain == 0 then
+              group
+            else if remain == 1 then
+              "${lib.substring 0 2 group}=="
+            else if remain == 2 then
+              "${lib.substring 0 3 group}="
+            else
+              throw "Unreachable"
+          else
+            group
+        ) groups
+      )
+    ];
+
+  base64Encode = base64EncodeWithCharset "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 }
