@@ -101,13 +101,12 @@
       nixpaks.wemeet
       kdePackages.filelight
     ])
-    ++ [
-      (pkgs.callPackage "${inputs.pwndbg}/nix/pwndbg.nix" {
-        inputs = inputs.pwndbg.inputs // {
-          self = inputs.pwndbg;
-        };
-      })
-    ]
+    ++ (
+      let
+        inherit (pkgs.stdenv.hostPlatform) system;
+      in
+      [ inputs.pwndbg.packages.${system}.default ]
+    )
     ++ lib.filter (value: lib.isDerivation value) (builtins.attrValues pkgs.unixtools);
 
   services.remmina.enable = true;
@@ -128,5 +127,5 @@
   # You can update home Manager without changing this value. See
   # the home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "25.05";
+  home.stateVersion = "25.11";
 }
