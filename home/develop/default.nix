@@ -35,6 +35,7 @@
     ida-pro
     ida-pro-mcp
     (cutter.withPlugins builtins.attrValues)
+    (burpsuite.override { inherit (jetbrains) jdk; })
     detect-it-easy
 
     # Container tools
