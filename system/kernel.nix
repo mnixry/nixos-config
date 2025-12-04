@@ -3,7 +3,17 @@ let
   kernelPackages =
     with pkgs;
     (linuxPackages_cachyos-lto.cachyOverride { mArch = "GENERIC_V3"; }).extend (
-      lpself: lpsuper: { inherit (linuxPackages_cachyos-gcc) evdi; }
+      lpself: lpsuper: {
+        evdi = linuxPackages_cachyos-gcc.evdi.overrideAttrs (_: {
+          version = "git";
+          src = fetchFromGitHub {
+            owner = "DisplayLink";
+            repo = "evdi";
+            rev = "e89796c565c5ae899b93a8f6323a52f089bb15c5";
+            hash = "sha256-L2v7SMScQSRP9gzV4ihxJpRmW7eSvXhvORkTiZjSOu4=";
+          };
+        });
+      }
     );
 in
 {
