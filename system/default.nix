@@ -48,10 +48,9 @@
         "flakes"
         "parallel-eval"
       ];
-      substituters = [
-        "https://nix-cache.any-mix.eu.org" # nix-cache.shizuku.workers.dev-1
-      ];
+      substituters = [ "https://nix-cache.any-mix.eu.org" ];
       trusted-public-keys = [
+        "nix-cache.any-mix.eu.org-0:MjiS/nKakYJiXgA32BM3vBbdBZUZ0r5DeL6dhuJwPn0="
         "nix-cache.shizuku.workers.dev-1:maTaI8jIrMNr7Mv+j0FS8sTvGgOTae7pP1OaVljjI6w="
       ];
       # Optimise storage
