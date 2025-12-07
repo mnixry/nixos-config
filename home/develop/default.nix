@@ -17,6 +17,7 @@
     git-graph
 
     # CTF tools
+    gtkwave
     hashcat
     imhex
     wireshark
@@ -25,7 +26,15 @@
     ida-pro-mcp
     (cutter.withPlugins builtins.attrValues)
     (burpsuite.override { inherit (jetbrains) jdk; })
-    detect-it-easy
+    (detect-it-easy.overrideAttrs (
+      { postInstall, ... }:
+      {
+        postInstall = postInstall + ''
+          substituteInPlace $out/share/applications/die.desktop \
+            --replace "MimeType=application/octet-stream;" ""
+        '';
+      }
+    ))
 
     # Container tools
     dive

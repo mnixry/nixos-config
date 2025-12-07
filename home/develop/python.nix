@@ -40,6 +40,8 @@ in
 
           numpy
           pandas
+          scipy
+          pillow
 
           requests
           httpx
