@@ -100,7 +100,6 @@ in
     fileSystems = [ "/.btr_pool" ];
   };
 
-  nixpkgs.overlays = [ (final: super: { bees = super.bees_git; }) ];
   services.beesd.filesystems = {
     "${luksName}" = {
       spec = "/dev/mapper/${luksName}";

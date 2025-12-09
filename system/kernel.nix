@@ -1,24 +1,32 @@
-{ pkgs, inputs, ... }:
+{ pkgs, lib, ... }:
 let
-  kernelPackages =
-    with pkgs;
-    (linuxPackages_cachyos-lto.cachyOverride { mArch = "GENERIC_V3"; }).extend (
-      lpself: lpsuper: {
-        evdi = linuxPackages_cachyos-gcc.evdi.overrideAttrs (_: {
-          version = "git";
-          src = fetchFromGitHub {
-            owner = "DisplayLink";
-            repo = "evdi";
-            rev = "e89796c565c5ae899b93a8f6323a52f089bb15c5";
-            hash = "sha256-L2v7SMScQSRP9gzV4ihxJpRmW7eSvXhvORkTiZjSOu4=";
-          };
-        });
-      }
-    );
+  linuxKernel = pkgs.linuxKernel.kernels.linux_xanmod_latest;
+  mkLTOKernel =
+    kernel:
+    kernel.override (prev: {
+      inherit (pkgs.pkgsLLVM) stdenv;
+      buildLinux =
+        attrs:
+        prev.buildLinux (
+          lib.recursiveUpdate attrs {
+            structuredExtraConfig = with lib.kernel; {
+              GENERIC_CPU = yes;
+              X86_64_VERSION = freeform "3";
+              LTO_CLANG_FULL = yes;
+              # these options are not supported by kernel with LLVM LTO
+              DRM_PANIC_SCREEN_QR_CODE = lib.mkForce unset;
+              RUST = lib.mkForce unset;
+            };
+          }
+        );
+    });
+  kernelPackages = (pkgs.linuxPackagesFor (mkLTOKernel linuxKernel)).extend (
+    lpself: lpsuper: {
+      inherit (pkgs.linuxPackagesFor linuxKernel) evdi nvidiaPackages;
+    }
+  );
 in
 {
-  imports = [ inputs.chaotic.nixosModules.default ];
-
   boot = {
     inherit kernelPackages;
     kernel.sysctl =
