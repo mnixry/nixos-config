@@ -33,8 +33,8 @@
     # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
   };
 
+  nixpkgs.overlays = [ inputs.determinate-nix.overlays.default ];
   nix = {
-    package = inputs.determinate-nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
     channel.enable = false;
     # do garbage collection weekly to keep disk usage low
     gc = {

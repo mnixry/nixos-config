@@ -4,12 +4,15 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
-    determinate-nix.url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.*";
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
       flake = false;
     };
     preservation.url = "github:nix-community/preservation";
+    determinate-nix = {
+      url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.*";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     lanzaboote = {
       url = "github:nix-community/lanzaboote/master";
       inputs.nixpkgs.follows = "nixpkgs";
