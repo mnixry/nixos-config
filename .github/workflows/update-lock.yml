@@ -36,13 +36,6 @@ jobs:
             echo "Previous commit is a manmade commit. Proceeding."
           fi
       - uses: ./.github/actions/setup-nix
-        with:
-          nix-cache-uri: "s3://${{ secrets.NIX_CACHE_S3_BUCKET }}?endpoint=${{ secrets.NIX_CACHE_S3_ENDPOINT }}"
-          aws-credentials: |
-            [default]
-            aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          nix-sign-secret-key: "${{ secrets.NIX_SIGN_SECRET_KEY }}"
       - name: Update Flake Lock
         id: update-lock
         run: |
@@ -63,6 +56,11 @@ jobs:
         id: build
         continue-on-error: true
         if: steps.update-lock.outputs.lock_updated == 'true'
+        with:
+          nix-cache-uri: "s3://${{ secrets.NIX_CACHE_S3_BUCKET }}?endpoint=${{ secrets.NIX_CACHE_S3_ENDPOINT }}"
+          aws-secret-access-key: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          aws-access-key-id: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+          nix-sign-secret-key: "${{ secrets.NIX_SIGN_SECRET_KEY }}"
       - name: Commit Changes
         if: steps.build.outcome == 'success'
         env:
