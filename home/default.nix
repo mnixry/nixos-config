@@ -101,13 +101,15 @@
       nixpaks.wemeet
       kdePackages.filelight
     ])
-    ++ (
-      let
-        inherit (pkgs.stdenv.hostPlatform) system;
-      in
-      [ inputs.pwndbg.packages.${system}.default ]
-    )
-    ++ lib.filter (value: lib.isDerivation value) (builtins.attrValues pkgs.unixtools);
+    ++ [ inputs.pwndbg.packages.${pkgs.stdenv.hostPlatform.system}.default ]
+    ++ lib.filter (value: lib.isDerivation value) (builtins.attrValues pkgs.unixtools)
+    ++ (with pkgs.lixPackageSets.stable; [
+      nix-update
+      nixpkgs-review
+      nix-eval-jobs
+      nix-fast-build
+      colmena
+    ]);
 
   services.remmina.enable = true;
   xdg.mimeApps.enable = true;

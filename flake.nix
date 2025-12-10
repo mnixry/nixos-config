@@ -9,10 +9,6 @@
       flake = false;
     };
     preservation.url = "github:nix-community/preservation";
-    determinate-nix = {
-      url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.*";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     lanzaboote = {
       url = "github:nix-community/lanzaboote/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -62,60 +58,46 @@
     let
       inherit (nixpkgs) lib;
       vars = import ./vars;
-      specialArgs = {
-        inherit inputs;
-        inherit vars;
-        extraLibs = import ./libs { inherit lib; };
-      };
-      forAllSystems = lib.genAttrs nixpkgs.lib.systems.flakeExposed;
+      extraLibs = import ./libs { inherit lib; };
+      specialArgs = { inherit inputs vars extraLibs; };
+      inherit (self.nixosConfigurations."${vars.network.hostname}") config pkgs;
+      inherit (pkgs.stdenv.hostPlatform) system;
     in
     {
       nixosConfigurations."${vars.network.hostname}" = nixpkgs.lib.nixosSystem {
-        specialArgs = specialArgs;
+        inherit specialArgs;
         modules = [
           ./system
           ./services
           ./desktop
           ./preservation.nix
-          # make home-manager as a module of nixos
-          # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "hm-backup";
-            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
             home-manager.extraSpecialArgs = specialArgs;
             home-manager.users."${vars.user.name}" = import ./home;
           }
         ];
       };
-      packages = forAllSystems (
-        system:
-        let
-          inherit (self.nixosConfigurations."${vars.network.hostname}") config;
-          inherit (nixpkgs) lib;
-          pkgs = import nixpkgs { inherit system; };
-          pick = set: names: with lib; filterAttrs (name: _: elem name names) set;
-          toNixConf =
-            (pkgs.formats.nixConf rec {
-              package = config.nix.package.out;
-              inherit (package) version;
-            }).generate;
-        in
-        {
-          nix-conf = toNixConf "nix.custom.conf" (
-            pick config.nix.settings [
-              "eval-cores"
-              "experimental-features"
-              "lazy-trees"
-              "substituters"
-              "trusted-public-keys"
-              "trusted-substituters"
-            ]
-          );
-          inherit (config.system.build) toplevel;
-        }
-      );
+      packages.${system} = {
+        nix-conf =
+          (pkgs.formats.nixConf rec {
+            inherit (config.nix) package;
+            inherit (package) version;
+          }).generate
+            "nix.custom.conf"
+            (
+              extraLibs.attrs.pick config.nix.settings [
+                "experimental-features"
+                "substituters"
+                "trusted-public-keys"
+                "trusted-substituters"
+              ]
+            );
+        inherit (config.system.build) toplevel;
+        inherit pkgs;
+      };
     };
 }

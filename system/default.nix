@@ -2,7 +2,6 @@
   lib,
   pkgs,
   vars,
-  inputs,
   extraLibs,
   ...
 }:
@@ -33,8 +32,8 @@
     # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
   };
 
-  nixpkgs.overlays = [ inputs.determinate-nix.overlays.default ];
   nix = {
+    package = pkgs.lixPackageSets.stable.lix;
     channel.enable = false;
     # do garbage collection weekly to keep disk usage low
     gc = {
@@ -46,7 +45,6 @@
       experimental-features = [
         "nix-command"
         "flakes"
-        "parallel-eval"
       ];
       substituters = [ "https://nix-cache.any-mix.eu.org" ];
       trusted-public-keys = [
@@ -58,8 +56,6 @@
       #    nix-store --optimise
       # https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-auto-optimise-store
       auto-optimise-store = true;
-      lazy-trees = true;
-      eval-cores = 0;
     };
   };
 

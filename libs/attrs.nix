@@ -44,4 +44,10 @@
   #     export y=b
   #    ````
   inherit (lib.attrsets) foldlAttrs;
+
+  # Pick a subset of attributes from an attribute set.
+  #
+  #   pick { x = "a"; y = "b"; } [ "x" "z" ]
+  #   => { x = "a"; }
+  pick = set: names: with lib; filterAttrs (name: _: elem name names) set;
 }
