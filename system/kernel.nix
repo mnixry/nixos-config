@@ -12,7 +12,7 @@ let
             structuredExtraConfig = with lib.kernel; {
               GENERIC_CPU = yes;
               X86_64_VERSION = freeform "3";
-              LTO_CLANG_FULL = yes;
+              LTO_CLANG_THIN = yes;
               # these options are not supported by kernel with LLVM LTO
               DRM_PANIC_SCREEN_QR_CODE = lib.mkForce unset;
               RUST = lib.mkForce unset;
