@@ -9,15 +9,6 @@
 {
   programs.kate = {
     enable = true;
-    package = pkgs.kdePackages.kate.overrideAttrs (_: {
-      patches = [
-        (pkgs.fetchpatch {
-          name = "lsp-workspace-configuration-support.patch";
-          url = "https://invent.kde.org/utilities/kate/-/commit/4446f148d340176aeda2ac3980f7b04a0b9ec7a8.patch";
-          hash = "sha256-M9HLvHxWVgLJy5Zp61F0sTYUMvSYuBD3LsGOaiD1eDk=";
-        })
-      ];
-    });
     lsp.customServers = {
       bash = {
         command = [
