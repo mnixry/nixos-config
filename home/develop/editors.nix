@@ -18,7 +18,7 @@
         '';
     }))
     (jetbrains.datagrip.override { forceWayland = true; })
-    (jetbrains.idea-ultimate.override { forceWayland = true; })
+    (jetbrains.idea.override { forceWayland = true; })
   ];
   programs.vscode.enable = true;
 }
