@@ -16,6 +16,7 @@ let
               # these options are not supported by kernel with LLVM LTO
               DRM_PANIC_SCREEN_QR_CODE = lib.mkForce unset;
               RUST = lib.mkForce unset;
+              RUST_FW_LOADER_ABSTRACTIONS = lib.mkForce unset;
             };
           }
         );
