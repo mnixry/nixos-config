@@ -55,6 +55,7 @@
         ''^cd($|\s+('[^/][^']*'|"[^/][^"]*"|[^/\s'"][^\s]*))$'' # filter cd command with non-absolute pathes
         ''/nix/store/.*'' # command contains /nix/store
         ''--cookie[=\s]+.+'' # command contains cookie
+        ''^\s+'' # filter commands with leading spaces
       ];
       store_failed = false;
     };

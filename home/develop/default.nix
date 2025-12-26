@@ -40,6 +40,8 @@
     dive
     buildah
     hadolint
+    kubectl
+    kubeseal
 
     # Android tools
     android-tools

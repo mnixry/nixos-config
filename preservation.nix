@@ -149,6 +149,7 @@ in
         # ======================================
         (mkDirMode ".aws" "0700")
         (mkDirMode ".docker" "0700")
+        (mkDirMode ".kube" "0700")
 
         # ======================================
         # language package managers
