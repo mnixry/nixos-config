@@ -2,7 +2,7 @@ name: Nix Flake Lock Update
 
 on:
   schedule:
-    - cron: "0 16 * * *"
+    - cron: "0 */8 * * *"
   workflow_dispatch:
 
 jobs:
@@ -50,6 +50,7 @@ jobs:
             echo "No changes to commit."
             echo "lock_updated=false" >> "$GITHUB_OUTPUT"
           else
+            git diff --color
             echo "lock_updated=true" >> "$GITHUB_OUTPUT"
           fi
       - uses: ./.github/actions/nixos-build
