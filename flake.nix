@@ -2,7 +2,7 @@
   description = "A simple NixOS flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
@@ -94,6 +94,10 @@
                 "substituters"
                 "trusted-public-keys"
                 "trusted-substituters"
+                "use-cgroups"
+                "keep-going"
+                "always-allow-substitutes"
+                "narinfo-cache-negative-ttl"
               ]
             );
         inherit (config.system.build) toplevel;

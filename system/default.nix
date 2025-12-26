@@ -2,6 +2,7 @@
   lib,
   pkgs,
   vars,
+  inputs,
   extraLibs,
   ...
 }:
@@ -41,22 +42,42 @@
       dates = "weekly";
       options = "--delete-older-than 1w";
     };
+    optimise.automatic = true;
     settings = {
+      keep-going = true;
+      always-allow-substitutes = false;
       experimental-features = [
         "nix-command"
         "flakes"
+        "auto-allocate-uids"
+        "cgroups"
       ];
-      substituters = [ "https://nix-cache.any-mix.eu.org" ];
+      substituters = lib.mkAfter [
+        "https://nix-cache.any-mix.eu.org"
+        "https://cache.garnix.io"
+      ];
       trusted-public-keys = [
         "nix-cache.any-mix.eu.org-0:MjiS/nKakYJiXgA32BM3vBbdBZUZ0r5DeL6dhuJwPn0="
-        "nix-cache.shizuku.workers.dev-1:maTaI8jIrMNr7Mv+j0FS8sTvGgOTae7pP1OaVljjI6w="
+        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       ];
-      # Optimise storage
-      # you can also optimise the store manually via:
-      #    nix-store --optimise
-      # https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-auto-optimise-store
-      auto-optimise-store = true;
+      narinfo-cache-negative-ttl = 60;
+      use-cgroups = true;
+      auto-allocate-uids = true;
+      auto-optimise-store = false;
     };
+    registry = {
+      "short" = {
+        from = {
+          id = "p";
+          type = "indirect";
+        };
+        to = {
+          type = "path";
+          path = inputs.self;
+        };
+      };
+    };
+    daemonCPUSchedPolicy = "batch";
   };
 
   nixpkgs = {
