@@ -17,6 +17,15 @@
       url = "github:nixpak/nixpak";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lix = {
+      url = "git+https://git.lix.systems/lix-project/lix.git";
+      flake = false;
+    };
+    lix-module = {
+      url = "git+https://git.lix.systems/lix-project/nixos-module.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.lix.follows = "lix";
+    };
     niri = {
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -86,6 +95,7 @@
           (pkgs.formats.nixConf rec {
             inherit (config.nix) package;
             inherit (package) version;
+            checkConfig = false;
           }).generate
             "nix.custom.conf"
             (

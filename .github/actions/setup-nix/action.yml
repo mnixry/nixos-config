@@ -18,3 +18,8 @@ runs:
     - uses: DeterminateSystems/nix-installer-action@main
       with:
         diagnostic-endpoint: ""
+    - name: Workaround AppArmor # https://git.lix.systems/lix-project/lix/issues/545
+      shell: bash
+      run: |
+        sudo sysctl -w kernel.apparmor_restrict_unprivileged_unconfined=0
+        sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0

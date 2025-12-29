@@ -7,7 +7,7 @@
   ...
 }:
 {
-  imports = extraLibs.scanPaths ./.;
+  imports = [ inputs.lix-module.nixosModules.default ] ++ extraLibs.scanPaths ./.;
 
   networking = {
     hostName = "${vars.network.hostname}";
@@ -34,7 +34,6 @@
   };
 
   nix = {
-    package = pkgs.lixPackageSets.stable.lix;
     channel.enable = false;
     # do garbage collection weekly to keep disk usage low
     gc = {
