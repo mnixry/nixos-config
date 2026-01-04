@@ -8,10 +8,10 @@ let
     pkgs = python3.pkgs.overrideScope (
       final: prev: {
         mcp = prev.mcp.overrideAttrs (prev: rec {
-          version = "1.19.0";
+          version = "1.25.0";
           src = prev.src.override {
             tag = "v${version}";
-            hash = "sha256-6O0NuFcT15s/S1jhVremrt8c6DjAYo3eDRFQt7X7ayg=";
+            hash = "sha256-fSQCvKaNMeCzguM2tcTJJlAeZQmzSJmbfEK35D8pQcs=";
           };
         });
       }
