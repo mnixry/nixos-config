@@ -29,7 +29,7 @@
           in
           {
             nixpkgs.expr = "import <nixpkgs> {}";
-            formatting.command = [ (lib.getExe pkgs.nixfmt-rfc-style) ];
+            formatting.command = [ (lib.getExe pkgs.nixfmt) ];
             options = {
               nixos.expr = ''
                 let configs = (builtins.getFlake "${flakeRoot}").nixosConfigurations;

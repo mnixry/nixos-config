@@ -52,7 +52,7 @@ in
 
   system.build.rules = rules;
   security.audit = {
-    enable = true;
+    enable = false;
     # audit usage of any  suid/guid binaries.
     # On NixOS it is guaranteed that no suid binaries are present out side of /run/wrappers
     rules = [

@@ -9,7 +9,7 @@
   home.packages = with pkgs; [
     # Nix development tools
     nixd
-    nixfmt-rfc-style
+    nixfmt
     nixfmt-tree
 
     # Git tools
@@ -18,6 +18,7 @@
 
     # CTF tools
     gtkwave
+    binwalk
     hashcat
     imhex
     wireshark

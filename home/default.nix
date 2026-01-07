@@ -101,7 +101,10 @@
       nixpaks.wemeet
       kdePackages.filelight
     ])
-    ++ [ inputs.pwndbg.packages.${pkgs.stdenv.hostPlatform.system}.default ]
+    ++ [
+      inputs.pwndbg.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.niks3.packages.${pkgs.stdenv.hostPlatform.system}.default
+    ]
     ++ lib.filter (value: lib.isDerivation value) (builtins.attrValues pkgs.unixtools)
     ++ (with pkgs.lixPackageSets.stable; [
       nix-update
