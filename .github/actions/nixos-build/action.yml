@@ -2,17 +2,8 @@ name: NixOS Build
 description: Build NixOS system closure with caching
 
 inputs:
-  nix-cache-uri:
-    description: The URI of the Nix cache
-    required: true
-  aws-secret-access-key:
-    description: The AWS secret access key
-    required: true
-  aws-access-key-id:
-    description: The AWS access key ID
-    required: true
-  nix-sign-secret-key:
-    description: The Nix sign secret key
+  niks3-server-url:
+    description: The URL of the Niks3 server
     required: true
 
 runs:
@@ -24,16 +15,24 @@ runs:
         nix build .#nix-conf
         cat ./result | sudo tee -a /etc/nix/nix.custom.conf
         sudo systemctl restart nix-daemon.service
+    - name: Setup NikS3
+      shell: bash
+      run: |
+        nix profile install "github:Mic92/niks3"
     - name: Write Cache Credentials
       id: write-cache-credentials
       shell: bash
       env:
-        NIX_CACHE_URI: ${{ inputs.nix-cache-uri }}
-        AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
-        AWS_ACCESS_KEY_ID: ${{ inputs.aws-access-key-id }}
-        NIX_SIGN_SECRET_KEY: ${{ inputs.nix-sign-secret-key }}
+        NIKS3_SERVER_URL: ${{ inputs.niks3-server-url }}
       run: |
-        ${GITHUB_ACTION_PATH}/credentials.py
+        hook_location=$(mktemp '/tmp/post-build-hook.XXXXXXXXXX.py')
+        sed -e "s|@@EXTRA_PATHS@@|$PATH|g" \
+            -e "s|@@NIKS3_SERVER_URL@@|$NIKS3_SERVER_URL|g" \
+            -e "s|@@ACTIONS_ID_TOKEN_REQUEST_TOKEN@@|$ACTIONS_ID_TOKEN_REQUEST_TOKEN|g" \
+            -e "s|@@ACTIONS_ID_TOKEN_REQUEST_URL@@|$ACTIONS_ID_TOKEN_REQUEST_URL|g" \
+            "${GITHUB_ACTION_PATH}/post-build-hook.py" > "$hook_location"
+        chmod +x "$hook_location"
+        echo "post-build-hook=$hook_location" >> "$GITHUB_OUTPUT"
     - name: Run Nix Build
       shell: bash
       env:

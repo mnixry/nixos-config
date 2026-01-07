@@ -22,13 +22,11 @@ jobs:
   checks:
     name: Check build
     runs-on: ubuntu-latest
-
+    permissions:
+      id-token: write
     steps:
       - uses: actions/checkout@main
       - uses: ./.github/actions/setup-nix
       - uses: ./.github/actions/nixos-build
         with:
-          nix-cache-uri: "s3://${{ secrets.NIX_CACHE_S3_BUCKET }}?endpoint=${{ secrets.NIX_CACHE_S3_ENDPOINT }}"
-          aws-secret-access-key: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          aws-access-key-id: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-          nix-sign-secret-key: "${{ secrets.NIX_SIGN_SECRET_KEY }}"
+          niks3-server-url: ${{ secrets.NIKS3_SERVER_URL }}

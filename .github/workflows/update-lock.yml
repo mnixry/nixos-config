@@ -13,10 +13,10 @@ jobs:
       COMMIT_MSG_SUBJECT: "automated flake lock maintenance at"
     permissions:
       contents: write
+      id-token: write
     concurrency:
       group: ${{ github.workflow }}
       cancel-in-progress: true
-
     steps:
       - uses: actions/checkout@main
         with:
@@ -58,10 +58,7 @@ jobs:
         continue-on-error: true
         if: steps.update-lock.outputs.lock_updated == 'true'
         with:
-          nix-cache-uri: "s3://${{ secrets.NIX_CACHE_S3_BUCKET }}?endpoint=${{ secrets.NIX_CACHE_S3_ENDPOINT }}"
-          aws-secret-access-key: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          aws-access-key-id: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-          nix-sign-secret-key: "${{ secrets.NIX_SIGN_SECRET_KEY }}"
+          niks3-server-url: ${{ secrets.NIKS3_SERVER_URL }}
       - name: Commit Changes
         if: steps.build.outcome == 'success'
         env:

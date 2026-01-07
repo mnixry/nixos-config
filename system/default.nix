@@ -56,7 +56,7 @@
         "https://cache.garnix.io"
       ];
       trusted-public-keys = [
-        "nix-cache.any-mix.eu.org-0:MjiS/nKakYJiXgA32BM3vBbdBZUZ0r5DeL6dhuJwPn0="
+        "nix-cache.any-mix.eu.org-1:1arBVKbTurqBX3Foe+tO8MihDz6qmVjNgnJ/lE3p1QI="
         "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       ];
       narinfo-cache-negative-ttl = 60;
