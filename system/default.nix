@@ -7,7 +7,7 @@
   ...
 }:
 {
-  imports = [ inputs.lix-module.nixosModules.default ] ++ extraLibs.scanPaths ./.;
+  imports = extraLibs.scanPaths ./.;
 
   networking = {
     hostName = "${vars.network.hostname}";
