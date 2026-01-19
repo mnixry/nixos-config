@@ -80,6 +80,11 @@
       # with more details log output
       nix-output-monitor
       nix-tree
+      nix-update
+      nixpkgs-review
+      nix-eval-jobs
+      nix-fast-build
+      colmena
 
       # productivity
       hugo # static site generator
@@ -105,14 +110,7 @@
       inputs.pwndbg.packages.${pkgs.stdenv.hostPlatform.system}.default
       inputs.niks3.packages.${pkgs.stdenv.hostPlatform.system}.default
     ]
-    ++ lib.filter (value: lib.isDerivation value) (builtins.attrValues pkgs.unixtools)
-    ++ (with pkgs.lixPackageSets.stable; [
-      nix-update
-      nixpkgs-review
-      nix-eval-jobs
-      nix-fast-build
-      colmena
-    ]);
+    ++ lib.filter (value: lib.isDerivation value) (builtins.attrValues pkgs.unixtools);
 
   services.remmina.enable = true;
   xdg.mimeApps.enable = true;
