@@ -104,7 +104,13 @@ let
         (pkgs.writers.writePython3Bin "script" { doCheck = false; })
         lib.getExe
       ];
-  pythonForIDA = pkgs.python313.withPackages (ps: with ps; [ rpyc ]);
+  pythonForIDA = pkgs.python313.withPackages (
+    ps: with ps; [
+      rpyc
+      z3-solver
+      angr
+    ]
+  );
 in
 pkgs.stdenv.mkDerivation rec {
   pname = "ida-pro";
