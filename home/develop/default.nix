@@ -43,6 +43,7 @@
     hadolint
     kubectl
     kubeseal
+    freelens-bin
 
     # Android tools
     android-tools
