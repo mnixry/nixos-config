@@ -4,19 +4,7 @@
   installShellFiles,
 }:
 let
-  py = python3 // {
-    pkgs = python3.pkgs.overrideScope (
-      final: prev: {
-        mcp = prev.mcp.overrideAttrs (prev: rec {
-          version = "1.25.0";
-          src = prev.src.override {
-            tag = "v${version}";
-            hash = "sha256-fSQCvKaNMeCzguM2tcTJJlAeZQmzSJmbfEK35D8pQcs=";
-          };
-        });
-      }
-    );
-  };
+  py = python3;
   inherit (py.pkgs) buildPythonApplication;
 in
 buildPythonApplication rec {

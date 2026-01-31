@@ -2,7 +2,7 @@
 {
   programs.obs-studio = {
     enable = true;
-    plugins = with pkgs.obs-studio-plugins; [
+    plugins = with pkgs.pkgsNoConfig.obs-studio-plugins; [
       # screen capture
       wlrobs
       # obs-ndi
