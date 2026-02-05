@@ -17,6 +17,8 @@ let
               DRM_PANIC_SCREEN_QR_CODE = lib.mkForce unset;
               RUST = lib.mkForce unset;
               RUST_FW_LOADER_ABSTRACTIONS = lib.mkForce unset;
+              DRM_NOVA = lib.mkForce unset;
+              NOVA_CORE = lib.mkForce unset;
             };
           }
         );
