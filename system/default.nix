@@ -54,10 +54,12 @@
       substituters = lib.mkAfter [
         "https://nix-cache.any-mix.eu.org"
         "https://cache.garnix.io"
+        "https://cache.nixos-cuda.org"
       ];
       trusted-public-keys = [
         "nix-cache.any-mix.eu.org-1:1arBVKbTurqBX3Foe+tO8MihDz6qmVjNgnJ/lE3p1QI="
         "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+        "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
       ];
       narinfo-cache-negative-ttl = 60;
       use-cgroups = true;

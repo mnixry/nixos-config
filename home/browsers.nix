@@ -12,7 +12,7 @@
 
   programs.firefox = {
     enable = true;
-    package = pkgs.pkgsNoConfig.firefox-devedition;
+    package = pkgs.firefox-devedition;
     policies = {
       DisableFirefoxStudies = true;
       DisablePocket = true;
