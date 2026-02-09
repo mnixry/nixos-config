@@ -1,7 +1,7 @@
 {
   lib,
   qq,
-  libX11,
+  libx11,
   libkrb5,
   stdenv,
   buildEnv,
@@ -19,7 +19,7 @@ let
         app.package = mkAppWrapper qq {
           binPath = "bin/qq";
           prefixLibraries = [
-            libX11
+            libx11
             libkrb5
             stdenv.cc.cc
           ];

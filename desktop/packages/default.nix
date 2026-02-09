@@ -17,7 +17,7 @@ let
         {
           binPath ? "bin/${builtins.baseNameOf (lib.getExe package)}",
           prefixPathes ? with pkgs; [ flatpak-xdg-utils ],
-          prefixLibraries ? with pkgs; [ xorg.libX11 ],
+          prefixLibraries ? with pkgs; [ libx11 ],
           extraWrapperArgs ? [ ],
         }:
         let
