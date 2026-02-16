@@ -7,5 +7,6 @@
     cargo-pgo
     cargo-zigbuild
     zig
+    taplo
   ];
 }

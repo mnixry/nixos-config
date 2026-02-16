@@ -34,6 +34,7 @@ in
     (mkNixLDwrappedPackage (
       pkgs.python3.withPackages (
         ps: with ps; [
+          pip
           pipx
           ptpython
           virtualenv
