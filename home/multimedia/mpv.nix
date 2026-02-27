@@ -13,7 +13,7 @@
     scripts = with pkgs.mpvScripts; [
       thumbfast
       modernz
-      mpv-cheatsheet
+      mpv-cheatsheet-ng
       visualizer
     ];
     config = {

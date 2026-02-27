@@ -108,7 +108,8 @@ let
     ps: with ps; [
       rpyc
       z3-solver
-      angr
+      # https://github.com/NixOS/nixpkgs/pull/487341
+      # angr
     ]
   );
 in

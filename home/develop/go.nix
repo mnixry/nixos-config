@@ -9,11 +9,10 @@
     enable = true;
     telemetry.mode = "off";
     env =
-      lib.attrsets.mapAttrs (name: value: lib.getExe' pkgs.gccgo value) {
+      lib.attrsets.mapAttrs (name: value: lib.getExe' pkgs.stdenv.cc value) {
         AR = "ar";
         CC = "gcc";
         CXX = "g++";
-        GCCGO = "gccgo";
       }
       // rec {
         GOPATH = "${config.xdg.dataHome}/go";
