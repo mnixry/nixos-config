@@ -65,6 +65,7 @@
       use-cgroups = true;
       auto-allocate-uids = true;
       auto-optimise-store = false;
+      http-connections = 0;
     };
     registry = {
       "short" = {
