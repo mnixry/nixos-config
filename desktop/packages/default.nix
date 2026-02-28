@@ -1,4 +1,9 @@
-{ inputs, extraLibs, ... }:
+{
+  lib,
+  inputs,
+  extraLibs,
+  ...
+}:
 let
   inherit (inputs) nixpak;
   wrapper =
@@ -15,13 +20,13 @@ let
       mkAppWrapper =
         package:
         {
-          binPath ? "bin/${builtins.baseNameOf (lib.getExe package)}",
+          binPath ? "bin/${baseNameOf (lib.getExe package)}",
           prefixPathes ? with pkgs; [ flatpak-xdg-utils ],
           prefixLibraries ? with pkgs; [ libx11 ],
           extraWrapperArgs ? [ ],
         }:
         let
-          mainProgram = builtins.baseNameOf binPath;
+          mainProgram = baseNameOf binPath;
           prefixPathesArg = lib.optionals (builtins.length prefixPathes > 0) [
             "--prefix"
             "PATH"
@@ -45,6 +50,18 @@ let
           ''makeWrapper '${package}/${binPath}' "$out/bin/${mainProgram}" ${lib.escapeShellArgs makeWrapperArgs}''
         );
     };
+
+  genuineDecrypt =
+    hash: ct:
+    lib.pipe ct [
+      extraLibs.base64DecodeToBytes
+      (ct: extraLibs.rc4encrypt hash ct)
+      extraLibs.asciiBytesToString
+      (
+        result:
+        lib.seq (lib.assertMsg ((lib.hashString "sha1" result) == hash) "Genuine decryption failed") result
+      )
+    ];
 in
 {
   nixpkgs.overlays = [
@@ -101,7 +118,7 @@ in
       };
     })
     (final: prev: {
-      ida-pro = prev.callPackage ./ida-pro.nix { inherit (extraLibs) base64Decode; };
+      ida-pro = prev.callPackage ./ida-pro.nix { inherit genuineDecrypt; };
       ida-pro-mcp = prev.callPackage ./ida-pro-mcp.nix { };
     })
     (final: prev: {
