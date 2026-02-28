@@ -1,12 +1,13 @@
 { lib, ... }:
 (import ./base64.nix { inherit lib; })
+// (import ./rc4.nix { inherit lib; })
 // {
   attrs = import ./attrs.nix { inherit lib; };
   # use path relative to the root of the project
   relativeToRoot = lib.path.append ../.;
   scanPaths =
     path:
-    builtins.map (f: (path + "/${f}")) (
+    map (f: (path + "/${f}")) (
       builtins.attrNames (
         lib.attrsets.filterAttrs (
           path: _type:

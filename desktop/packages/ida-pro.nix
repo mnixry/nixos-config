@@ -118,8 +118,8 @@ pkgs.stdenv.mkDerivation rec {
   version = "9.2";
 
   src = pkgs.fetchurl {
-    url = "https://archive.org/download/ida-pro_92/ida-pro_92_x64linux.run";
-    hash = "sha256-EXzWJftWzuxi8mnOs+XK/9jMUWvxdHafi6F4Xs2ayVI=";
+    url = "https://archive.org/download/ida-pro_93_x64linux/ida-pro_93_x64linux.run";
+    hash = "sha256-LtQ65LuE103K5vAJkhDfqNYb/qSVL1+aB6mq4Wy3D4I=";
   };
 
   desktopItem = pkgs.makeDesktopItem {
