@@ -1,8 +1,6 @@
 {
-  description = "A simple NixOS flake";
-
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
@@ -60,31 +58,7 @@
   outputs =
     { self, ... }@inputs:
     let
-      nixpkgs-patched =
-        let
-          pkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
-        in
-        pkgs.applyPatches {
-          src = pkgs.path;
-          patches = [
-            (pkgs.fetchpatch {
-              # nixos/hardware.displaylink: fix unknown driver assertion
-              url = "https://github.com/NixOS/nixpkgs/pull/491981.patch";
-              hash = "sha256-vJAuizb+plx1BSV3aG8Rq5COT5fpl+xjDj0D3Z+toh0=";
-            })
-            (pkgs.fetchpatch {
-              # mpvScripts.mpv-cheatsheet-ng: init at 0.1.0
-              url = "https://github.com/NixOS/nixpkgs/pull/490264.patch";
-              hash = "sha256-hwjuwx/C6a8IU9dxZa/vyWbKoM1KC6bdt5GT6aXvSnw=";
-            })
-            (pkgs.fetchpatch {
-              # python3Packages.plotly: fix build with pytest 9 and numpy 2.4
-              url = "https://github.com/NixOS/nixpkgs/pull/493409.patch";
-              hash = "sha256-Euw1x2tE91R9ltnuQ4l7WNXo1vCmX6V+NLf0+s0tpzg=";
-            })
-          ];
-        };
-      inherit ((import "${nixpkgs-patched}/flake.nix").outputs { self = nixpkgs-patched; }) lib;
+      inherit (inputs.nixpkgs) lib;
       vars = import ./vars;
       extraLibs = import ./libs { inherit lib; };
       specialArgs = { inherit inputs vars extraLibs; };

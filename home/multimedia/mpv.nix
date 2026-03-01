@@ -13,7 +13,8 @@
     scripts = with pkgs.mpvScripts; [
       thumbfast
       modernz
-      mpv-cheatsheet-ng
+      # https://github.com/NixOS/nixpkgs/pull/490264
+      # mpv-cheatsheet-ng
       visualizer
     ];
     config = {
