@@ -18,7 +18,7 @@ runs:
     - name: Setup NikS3
       shell: bash
       run: |
-        nix profile install "github:Mic92/niks3"
+        nix profile add "github:Mic92/niks3"
     - name: Write Cache Credentials
       id: write-cache-credentials
       shell: bash
@@ -42,3 +42,14 @@ runs:
           --fallback \
           --print-build-logs \
           --option post-build-hook "${POST_BUILD_HOOK}"
+    - name: Run NikS3 GC
+      shell: bash
+      env:
+        NIKS3_SERVER_URL: ${{ inputs.niks3-server-url }}
+      run: |
+        token=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=$NIKS3_SERVER_URL" | jq -r '.value')
+        niks3 gc \
+          --server-url "$NIKS3_SERVER_URL" \
+          --auth-token "$token" \
+          --older-than 168h
