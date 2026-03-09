@@ -1,5 +1,4 @@
 {
-  lib,
   config,
   inputs,
   modulesPath,
@@ -7,12 +6,14 @@
 }:
 {
   imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
-    (inputs.nixos-hardware + "/common/pc/laptop")
-    (inputs.nixos-hardware + "/common/pc/ssd")
-    (inputs.nixos-hardware + "/common/gpu/nvidia/prime.nix")
-    (inputs.nixos-hardware + "/common/cpu/intel/meteor-lake")
-  ];
+    "${modulesPath}/installer/scan/not-detected.nix"
+  ]
+  ++ (with inputs; [
+    "${nixos-hardware}/common/pc/laptop"
+    "${nixos-hardware}/common/pc/ssd"
+    "${nixos-hardware}/common/gpu/nvidia/prime.nix"
+    "${nixos-hardware}/common/cpu/intel/meteor-lake"
+  ]);
 
   services.xserver.videoDrivers = [
     "nvidia"
@@ -32,7 +33,6 @@
   ];
   nixpkgs.config.cudaSupport = true;
 
-  hardware.intelgpu.driver = "xe";
   hardware.nvidia = {
     open = true;
     package = config.boot.kernelPackages.nvidiaPackages.beta;
@@ -45,17 +45,6 @@
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
     };
-  };
-
-  specialisation.intel-xe.configuration = {
-    boot.kernelParams =
-      let
-        deviceId = "7d51";
-      in
-      [
-        "i915.force_probe=!${deviceId}"
-        "xe.force_probe=${deviceId}"
-      ];
   };
 
   specialisation.battery-saver.configuration = {
@@ -78,14 +67,6 @@
     enableGraphical = true;
   };
 
-  environment.etc."libinput/local-overrides.quirks".text = lib.mkForce ''
-    [Lenovo ThinkBook 16 G7+ IAH touchpad]
-    MatchName=*GXTP5100*
-    MatchDMIModalias=dmi:*svnLENOVO:*pvrThinkBook16G7+IAH*:*
-    MatchUdevType=touchpad
-    ModelPressurePad=1
-  '';
-
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "thunderbolt"
@@ -97,7 +78,6 @@
   ];
   boot.kernelModules = [
     "kvm-intel"
-    "xe"
     "hid-logitech-dj"
     "hid-logitech-hidpp"
   ];

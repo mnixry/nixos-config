@@ -1,9 +1,9 @@
 { ... }:
 {
   # Set your time zone.
-  time.timeZone = "Asia/Shanghai";
+  time.timeZone = "Asia/Singapore";
 
-  # Select internationalisation properties.
+  # Select internationalization properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings =
