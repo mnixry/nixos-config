@@ -34,16 +34,6 @@ in
     execWheelOnly = true;
   };
 
-  security.apparmor = {
-    enable = true;
-    enableCache = true;
-    killUnconfinedConfinables = true;
-    packages = with pkgs; [
-      apparmor-utils
-      apparmor-profiles
-    ];
-  };
-
   # Don't allow any  binaries outside of nix store
   # fileSystems."/".options = [ "nosuid" "nodev" "noexec" ];
 
@@ -52,7 +42,7 @@ in
 
   system.build.rules = rules;
   security.audit = {
-    enable = false;
+    enable = true;
     # audit usage of any  suid/guid binaries.
     # On NixOS it is guaranteed that no suid binaries are present out side of /run/wrappers
     rules = [
