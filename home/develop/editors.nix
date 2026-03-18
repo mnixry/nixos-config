@@ -14,7 +14,10 @@
             --replace-fail '$VSCODE_PATH/cursor' '${electron}' \
             --replace-fail \
               'ELECTRON_RUN_AS_NODE=1 \"$ELECTRON\" \"$CLI\"'\
-              'ELECTRON_RUN_AS_NODE=1 \"$ELECTRON\" \"$CLI\" --app \"$VSCODE_PATH/resources/app\"'
+              'ELECTRON_RUN_AS_NODE=1 \"$ELECTRON\" \"$CLI\" --app \"$VSCODE_PATH/resources/app\"'\
+            --replace-fail \
+              'ELECTRON_RUN_AS_NODE=1 "$ELECTRON" "$CLI"'\
+              'ELECTRON_RUN_AS_NODE=1 "$ELECTRON" "$CLI" --app "$VSCODE_PATH/resources/app"'
         '';
     }))
     (jetbrains.datagrip.override { forceWayland = true; })

@@ -13,6 +13,7 @@
   programs.firefox = {
     enable = true;
     package = pkgs.firefox-devedition;
+    nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
     policies = {
       DisableFirefoxStudies = true;
       DisablePocket = true;
@@ -107,5 +108,6 @@
   programs.chromium = {
     enable = true;
     package = pkgs.ungoogled-chromium;
+    nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
   };
 }
