@@ -90,6 +90,7 @@
       # productivity
       hugo # static site generator
       glow # markdown previewer in terminal
+      cloudflared # cloudflare tunnel
 
       # system call monitoring
       strace # system call monitoring
