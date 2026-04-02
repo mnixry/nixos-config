@@ -1,12 +1,10 @@
 name: Setup Nix
 description: Setup Nix with caching
-
 inputs:
   free-space:
     description: Whether to free space before building
     required: false
     default: "true"
-
 runs:
   using: "composite"
   steps:

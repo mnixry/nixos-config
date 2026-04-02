@@ -1,5 +1,4 @@
 name: Nix Build CI
-
 on:
   push:
     branches:
@@ -17,7 +16,6 @@ on:
       - "**.md"
       - "**.nu"
       - "Justfile"
-
 jobs:
   checks:
     name: Check build

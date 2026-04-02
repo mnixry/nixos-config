@@ -1,11 +1,9 @@
 name: NixOS Build
 description: Build NixOS system closure with caching
-
 inputs:
   niks3-server-url:
     description: The URL of the Niks3 server
     required: true
-
 runs:
   using: "composite"
   steps:
