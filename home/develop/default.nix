@@ -41,6 +41,7 @@
     dive
     buildah
     hadolint
+    yamlfmt
     kubectl
     kubeseal
     freelens-bin
