@@ -28,6 +28,10 @@
       url = "github:daeuniverse/flake.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    v2ray-rules-dat = {
+      url = "github:Loyalsoldier/v2ray-rules-dat/release";
+      flake = false;
+    };
     niks3 = {
       url = "github:Mic92/niks3";
       inputs.nixpkgs.follows = "nixpkgs";

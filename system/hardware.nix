@@ -33,18 +33,21 @@
   ];
   nixpkgs.config.cudaSupport = true;
 
-  hardware.nvidia = {
-    open = true;
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
-    primeBatterySaverSpecialisation = true;
-    powerManagement = {
-      enable = true;
-      finegrained = true;
+  hardware = {
+    nvidia = {
+      open = true;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      primeBatterySaverSpecialisation = true;
+      powerManagement = {
+        enable = true;
+        finegrained = true;
+      };
+      prime = {
+        intelBusId = "PCI:0:2:0";
+        nvidiaBusId = "PCI:1:0:0";
+      };
     };
-    prime = {
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
-    };
+    nvidia-container-toolkit.enable = true;
   };
 
   specialisation.battery-saver.configuration = {
