@@ -28,14 +28,5 @@
     matchBlocks."*" = {
       compression = true;
     };
-    matchBlocks."github.com" = {
-      host = "github.com";
-      hostname = "ssh.github.com";
-      port = 443;
-      user = "git";
-      controlMaster = "auto";
-      controlPath = "~/.ssh/control-%r@%h:%p";
-      controlPersist = "yes";
-    };
   };
 }

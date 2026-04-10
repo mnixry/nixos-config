@@ -4,5 +4,10 @@
     nodejs
     pnpm
     yarn-berry
+
+    biome
+    oxlint
+    prettier
+    eslint
   ];
 }

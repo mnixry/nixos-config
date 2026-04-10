@@ -9,6 +9,7 @@
     (lib.hiPrio clang-tools)
     clang_multi
     libllvm
+    llvmPackages.bolt
 
     bear
     patchelf

@@ -103,6 +103,7 @@
       ethtool
       pciutils # lspci
       usbutils # lsusb
+      numactl
 
       nixpaks.wpsoffice
       nixpaks.wemeet

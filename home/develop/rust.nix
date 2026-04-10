@@ -15,6 +15,7 @@ in
     cargo-pgo
     cargo-zigbuild
     cargo-edit
+    cargo-nextest
     zig
     taplo
   ]);

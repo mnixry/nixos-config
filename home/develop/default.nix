@@ -20,6 +20,7 @@
     gtkwave
     binwalk
     hashcat
+    hashcash
     imhex
     wireshark
     bpftrace
@@ -37,12 +38,14 @@
       }
     ))
 
-    # Container tools
+    # Container & Cloud Native tools
     dive
+    skopeo
     buildah
     hadolint
     yamlfmt
     kubectl
+    kubernetes-helm
     kubeseal
     freelens-bin
 
@@ -54,6 +57,11 @@
     duckdb
     sqlite
     sqlitebrowser
+
+    # Performance tools
+    perf
+    pprof
+    gnuplot
 
     # Miscellaneous tools
     tokei
