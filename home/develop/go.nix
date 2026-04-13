@@ -21,20 +21,24 @@
   };
 
   home = {
-    packages = with pkgs; [
-      gofumpt
-      goimports-reviser
-      golangci-lint
-      golines
-      gomodifytags
-      gopls
-      gotests
-      go-tools # staticcheck
-      gotools # goimports
-      delve
-      impl
-      revive
-    ];
+    packages =
+      (with pkgs; [
+        # https://github.com/NixOS/nixpkgs/issues/509480
+        (lib.hiPrio gopls)
+        gotools # goimports
+      ])
+      ++ (with pkgs; [
+        gofumpt
+        goimports-reviser
+        golangci-lint
+        golines
+        gomodifytags
+        gotests
+        go-tools # staticcheck
+        delve
+        impl
+        revive
+      ]);
     sessionPath = [ config.programs.go.env.GOBIN ];
   };
 }

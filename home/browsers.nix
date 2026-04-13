@@ -12,7 +12,7 @@
 
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-devedition;
+    package = pkgs.pkgsNoConfig.firefox-devedition;
     nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
     policies = {
       DisableFirefoxStudies = true;

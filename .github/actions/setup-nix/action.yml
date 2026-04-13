@@ -16,3 +16,10 @@ runs:
     - uses: DeterminateSystems/nix-installer-action@main
       with:
         diagnostic-endpoint: ""
+    - uses: actions/cache@main
+      with:
+        path: ~/.cache/nix
+        key: nix-cache-${{ runner.os }}-${{ github.sha }}-${{ job.check_run_id }}
+        restore-keys: |
+          nix-cache-${{ runner.os }}-${{ github.sha }}-
+          nix-cache-${{ runner.os }}-
