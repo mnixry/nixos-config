@@ -5,7 +5,9 @@
   ...
 }:
 {
-  xdg.mimeApps.defaultApplicationPackages = [ config.programs.mpv.package ];
+  xdg.mimeApps.defaultApplicationPackages = lib.optionals pkgs.stdenv.isLinux [
+    config.programs.mpv.package
+  ];
 
   programs.mpv = {
     enable = true;

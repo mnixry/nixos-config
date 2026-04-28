@@ -71,6 +71,36 @@
   # Enable Fish shell
   programs.fish.enable = true;
 
+  # Enable Zsh (macOS default login shell)
+  programs.zsh.enable = true;
+
+  # Register nix shells as valid login shells
+  environment.shells = with pkgs; [
+    fish
+    zsh
+  ];
+
+  # Font packages (installed to /Library/Fonts/Nix Fonts)
+  fonts.packages = with pkgs; [
+    # builtin families
+    ubuntu-classic
+    liberation_ttf
+    # monospace families
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
+    nerd-fonts.monaspace
+    sarasa-gothic
+    # sans/serif families
+    ibm-plex
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
+    noto-fonts-color-emoji
+    noto-fonts-monochrome-emoji
+    noto-fonts
+    # Persian Font
+    vazir-fonts
+  ];
+
   # Basic system packages
   environment.systemPackages = with pkgs; [
     git
@@ -108,7 +138,7 @@
 
   # Keyboard settings
   system.keyboard = {
-    enableKeyMapping = false;
+    enableKeyMapping = true;
     remapCapsLockToEscape = false;
   };
 

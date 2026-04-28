@@ -28,65 +28,39 @@ let
         package
       ];
     };
+
+  pythonPackages = ps: with ps; [
+    pip
+    pipx
+    ptpython
+    virtualenv
+
+    numpy
+    pandas
+    scipy
+    pillow
+
+    requests
+    httpx
+    rich
+
+    sympy
+    cryptography
+    pycryptodome
+    gmpy2
+
+    pwntools
+    ropper
+  ];
 in
 {
   home.packages =
     (lib.optionals pkgs.stdenv.isLinux [
-      (mkNixLDwrappedPackage (
-        pkgs.python3.withPackages (
-          ps: with ps; [
-            pip
-            pipx
-            ptpython
-            virtualenv
-
-            numpy
-            pandas
-            scipy
-            pillow
-
-            requests
-            httpx
-            rich
-
-            sympy
-            cryptography
-            pycryptodome
-            gmpy2
-
-            pwntools
-            ropper
-          ]
-        )
-      ))
+      (mkNixLDwrappedPackage (pkgs.python3.withPackages pythonPackages))
       (mkNixLDwrappedPackage pkgs.pypy3)
     ])
-    ++ (lib.optionals (!pkgs.stdenv.isLinux) [
-      (pkgs.python3.withPackages (
-        ps: with ps; [
-          pip
-          pipx
-          ptpython
-          virtualenv
-
-          numpy
-          pandas
-          scipy
-          pillow
-
-          requests
-          httpx
-          rich
-
-          sympy
-          cryptography
-          pycryptodome
-          gmpy2
-
-          pwntools
-          ropper
-        ]
-      ))
+    ++ (lib.optionals pkgs.stdenv.isDarwin [
+      (pkgs.python3.withPackages pythonPackages)
       pkgs.pypy3
     ])
     ++ (with pkgs; [ ruff ]);

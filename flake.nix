@@ -58,7 +58,7 @@
       inputs.home-manager.follows = "home-manager";
     };
     nix-darwin = {
-      url = "git+https://github.com/nix-darwin/nix-darwin.git";
+      url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -107,7 +107,7 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "hm-backup";
             home-manager.extraSpecialArgs = specialArgs;
-            home-manager.users."${vars.user.name}" = import ./darwin/home.nix;
+            home-manager.users."${vars.user.name}" = import ./home/darwin.nix;
           }
         ];
       };

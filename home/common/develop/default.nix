@@ -17,13 +17,6 @@
     git-filter-repo
     git-graph
 
-    # CTF tools
-    gtkwave
-    binwalk
-    hashcat
-    imhex
-    wireshark
-
     # Container & Cloud Native tools
     dive
     skopeo
@@ -32,16 +25,10 @@
     kubectl
     kubernetes-helm
     kubeseal
-    freelens-bin
-
-    # Android tools
-    android-tools
-    scrcpy
 
     # Database tools
     duckdb
     sqlite
-    sqlitebrowser
 
     # Performance tools
     pprof
@@ -54,10 +41,23 @@
     ffmpeg
     caddy
     openssl
-    qalculate-qt
     just
   ]
   ++ lib.optionals pkgs.stdenv.isLinux [
+    # CTF tools (Linux-only due to GUI/kernel dependencies)
+    gtkwave
+    binwalk
+    hashcat
+    imhex
+    wireshark
+
+    # Linux-only GUI/system tools
+    freelens-bin
+    android-tools
+    scrcpy
+    sqlitebrowser
+    qalculate-qt
+
     ida-pro
     ida-pro-mcp
     (cutter.withPlugins builtins.attrValues)

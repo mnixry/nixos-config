@@ -397,15 +397,15 @@
       "locked": {
         "lastModified": 1775037210,
         "narHash": "sha256-KM2WYj6EA7M/FVZVCl3rqWY+TFV5QzSyyGE2gQxeODU=",
-        "ref": "refs/heads/master",
+        "owner": "nix-darwin",
+        "repo": "nix-darwin",
         "rev": "06648f4902343228ce2de79f291dd5a58ee12146",
-        "revCount": 2346,
-        "type": "git",
-        "url": "https://github.com/nix-darwin/nix-darwin.git"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "https://github.com/nix-darwin/nix-darwin.git"
+        "owner": "nix-darwin",
+        "repo": "nix-darwin",
+        "type": "github"
       }
     },
     "nix-index-database": {
