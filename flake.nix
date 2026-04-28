@@ -78,9 +78,36 @@
       nixosSystem = "${vars.network.hostname}";
       darwinSystem = "${vars.darwin.hostname}";
 
+      mkNixConf =
+        { pkgs', config' }:
+        (pkgs'.formats.nixConf rec {
+          inherit (config'.nix) package;
+          inherit (package) version;
+          checkConfig = false;
+        }).generate
+          "nix.custom.conf"
+          (
+            extraLibs.attrs.pick config'.nix.settings [
+              "experimental-features"
+              "substituters"
+              "trusted-public-keys"
+              "trusted-substituters"
+              "use-cgroups"
+              "keep-going"
+              "always-allow-substitutes"
+              "narinfo-cache-negative-ttl"
+            ]
+          );
+
+      mkPackages =
+        { pkgs', config' }:
+        {
+          nix-conf = mkNixConf { inherit pkgs' config'; };
+          inherit (config'.system.build) toplevel;
+        };
+
       nixosConfig = self.nixosConfigurations.${nixosSystem};
-      inherit (nixosConfig) config pkgs;
-      inherit (pkgs.stdenv.hostPlatform) system;
+      darwinConfig = self.darwinConfigurations.${darwinSystem};
     in
     {
       nixosConfigurations.${nixosSystem} = lib.nixosSystem {
@@ -117,28 +144,12 @@
         ];
       };
 
-      packages.${system} = {
-        nix-conf =
-          (pkgs.formats.nixConf rec {
-            inherit (config.nix) package;
-            inherit (package) version;
-            checkConfig = false;
-          }).generate
-            "nix.custom.conf"
-            (
-              extraLibs.attrs.pick config.nix.settings [
-                "experimental-features"
-                "substituters"
-                "trusted-public-keys"
-                "trusted-substituters"
-                "use-cgroups"
-                "keep-going"
-                "always-allow-substitutes"
-                "narinfo-cache-negative-ttl"
-              ]
-            );
-        inherit (config.system.build) toplevel;
-        inherit pkgs;
-      };
+      packages = lib.genAttrs' [ nixosConfig darwinConfig ] (
+        { config, pkgs, ... }:
+        lib.nameValuePair (config.nixpkgs.hostPlatform.system) (mkPackages {
+          pkgs' = pkgs;
+          config' = config;
+        })
+      );
     };
 }
