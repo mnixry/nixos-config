@@ -1,4 +1,6 @@
-# Mix's NixOS configuration
+# Mix's Nix/NixOS + nix-darwin configuration
+
+> **Multi-platform**: This repo now supports both **NixOS** (`mix-laptop-21tl`) and **macOS** (`mix-moonshot`).
 
 ## Preface
 

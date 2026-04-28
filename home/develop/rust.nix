@@ -1,13 +1,19 @@
 { pkgs, lib, ... }:
 let
-  inherit (pkgs) rust-bin;
-  rust = rust-bin.stable.latest.complete.override {
-    targets = [ "x86_64-unknown-linux-musl" ];
-  };
-  rustfmt = rust-bin.selectLatestNightlyWith (toolchain: toolchain.rustfmt);
+  hasRustOverlay = pkgs ? rust-bin;
+  rust = if hasRustOverlay then
+    pkgs.rust-bin.stable.latest.complete.override {
+      targets = lib.optionals pkgs.stdenv.isLinux [ "x86_64-unknown-linux-musl" ];
+    }
+  else
+    pkgs.rustc;
+  rustfmt = if hasRustOverlay then
+    pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.rustfmt)
+  else
+    pkgs.rustfmt;
 in
 {
-  home.packages = [
+  home.packages = lib.optionals hasRustOverlay [
     (lib.hiPrio rustfmt)
     rust
   ]

@@ -1,12 +1,12 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
-  home.packages = with pkgs; [
+  home.packages = lib.optionals pkgs.stdenv.isLinux (with pkgs; [
     iotop # io monitoring
     iftop # network monitoring
     nvtopPackages.full # gpu monitoring
-  ];
+  ]);
 
-  home.sessionVariables = {
+  home.sessionVariables = lib.optionalAttrs pkgs.stdenv.isLinux {
     NIXOS_OZONE_WL = "1";
   };
 

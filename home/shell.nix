@@ -31,6 +31,7 @@
     enable = true;
     enableFishIntegration = true;
     enableBashIntegration = true;
+    enableZshIntegration = true;
     enableTransience = true;
     # custom settings
     settings =
@@ -44,6 +45,7 @@
     enable = true;
     enableBashIntegration = true;
     enableFishIntegration = true;
+    enableZshIntegration = true;
     daemon.enable = true;
     settings = {
       sync_frequency = 0;
@@ -64,5 +66,6 @@
     enable = true;
     enableBashIntegration = true;
     enableFishIntegration = true;
+    enableZshIntegration = true;
   };
 }

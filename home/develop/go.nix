@@ -11,8 +11,8 @@
     env =
       lib.attrsets.mapAttrs (name: value: lib.getExe' pkgs.stdenv.cc value) {
         AR = "ar";
-        CC = "gcc";
-        CXX = "g++";
+        CC = if pkgs.stdenv.isDarwin then "clang" else "gcc";
+        CXX = if pkgs.stdenv.isDarwin then "clang++" else "g++";
       }
       // rec {
         GOPATH = "${config.xdg.dataHome}/go";

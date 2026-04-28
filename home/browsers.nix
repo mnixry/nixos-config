@@ -6,14 +6,14 @@
 }:
 
 {
-  xdg.mimeApps.defaultApplicationPackages = [
+  xdg.mimeApps.defaultApplicationPackages = lib.optionals pkgs.stdenv.isLinux [
     config.programs.firefox.package
   ];
 
   programs.firefox = {
     enable = true;
-    package = pkgs.pkgsNoConfig.firefox-devedition;
-    nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
+    package = if pkgs ? pkgsNoConfig then pkgs.pkgsNoConfig.firefox-devedition else pkgs.firefox-devedition;
+    nativeMessagingHosts = lib.optionals pkgs.stdenv.isLinux [ pkgs.kdePackages.plasma-browser-integration ];
     policies = {
       DisableFirefoxStudies = true;
       DisablePocket = true;
@@ -105,7 +105,7 @@
       );
   };
 
-  programs.chromium = {
+  programs.chromium = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
     package = pkgs.ungoogled-chromium;
     nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];

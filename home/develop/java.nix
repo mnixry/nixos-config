@@ -7,6 +7,8 @@ in
     with pkgs;
     [
       defaultJdk
+    ]
+    ++ lib.optionals pkgs.stdenv.isLinux [
       (jadx.override { inherit (jetbrains) jdk; })
     ]
   );

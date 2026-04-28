@@ -30,9 +30,39 @@ let
     };
 in
 {
-  home.packages = [
-    (mkNixLDwrappedPackage (
-      pkgs.python3.withPackages (
+  home.packages =
+    (lib.optionals pkgs.stdenv.isLinux [
+      (mkNixLDwrappedPackage (
+        pkgs.python3.withPackages (
+          ps: with ps; [
+            pip
+            pipx
+            ptpython
+            virtualenv
+
+            numpy
+            pandas
+            scipy
+            pillow
+
+            requests
+            httpx
+            rich
+
+            sympy
+            cryptography
+            pycryptodome
+            gmpy2
+
+            pwntools
+            ropper
+          ]
+        )
+      ))
+      (mkNixLDwrappedPackage pkgs.pypy3)
+    ])
+    ++ (lib.optionals (!pkgs.stdenv.isLinux) [
+      (pkgs.python3.withPackages (
         ps: with ps; [
           pip
           pipx
@@ -56,20 +86,19 @@ in
           pwntools
           ropper
         ]
-      )
-    ))
-    (mkNixLDwrappedPackage pkgs.pypy3)
-  ]
-  ++ (with pkgs; [ ruff ]);
+      ))
+      pkgs.pypy3
+    ])
+    ++ (with pkgs; [ ruff ]);
 
-  programs.pdm = {
+  programs.pdm = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
     settings = {
       venv.backend = "venv";
     };
   };
 
-  programs.uv = {
+  programs.uv = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
     settings = {
       python-downloads = "never";
@@ -77,7 +106,7 @@ in
     };
   };
 
-  programs.poetry = {
+  programs.poetry = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
     settings = {
       virtualenvs.create = true;

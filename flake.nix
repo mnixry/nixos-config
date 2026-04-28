@@ -57,6 +57,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    nix-darwin = {
+      url = "git+https://github.com/nix-darwin/nix-darwin.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -66,11 +70,16 @@
       vars = import ./vars;
       extraLibs = import ./libs { inherit lib; };
       specialArgs = { inherit inputs vars extraLibs; };
-      inherit (self.nixosConfigurations."${vars.network.hostname}") config pkgs;
+
+      nixosSystem = "${vars.network.hostname}";
+      darwinSystem = "${vars.darwin.hostname}";
+
+      nixosConfig = self.nixosConfigurations.${nixosSystem};
+      inherit (nixosConfig) config pkgs;
       inherit (pkgs.stdenv.hostPlatform) system;
     in
     {
-      nixosConfigurations."${vars.network.hostname}" = lib.nixosSystem {
+      nixosConfigurations.${nixosSystem} = lib.nixosSystem {
         inherit specialArgs;
         modules = [
           ./system
@@ -87,6 +96,22 @@
           }
         ];
       };
+
+      darwinConfigurations.${darwinSystem} = inputs.nix-darwin.lib.darwinSystem {
+        inherit specialArgs;
+        modules = [
+          ./darwin
+          inputs.home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "hm-backup";
+            home-manager.extraSpecialArgs = specialArgs;
+            home-manager.users."${vars.user.name}" = import ./darwin/home.nix;
+          }
+        ];
+      };
+
       packages.${system} = {
         nix-conf =
           (pkgs.formats.nixConf rec {

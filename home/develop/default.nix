@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   extraLibs,
   ...
 }:
@@ -20,28 +21,12 @@
     gtkwave
     binwalk
     hashcat
-    hashcash
     imhex
     wireshark
-    bpftrace
-    ida-pro
-    ida-pro-mcp
-    (cutter.withPlugins builtins.attrValues)
-    (burpsuite.override { inherit (jetbrains) jdk; })
-    (detect-it-easy.overrideAttrs (
-      { postInstall, ... }:
-      {
-        postInstall = postInstall + ''
-          substituteInPlace $out/share/applications/die.desktop \
-            --replace "MimeType=application/octet-stream;" ""
-        '';
-      }
-    ))
 
     # Container & Cloud Native tools
     dive
     skopeo
-    buildah
     hadolint
     yamlfmt
     kubectl
@@ -59,7 +44,6 @@
     sqlitebrowser
 
     # Performance tools
-    perf
     pprof
     gnuplot
 
@@ -72,30 +56,28 @@
     openssl
     qalculate-qt
     just
+  ]
+  ++ lib.optionals pkgs.stdenv.isLinux [
+    ida-pro
+    ida-pro-mcp
+    (cutter.withPlugins builtins.attrValues)
+    (burpsuite.override { inherit (jetbrains) jdk; })
+    hashcash
+    (detect-it-easy.overrideAttrs (
+      { postInstall, ... }:
+      {
+        postInstall = postInstall + ''
+          substituteInPlace $out/share/applications/die.desktop \
+            --replace "MimeType=application/octet-stream;" ""
+        '';
+      }
+    ))
+    bpftrace
+    buildah
+    perf
   ];
 
   programs.awscli = {
     enable = true;
-  };
-
-  programs.ghidra = {
-    enable = true;
-    waylandSupport = true;
-    # extensions = builtins.attrValues;
-    preferences =
-      let
-        themeFile = pkgs.fetchurl {
-          url = "https://github.com/zackelia/ghidra-dark-theme/raw/refs/heads/main/ghidra-dark.theme";
-          hash = "sha256-ajjMtMpIAFxIHxMbAezISRv3u2ORO8sgcp7Rv2JKiKc=";
-        };
-      in
-      {
-        "GhidraShowWhatsNew" = false;
-        "SHOW.HELP.NAVIGATION.AID" = true;
-        "SHOW_TIPS" = true;
-        "TIP_INDEX" = 0;
-        "USER_AGREEMENT" = "ACCEPT";
-        "Theme" = "File:${themeFile}";
-      };
   };
 }

@@ -46,7 +46,7 @@
     };
   };
 
-  systemd.user.services.aria2 = {
+  systemd.user.services.aria2 = lib.mkIf pkgs.stdenv.isLinux {
     Unit.Description = "aria2 download manager";
     Service =
       let

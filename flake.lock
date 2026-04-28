@@ -388,6 +388,26 @@
         "type": "github"
       }
     },
+    "nix-darwin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775037210,
+        "narHash": "sha256-KM2WYj6EA7M/FVZVCl3rqWY+TFV5QzSyyGE2gQxeODU=",
+        "ref": "refs/heads/master",
+        "rev": "06648f4902343228ce2de79f291dd5a58ee12146",
+        "revCount": 2346,
+        "type": "git",
+        "url": "https://github.com/nix-darwin/nix-darwin.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/nix-darwin/nix-darwin.git"
+      }
+    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -674,6 +694,7 @@
         "lanzaboote": "lanzaboote",
         "niks3": "niks3",
         "niri": "niri",
+        "nix-darwin": "nix-darwin",
         "nix-index-database": "nix-index-database",
         "nixos-hardware": "nixos-hardware",
         "nixpak": "nixpak",
