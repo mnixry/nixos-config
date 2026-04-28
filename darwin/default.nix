@@ -146,18 +146,6 @@
     remapCapsLockToEscape = false;
   };
 
-  # Disable macOS developer tools prompt by ensuring Nix git shadows system stub
-  environment.variables = {
-    # Skip xcode-select developer tools prompt
-    # Nix's git will be used instead of /usr/bin/git
-  };
-
-  # Ensure Nix binaries come before system stubs in PATH
-  environment.systemPath = lib.mkBefore [
-    "/run/current-system/sw/bin"
-    "/nix/var/nix/profiles/default/bin"
-  ];
-
   # Homebrew integration (optional - uncomment if you use Homebrew)
   # homebrew = {
   #   enable = true;

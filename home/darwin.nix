@@ -1,7 +1,9 @@
 {
+  config,
   pkgs,
   lib,
   inputs,
+
   ...
 }:
 {
@@ -12,6 +14,9 @@
   # Darwin-specific packages
   home.packages =
     (with pkgs; [
+      docker-client
+      docker-compose
+
       # macOS softwares
       ice-bar
       alt-tab-macos
@@ -25,11 +30,17 @@
       }))
     ]);
 
+  programs.docker-cli = {
+    enable = true;
+    configDir = "${config.xdg.configHome}/docker";
+  };
+
   services.colima = {
     enable = true;
     profiles.default = {
       isService = true;
       isActive = true;
+      setDockerHost = true;
       settings = {
         runtime = "docker";
         arch = "host";
@@ -38,7 +49,7 @@
         mountType = "virtiofs";
 
         cpu = 4;
-        memory = 4096;
+        memory = 4;
         disk = 100;
 
         kubernetes.enabled = false;
@@ -63,19 +74,5 @@
       quick-terminal-autohide = true;
       quick-terminal-space-behavior = "move";
     };
-  };
-
-  # Disable NixOS-specific settings
-  xdg.mimeApps.enable = lib.mkForce false;
-
-  # Disable dconf settings (virt-manager specific, not applicable on Darwin)
-  dconf.settings = lib.mkForce { };
-
-  # Use pinentry-mac instead of pinentry-qt on Darwin
-  services.gpg-agent.pinentry.package = lib.mkForce pkgs.pinentry_mac;
-
-  # Remove NIXOS_OZONE_WL session variable (not applicable on Darwin)
-  home.sessionVariables = lib.mkForce {
-    # Darwin-specific session variables can go here
   };
 }
