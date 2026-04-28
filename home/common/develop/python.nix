@@ -29,29 +29,30 @@ let
       ];
     };
 
-  pythonPackages = ps: with ps; [
-    pip
-    pipx
-    ptpython
-    virtualenv
+  pythonPackages =
+    ps: with ps; [
+      pip
+      pipx
+      ptpython
+      virtualenv
 
-    numpy
-    pandas
-    scipy
-    pillow
+      numpy
+      pandas
+      scipy
+      pillow
 
-    requests
-    httpx
-    rich
+      requests
+      httpx
+      rich
 
-    sympy
-    cryptography
-    pycryptodome
-    gmpy2
+      sympy
+      cryptography
+      pycryptodome
+      gmpy2
 
-    pwntools
-    ropper
-  ];
+      pwntools
+      ropper
+    ];
 in
 {
   home.packages =

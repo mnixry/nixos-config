@@ -12,8 +12,11 @@
 
   programs.firefox = {
     enable = true;
-    package = if pkgs ? pkgsNoConfig then pkgs.pkgsNoConfig.firefox-devedition else pkgs.firefox-devedition;
-    nativeMessagingHosts = lib.optionals pkgs.stdenv.isLinux [ pkgs.kdePackages.plasma-browser-integration ];
+    package =
+      if pkgs ? pkgsNoConfig then pkgs.pkgsNoConfig.firefox-devedition else pkgs.firefox-devedition;
+    nativeMessagingHosts = lib.optionals pkgs.stdenv.isLinux [
+      pkgs.kdePackages.plasma-browser-integration
+    ];
     policies = {
       DisableFirefoxStudies = true;
       DisablePocket = true;
