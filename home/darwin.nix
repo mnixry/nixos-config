@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  inputs,
   ...
 }:
 {
@@ -9,16 +10,58 @@
   ];
 
   # Darwin-specific packages
-  home.packages = with pkgs; [
-    # macOS softwares
-    ice-bar
-  ];
+  home.packages =
+    (with pkgs; [
+      # macOS softwares
+      ice-bar
+      alt-tab-macos
+      qq
+    ])
+    ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
+      opencode
+      oh-my-opencode
+      (codex.overrideAttrs (prev: {
+        nativeBuildInputs = prev.nativeBuildInputs ++ [ pkgs.rustPlatform.bindgenHook ];
+      }))
+    ]);
+
+  services.colima = {
+    enable = true;
+    profiles.default = {
+      isService = true;
+      isActive = true;
+      settings = {
+        runtime = "docker";
+        arch = "host";
+
+        vmType = "vz";
+        mountType = "virtiofs";
+
+        cpu = 4;
+        memory = 4096;
+        disk = 100;
+
+        kubernetes.enabled = false;
+        portForwarder = "ssh";
+      };
+    };
+  };
 
   programs.ghostty = {
     enable = true;
     package = pkgs.ghostty-bin;
     settings = {
       command = "${pkgs.fish}/bin/fish --login --interactive";
+      keybind = [
+        "global:cmd+backquote=toggle_quick_terminal"
+      ];
+
+      quick-terminal-position = "top";
+      quick-terminal-size = "40%";
+      quick-terminal-screen = "main";
+      quick-terminal-animation-duration = "0.15";
+      quick-terminal-autohide = true;
+      quick-terminal-space-behavior = "move";
     };
   };
 

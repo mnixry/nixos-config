@@ -40,6 +40,10 @@
       url = "github:pwndbg/pwndbg";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -101,6 +105,7 @@
         inherit specialArgs;
         modules = [
           ./darwin
+          ./desktop/packages
           inputs.home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
