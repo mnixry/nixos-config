@@ -1,31 +1,20 @@
 {
   lib,
   feishu,
-  fetchurl,
   buildEnv,
   mkNixPak,
   mkAppWrapper,
   makeDesktopItem,
 }:
 let
-  appId = "com.larksuite.suite";
-  larksuite = feishu.overrideAttrs (prev: {
-    pname = "lark";
-    version = "7.50.14";
-    src = fetchurl {
-      url = "https://sf16-sg.larksuitecdn.com/obj/lark-artifact-storage/31c1c2ee/Lark-linux_x64-7.50.14.deb";
-      hash = "sha256-cI0qDNG0McQtby1tzdVm5ixiGMuIvuNofALKKphVtS0=";
-    };
-    installPhase = lib.replaceString "feishu" "lark" prev.installPhase;
-    meta.mainProgram = "bytedance-lark";
-  });
+  appId = "cn.feishu.Feishu";
   wrapped = mkNixPak {
     config =
       { ... }:
       {
         imports = [ ./nixpaks-common.nix ];
-        app.package = mkAppWrapper larksuite {
-          binPath = "opt/bytedance/lark/lark";
+        app.package = mkAppWrapper feishu {
+          binPath = "opt/bytedance/feishu/feishu";
           extraWrapperArgs = [
             "--add-flags"
             "--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true --wayland-text-input-version=3"
@@ -58,13 +47,13 @@ buildEnv {
     wrapped.config.script
     (makeDesktopItem {
       name = appId;
-      desktopName = "Lark";
-      genericName = "Lark";
-      comment = "Lark is a next-generation office suite that integrates messaging, schedule management, collaborative documents, video meeting, and various apps in one platform.";
+      desktopName = "Feishu";
+      genericName = "Feishu";
+      comment = "Feishu is an all-in-one platform that integrates instant communication, calendar, video meeting, collaborative documents, workplace, and various features. Feishu aims to make your work more enjoyable while achieving better organizational results.";
       exec = "${exePath} %U";
       startupNotify = true;
       terminal = false;
-      icon = "${larksuite}/share/icons/hicolor/256x256/apps/bytedance-lark.png";
+      icon = "${feishu}/share/icons/hicolor/256x256/apps/bytedance-feishu.png";
       type = "Application";
       categories = [ "Office" ];
       mimeTypes = [
@@ -72,10 +61,11 @@ buildEnv {
         "x-scheme-handler/feishu"
         "x-scheme-handler/feishu-open"
         "x-scheme-handler/lark"
-        "x-scheme-handler/x-lark"
+        "x-scheme-handler/x-feishu"
       ];
       extraConfig = {
         X-Flatpak = appId;
+        X-KDE-DBUS-Restricted-Interfaces = "org.kde.kwin.Screenshot,org.kde.KWin.ScreenShot2";
       };
     })
   ];

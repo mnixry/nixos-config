@@ -77,7 +77,7 @@ in
     (final: prev: {
       nixpaks = {
         telegram = wrapper prev ./nixpaks-telegram.nix;
-        larksuite = wrapper prev ./nixpaks-larksuite.nix;
+        feishu = wrapper prev ./nixpaks-feishu.nix;
         qq = wrapper prev ./nixpaks-qq.nix;
         wechat = wrapper prev ./nixpaks-wechat.nix;
         spotify = wrapper prev ./nixpaks-spotify.nix;

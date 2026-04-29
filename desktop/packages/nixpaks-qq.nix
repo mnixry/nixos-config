@@ -38,7 +38,6 @@ let
         };
         bubblewrap = {
           sockets = {
-            wayland = lib.mkForce false;
             x11 = true;
           };
           bind.rw = with sloth; [ xdgDownloadDir ];
