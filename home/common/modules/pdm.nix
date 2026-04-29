@@ -56,7 +56,7 @@ in
       {
         home.packages = [ cfg.package ];
         home.sessionVariables = mkIf cfg.enablePEP582 {
-          PYTHONPATH = "${pkgs.pdm}/${pkgs.python3.sitePackages}/pdm/pep582";
+          PYTHONPATH = "${cfg.package}/${pkgs.python3.sitePackages}/pdm/pep582";
         };
       }
 
