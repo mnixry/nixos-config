@@ -16,11 +16,11 @@ runs:
         sudo systemctl restart nix-daemon.service
     - name: Apply Nix Settings for Darwin
       shell: bash
-      if: runner.os == 'Darwin'
+      if: runner.os == 'macOS'
       run: |
         nix build .#nix-conf
         cat ./result | sudo tee -a /etc/nix/nix.custom.conf
-        sudo launchctl kickstart -k system/org.nixos.nix-daemon
+        sudo launchctl kickstart -k system/systems.determinate.nix-daemon
     - name: Setup NikS3
       shell: bash
       run: |
