@@ -32,6 +32,8 @@ jobs:
             echo "Previous commit is a manmade commit. Proceeding."
           fi
       - uses: ./.github/actions/setup-nix
+        with:
+          free-space: false
       - name: Update Flake Lock
         id: update-lock
         run: |
@@ -57,12 +59,13 @@ jobs:
   check:
     needs: update
     if: needs.update.outputs.lock_updated == 'true'
-    continue-on-error: true
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
       fail-fast: false
     runs-on: ${{ matrix.os }}
+    outputs:
+      result: ${{ steps.result.outputs }}
     permissions:
       id-token: write
     steps:
@@ -78,11 +81,19 @@ jobs:
           echo "$PATCH" | git apply
       - uses: ./.github/actions/setup-nix
       - uses: ./.github/actions/nixos-build
+        id: build
+        continue-on-error: true
         with:
           niks3-server-url: ${{ secrets.NIKS3_SERVER_URL }}
+      - name: Write Outputs
+        id: result
+        env:
+          OUTPUT_KEY: result-${{ matrix.os }}
+          OUTPUT_VALUE: ${{ steps.build.outcome == 'success' }}
+        run: echo "${OUTPUT_KEY}=${OUTPUT_VALUE}" >> "$GITHUB_OUTPUT"
   commit:
     needs: [update, check]
-    if: needs.check.result == 'success'
+    if: "join(needs.check.outputs.result.*) != '' && !contains(needs.check.outputs.result.*, false)"
     runs-on: ubuntu-latest
     permissions:
       contents: write
