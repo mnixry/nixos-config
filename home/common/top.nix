@@ -5,14 +5,15 @@
   ...
 }:
 {
-  home.packages = lib.optionals pkgs.stdenv.isLinux (
+  home.packages =
     with pkgs;
     [
-      iotop # io monitoring
       iftop # network monitoring
-      nvtopPackages.full # gpu monitoring
     ]
-  );
+    ++ lib.optionals pkgs.stdenv.isLinux [
+      iotop # io monitoring (Linux kernel IO accounting)
+      nvtopPackages.full # gpu monitoring
+    ];
 
   home.sessionVariables = lib.optionalAttrs pkgs.stdenv.isLinux {
     NIXOS_OZONE_WL = "1";

@@ -32,11 +32,7 @@
     bc = "libqalculate";
     inxi = "inxi -Fz";
     beep = ''echo -en "\007"'';
-  }
-  // lib.optionalAttrs pkgs.stdenv.isLinux {
-    journalctl-1h = ''journalctl -p err..alert --since "60 min ago"'';
-  }
-  // {
+
     man = "batman";
 
     # network
@@ -49,5 +45,8 @@
 
     # nix
     nix-build-package = ''nix build --impure --expr "(import <nixpkgs> {}).callPackage ./package.nix {}" -L'';
+  }
+  // lib.optionalAttrs pkgs.stdenv.isLinux {
+    journalctl-1h = ''journalctl -p err..alert --since "60 min ago"'';
   };
 }

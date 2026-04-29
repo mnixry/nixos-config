@@ -12,8 +12,7 @@
 
   programs.firefox = {
     enable = true;
-    package =
-      if pkgs ? pkgsNoConfig then pkgs.pkgsNoConfig.firefox-devedition else pkgs.firefox-devedition;
+    package = pkgs.pkgsNoConfig.firefox-devedition;
     nativeMessagingHosts = lib.optionals pkgs.stdenv.isLinux [
       pkgs.kdePackages.plasma-browser-integration
     ];

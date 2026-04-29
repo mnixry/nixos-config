@@ -1,13 +1,9 @@
 { pkgs, lib, ... }:
 {
-  home.packages =
-    with pkgs;
-    [
-      code-cursor
-    ]
-    ++ lib.optionals pkgs.stdenv.isLinux [
-      (jetbrains.datagrip.override { forceWayland = true; })
-      (jetbrains.idea.override { forceWayland = true; })
-    ];
+  home.packages = with pkgs; [
+    code-cursor
+    (jetbrains.datagrip.override { forceWayland = pkgs.stdenv.isLinux; })
+    (jetbrains.idea.override { forceWayland = pkgs.stdenv.isLinux; })
+  ];
   programs.vscode.enable = true;
 }

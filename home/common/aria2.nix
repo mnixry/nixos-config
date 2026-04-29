@@ -4,6 +4,29 @@
   lib,
   ...
 }:
+let
+  inherit (pkgs.stdenv) isLinux isDarwin;
+  inherit (config.xdg) configHome dataHome;
+  sessionFile = "${dataHome}/aria2/session";
+
+  prestartScript = pkgs.writeScript "aria2-prestart" ''
+    #!${pkgs.runtimeShell}
+    ${lib.getExe' pkgs.coreutils "mkdir"} -p ${dataHome}/aria2
+
+    if [ ! -e "${sessionFile}" ]; then
+        ${lib.getExe' pkgs.coreutils "touch"} ${sessionFile}
+    fi
+  '';
+
+  aria2Args = [
+    "${lib.getExe config.programs.aria2.package}"
+    "--enable-rpc"
+    "--rpc-listen-port=16800"
+    "--conf-path=${configHome}/aria2/aria2.conf"
+    "--save-session=${sessionFile}"
+    "--input-file=${sessionFile}"
+  ];
+in
 {
   programs.aria2 = {
     enable = true;
@@ -21,12 +44,11 @@
       check-integrity = true;
 
       ## General optimization
-      # Don't download files if they're already in the download directory
       auto-save-interval = 10;
       conditional-get = true;
-      file-allocation = "falloc"; # Assume ext4, this is faster there
+      file-allocation = if isLinux then "falloc" else "prealloc"; # falloc is ext4-optimized, prealloc for APFS
       optimize-concurrent-downloads = true;
-      disk-cache = "64M"; # In-memory cache to avoid fragmentation
+      disk-cache = "64M";
       min-split-size = "1M";
       http-accept-gzip = true;
       content-disposition-default-utf8 = true;
@@ -38,7 +60,7 @@
 
       ## Torrent options
       bt-force-encryption = true;
-      bt-detach-seed-only = true; # Don't block downloads when seeding
+      bt-detach-seed-only = true;
       enable-dht = true;
       enable-dht6 = true;
       seed-ratio = 2;
@@ -46,50 +68,40 @@
     };
   };
 
-  systemd.user.services.aria2 = lib.mkIf pkgs.stdenv.isLinux {
+  # Linux: systemd user service
+  systemd.user.services.aria2 = lib.mkIf isLinux {
     Unit.Description = "aria2 download manager";
     Service =
       let
         coreBin = name: lib.getExe' pkgs.coreutils name;
-        inherit (config.xdg) configHome dataHome;
-        sessionFile = "${dataHome}/aria2/session";
       in
       {
-        ExecStartPre =
-          let
-            prestart = pkgs.writeScript "aria2-prestart" ''
-              #!${pkgs.runtimeShell}
-              ${coreBin "mkdir"} -p ${dataHome}/aria2
-
-              if [ ! -e "${sessionFile}" ]; then
-                  ${coreBin "touch"} ${sessionFile}
-              fi
-            '';
-          in
-          "${prestart}";
-
-        ExecStart = lib.concatStringsSep " " [
-          "${lib.getExe config.programs.aria2.package}"
-          "--enable-rpc"
-          "--rpc-listen-port=16800"
-          "--conf-path=${configHome}/aria2/aria2.conf"
-          "--save-session=${sessionFile}"
-          "--input-file=${sessionFile}"
-        ];
-
+        ExecStartPre = "${prestartScript}";
+        ExecStart = lib.concatStringsSep " " aria2Args;
         ExecReload = "${coreBin "kill"} -HUP $MAINPID";
-
-        # We don't want to class an exit before downloads finish as a
-        # failure if we stop aria2c, since the entire point of it is
-        # that it will resume the downloads.
         SuccessExitStatus = "7";
-
-        # We use falloc, so if we use this unit on any other fs it will
-        # cause issues
         Slice = "session.slice";
         ProtectSystem = "full";
       };
 
     Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  # macOS: launchd user agent
+  launchd.agents.aria2 = lib.mkIf isDarwin {
+    enable = true;
+    config = {
+      ProgramArguments = [
+        "${pkgs.runtimeShell}"
+        "-c"
+        "${prestartScript} && exec ${lib.concatStringsSep " " aria2Args}"
+      ];
+      KeepAlive = {
+        Crashed = true;
+        SuccessfulExit = false;
+      };
+      RunAtLoad = true;
+      ProcessType = "Background";
+    };
   };
 }

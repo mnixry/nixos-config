@@ -44,27 +44,26 @@
       caddy
       openssl
       just
-    ]
-    ++ lib.optionals pkgs.stdenv.isLinux [
-      # CTF tools (Linux-only due to GUI/kernel dependencies)
+      # CTF & RE tools
       gtkwave
       binwalk
       hashcat
       imhex
       wireshark
 
-      # Linux-only GUI/system tools
-      freelens-bin
+      # GUI/system tools
       android-tools
       scrcpy
       sqlitebrowser
       qalculate-qt
-
+      freelens-bin
+    ]
+    ++ lib.optionals pkgs.stdenv.isLinux [
+      # Linux-only tools (kernel/FHS/platform dependencies)
+      (cutter.withPlugins builtins.attrValues) # qtwebengine -> cef-binary lacks darwin support
       ida-pro
       ida-pro-mcp
-      (cutter.withPlugins builtins.attrValues)
       (burpsuite.override { inherit (jetbrains) jdk; })
-      hashcash
       (detect-it-easy.overrideAttrs (
         { postInstall, ... }:
         {
@@ -74,6 +73,7 @@
           '';
         }
       ))
+      hashcash
       bpftrace
       buildah
       perf

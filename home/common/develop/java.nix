@@ -3,15 +3,10 @@ let
   defaultJdk = pkgs.zulu.override { enableJavaFX = true; };
 in
 {
-  home.packages = (
-    with pkgs;
-    [
-      defaultJdk
-    ]
-    ++ lib.optionals pkgs.stdenv.isLinux [
-      (jadx.override { inherit (jetbrains) jdk; })
-    ]
-  );
+  home.packages = with pkgs; [
+    defaultJdk
+    (jadx.override (lib.optionalAttrs pkgs.stdenv.isLinux { inherit (jetbrains) jdk; }))
+  ];
   home.shellAliases = (
     builtins.foldl' (
       acc: name:
