@@ -58,9 +58,10 @@
       qalculate-qt
       freelens-bin
     ]
+    # Linux-only tools (kernel/FHS/platform dependencies)
     ++ lib.optionals pkgs.stdenv.isLinux [
-      # Linux-only tools (kernel/FHS/platform dependencies)
-      (cutter.withPlugins builtins.attrValues) # qtwebengine -> cef-binary lacks darwin support
+      # https://github.com/NixOS/nixpkgs/issues/514250
+      (pkgsStable.cutter.withPlugins builtins.attrValues)
       ida-pro
       ida-pro-mcp
       (burpsuite.override { inherit (jetbrains) jdk; })
