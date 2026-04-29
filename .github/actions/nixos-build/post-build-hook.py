@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+#! /nix/var/nix/profiles/default/bin/nix-shell
+#! nix-shell -i python3 -p python3Packages.requests
 from datetime import timedelta
 import logging
 from os import environ
