@@ -9,10 +9,10 @@
   programs.fish.enable = true;
   programs.wireshark.enable = true;
   programs.traceroute.enable = true;
-  users.users."${vars.user.name}" = {
+  users.users."${vars.linux.user.name}" = {
     isNormalUser = true;
-    initialHashedPassword = "${vars.user.initialHashedPassword}";
-    description = "${vars.user.fullname}";
+    initialHashedPassword = "${vars.linux.user.initialHashedPassword}";
+    description = "${vars.linux.user.fullname}";
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -23,7 +23,7 @@
   };
 
   environment.defaultPackages = with pkgs; [ bitwarden-desktop ];
-  security.pam.services."${vars.user.name}".kwallet = {
+  security.pam.services."${vars.linux.user.name}".kwallet = {
     enable = true;
     package = pkgs.kdePackages.kwallet-pam;
   };

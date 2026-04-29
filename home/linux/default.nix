@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  inputs,
   extraLibs,
   ...
 }:
@@ -9,6 +8,10 @@
   imports = extraLibs.scanPaths ./.;
 
   xdg.mimeApps.enable = true;
+
+  home.sessionVariables = lib.optionalAttrs pkgs.stdenv.isLinux {
+    NIXOS_OZONE_WL = "1";
+  };
 
   # Linux-only packages
   home.packages =

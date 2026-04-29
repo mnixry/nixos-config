@@ -1,9 +1,6 @@
 {
   config,
   pkgs,
-  lib,
-  inputs,
-
   ...
 }:
 {
@@ -12,8 +9,9 @@
   ];
 
   # Darwin-specific packages
-  home.packages =
-    (with pkgs; [
+  home.packages = (
+    with pkgs;
+    [
       docker-client
       docker-compose
 
@@ -21,14 +19,8 @@
       ice-bar
       alt-tab-macos
       qq
-    ])
-    ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
-      opencode
-      oh-my-opencode
-      (codex.overrideAttrs (prev: {
-        nativeBuildInputs = prev.nativeBuildInputs ++ [ pkgs.rustPlatform.bindgenHook ];
-      }))
-    ]);
+    ]
+  );
 
   programs.docker-cli = {
     enable = true;

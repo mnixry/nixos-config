@@ -36,7 +36,7 @@
                 in (builtins.head (builtins.attrValues configs)).options
               '';
               home-manager.expr = ''
-                (builtins.getFlake "${flakeRoot}").nixosConfigurations.${vars.network.hostname}.options.home-manager.users.value.${vars.user.name}
+                (builtins.getFlake "${flakeRoot}").nixosConfigurations.${vars.linux.hostname}.options.home-manager.users.value.${vars.linux.user.name}
               '';
             };
           };

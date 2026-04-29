@@ -5,7 +5,7 @@
   ...
 }:
 let
-  inherit (vars.hardware) luksName;
+  inherit (vars.linux.hardware) luksName;
   cores =
     with lib;
     (pipe "nproc --all > $out" [
@@ -84,7 +84,7 @@ in
       neededForBoot = true;
     };
     "/boot" = {
-      device = "${vars.hardware.bootDevice}";
+      device = "${vars.linux.hardware.bootDevice}";
       fsType = "vfat";
       options = [
         "fmask=0077"

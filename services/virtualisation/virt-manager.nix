@@ -5,7 +5,7 @@
     qemu_kvm
   ];
   programs.virt-manager.enable = true;
-  users.users."${vars.user.name}".extraGroups = [ "libvirtd" ];
+  users.users."${vars.linux.user.name}".extraGroups = [ "libvirtd" ];
 
   virtualisation.libvirtd = {
     enable = true;

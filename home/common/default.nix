@@ -6,12 +6,21 @@
   extraLibs,
   ...
 }:
+let
+  inherit (pkgs.stdenv.hostPlatform) system;
+  username =
+    if pkgs.stdenv.isDarwin then
+      vars.darwin.user.name
+    else if pkgs.stdenv.isLinux then
+      vars.linux.user.name
+    else
+      throw "unknown platform";
+in
 {
   imports = extraLibs.scanPaths ./.;
 
-  home.username = "${vars.user.name}";
-  home.homeDirectory =
-    if pkgs.stdenv.isDarwin then "/Users/${vars.user.name}" else "/home/${vars.user.name}";
+  home.username = "${username}";
+  home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
 
   programs.nh = {
     enable = true;
@@ -77,9 +86,20 @@
       lsof
     ])
     ++ [
-      inputs.pwndbg.packages.${pkgs.stdenv.hostPlatform.system}.default
-      inputs.niks3.packages.${pkgs.stdenv.hostPlatform.system}.default
-    ];
+      inputs.pwndbg.packages.${system}.default
+      inputs.niks3.packages.${system}.default
+    ]
+    ++ (with inputs.llm-agents.packages.${system}; [
+      opencode
+      oh-my-opencode
+      (codex.overrideAttrs (prev: {
+        nativeBuildInputs =
+          prev.nativeBuildInputs
+          ++
+            # https://github.com/numtide/llm-agents.nix/issues/4402
+            lib.optionals pkgs.stdenv.isDarwin [ pkgs.rustPlatform.bindgenHook ];
+      }))
+    ]);
 
   home.stateVersion = "25.11";
 }

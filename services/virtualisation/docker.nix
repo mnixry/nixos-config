@@ -31,7 +31,7 @@
     ];
   };
 
-  users.users."${vars.user.name}".extraGroups = [ "docker" ];
+  users.users."${vars.linux.user.name}".extraGroups = [ "docker" ];
 
   virtualisation.oci-containers = {
     backend = "docker";

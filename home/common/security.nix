@@ -17,8 +17,8 @@
   programs.git = {
     enable = true;
     settings.user = {
-      name = "${vars.user.fullname}";
-      email = "${vars.user.email}";
+      name = "${vars.git.name}";
+      email = "${vars.git.email}";
     };
   };
 

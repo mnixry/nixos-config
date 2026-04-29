@@ -16,8 +16,8 @@
     initrd = {
       systemd.enable = true;
       luks.fido2Support = false;
-      luks.devices."${vars.hardware.luksName}" = {
-        device = "${vars.hardware.rootDevice}";
+      luks.devices."${vars.linux.hardware.luksName}" = {
+        device = "${vars.linux.hardware.rootDevice}";
         crypttabExtraOpts = [ "fido2-device=auto" ];
         # whether to allow TRIM requests to the underlying device.
         # it's less secure, but faster.

@@ -10,7 +10,7 @@
   imports = extraLibs.scanPaths ./.;
 
   networking = {
-    hostName = "${vars.network.hostname}";
+    hostName = "${vars.linux.hostname}";
     networkmanager = {
       enable = true;
       plugins = with pkgs; [

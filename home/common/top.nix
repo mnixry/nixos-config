@@ -15,10 +15,6 @@
       nvtopPackages.full # gpu monitoring
     ];
 
-  home.sessionVariables = lib.optionalAttrs pkgs.stdenv.isLinux {
-    NIXOS_OZONE_WL = "1";
-  };
-
   programs.htop = {
     enable = true;
     settings = {

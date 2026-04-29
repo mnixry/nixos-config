@@ -1,10 +1,7 @@
 {
-  config,
   pkgs,
-  lib,
   vars,
   inputs,
-  extraLibs,
   ...
 }:
 {
@@ -65,10 +62,10 @@
   };
 
   # User configuration
-  system.primaryUser = vars.user.name;
+  system.primaryUser = vars.darwin.user.name;
 
-  users.users."${vars.user.name}" = {
-    home = "/Users/${vars.user.name}";
+  users.users."${vars.darwin.user.name}" = {
+    home = "/Users/${vars.darwin.user.name}";
     shell = pkgs.fish;
   };
 

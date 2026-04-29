@@ -91,7 +91,7 @@ in
       }
     ];
 
-    users."${vars.user.name}" = {
+    users."${vars.linux.user.name}" = {
       commonMountOptions = [
         "x-gvfs-hide"
       ];

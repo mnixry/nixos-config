@@ -75,7 +75,7 @@
       extraLibs = import ./libs { inherit lib; };
       specialArgs = { inherit inputs vars extraLibs; };
 
-      nixosSystem = "${vars.network.hostname}";
+      nixosSystem = "${vars.linux.hostname}";
       darwinSystem = "${vars.darwin.hostname}";
 
       mkNixConf =
@@ -123,7 +123,7 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "hm-backup";
             home-manager.extraSpecialArgs = specialArgs;
-            home-manager.users."${vars.user.name}" = import ./home;
+            home-manager.users."${vars.linux.user.name}" = import ./home;
           }
         ];
       };
@@ -139,7 +139,7 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "hm-backup";
             home-manager.extraSpecialArgs = specialArgs;
-            home-manager.users."${vars.user.name}" = import ./home/darwin.nix;
+            home-manager.users."${vars.darwin.user.name}" = import ./home/darwin.nix;
           }
         ];
       };
