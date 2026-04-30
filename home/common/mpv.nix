@@ -11,14 +11,17 @@
 
   programs.mpv = {
     enable = true;
-    defaultProfiles = [ "gpu-hq" ];
-    scripts = with pkgs.mpvScripts; [
-      thumbfast
-      modernz
+    package = pkgs.mpv.override {
+      scripts = with pkgs.mpvScripts; [
+        thumbfast
+        modernz
 
-      mpv-cheatsheet-ng
-      visualizer
-    ];
+        mpv-cheatsheet-ng
+        visualizer
+      ];
+      youtubeSupport = false;
+    };
+    defaultProfiles = [ "gpu-hq" ];
     config = {
       osc = false;
       border = false;
