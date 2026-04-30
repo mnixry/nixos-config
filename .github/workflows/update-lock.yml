@@ -65,7 +65,7 @@ jobs:
       fail-fast: false
     runs-on: ${{ matrix.os }}
     outputs:
-      result: ${{ steps.result.outputs }}
+      result: ${{ toJson(steps.result.outputs.*) != '[]' && !contains(steps.result.outputs.*, false) }}
     permissions:
       id-token: write
     steps:
@@ -93,7 +93,7 @@ jobs:
         run: echo "${OUTPUT_KEY}=${OUTPUT_VALUE}" >> "$GITHUB_OUTPUT"
   commit:
     needs: [update, check]
-    if: "join(needs.check.outputs.result.*) != '' && !contains(needs.check.outputs.result.*, false)"
+    if: needs.check.outputs.result
     runs-on: ubuntu-latest
     permissions:
       contents: write
