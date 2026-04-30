@@ -4,15 +4,34 @@ inputs:
   free-space:
     description: Whether to free space before building
     required: false
-    default: ${{ runner.os == 'Linux' }}
+    default: "true"
 runs:
   using: "composite"
   steps:
     - uses: wimpysworld/nothing-but-nix@main
-      if: inputs.free-space == 'true'
+      if: inputs.free-space == 'true' && runner.os == 'Linux'
       with:
         hatchet-protocol: rampage
         mnt-safe-haven: 6144
+    - name: Free Space on macOS
+      shell: bash
+      if: inputs.free-space == 'true' && runner.os == 'macOS'
+      run: |
+        sudo df -h
+        sudo mdutil -i off -a \
+          || echo "mdutil failed"
+        sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist \
+          || echo "launchctl unload failed"
+        sudo rm -rf \
+          /Applications/Xcode_* \
+          /Library/Developer/CoreSimulator \
+          /Library/Frameworks \
+          /Users/runner/.dotnet \
+          /Users/runner/.rustup \
+          /Users/runner/Library/Android \
+          /Users/runner/Library/Caches \
+          /Users/runner/Library/Developer/CoreSimulator \
+          /Users/runner/hostedtoolcache &
     - uses: DeterminateSystems/nix-installer-action@main
       with:
         diagnostic-endpoint: ""
