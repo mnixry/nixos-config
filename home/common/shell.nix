@@ -48,6 +48,15 @@
       };
   };
 
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+    enableFishIntegration = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+    mise.enable = true;
+  };
+
   programs.atuin = {
     enable = true;
     enableBashIntegration = true;
