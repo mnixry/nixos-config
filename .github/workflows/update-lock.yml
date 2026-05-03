@@ -65,7 +65,8 @@ jobs:
       fail-fast: false
     runs-on: ${{ matrix.os }}
     outputs:
-      result: ${{ toJson(steps.result.outputs.*) != '[]' && !contains(steps.result.outputs.*, false) }}
+      result-macos: ${{ steps.build-macos.outcome == 'success' }}
+      result-linux: ${{ steps.build-linux.outcome == 'success' }}
     permissions:
       id-token: write
     steps:
@@ -81,19 +82,20 @@ jobs:
           echo "$PATCH" | git apply
       - uses: ./.github/actions/setup-nix
       - uses: ./.github/actions/nixos-build
-        id: build
+        id: build-macos
+        if: runner.os == 'macOS'
         continue-on-error: true
         with:
           niks3-server-url: ${{ secrets.NIKS3_SERVER_URL }}
-      - name: Write Outputs
-        id: result
-        env:
-          OUTPUT_KEY: result-${{ matrix.os }}
-          OUTPUT_VALUE: ${{ steps.build.outcome == 'success' }}
-        run: echo "${OUTPUT_KEY}=${OUTPUT_VALUE}" >> "$GITHUB_OUTPUT"
+      - uses: ./.github/actions/nixos-build
+        id: build-linux
+        if: runner.os == 'Linux'
+        continue-on-error: true
+        with:
+          niks3-server-url: ${{ secrets.NIKS3_SERVER_URL }}
   commit:
     needs: [update, check]
-    if: needs.check.outputs.result
+    if: needs.check.outputs.result-linux && needs.check.outputs.result-macos
     runs-on: ubuntu-latest
     permissions:
       contents: write
