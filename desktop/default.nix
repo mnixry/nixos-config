@@ -19,7 +19,8 @@
       nerd-fonts.monaspace
       sarasa-gothic
       # sans/serif families
-      ibm-plex
+      # FIXME: https://github.com/NixOS/nixpkgs/pull/514577
+      pkgsStable.ibm-plex
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
       noto-fonts-color-emoji

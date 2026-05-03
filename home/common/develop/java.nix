@@ -7,7 +7,20 @@ in
     with pkgs;
     [ defaultJdk ]
     ++ lib.optionals stdenv.isLinux [
-      (jadx.override { inherit (jetbrains) jdk; })
+      (jadx.overrideAttrs (
+        # FIXME: jadx is relying on Gradle 8, which does not compatible with Jetbrains JDK (JDK 25)
+        { installPhase, ... }:
+        let
+          jdkHome = builtins.unsafeDiscardStringContext (toString jdk.home);
+          jetbrainsJdkHome = builtins.unsafeDiscardStringContext (toString jetbrains.jdk.home);
+        in
+        {
+          installPhase =
+            builtins.seq
+              (lib.assertMsg (lib.strings.hasInfix jdkHome installPhase) "jadx is not using the correct JDK")
+              (lib.strings.replaceString jdkHome jetbrainsJdkHome installPhase);
+        }
+      ))
     ];
   home.shellAliases = (
     builtins.foldl' (
