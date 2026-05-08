@@ -16,9 +16,15 @@
       docker-compose
 
       # macOS softwares
-      ice-bar
+      (ice-bar.overrideAttrs rec {
+        version = "0.11.13-dev.2";
+        src = fetchurl {
+          url = "https://github.com/jordanbaird/Ice/releases/download/${version}/Ice.zip";
+          hash = "sha256-wbuqcfYev+Xuko95CvYJY6nyAjZNY/eNLGs+xRBc9KA=";
+        };
+      })
       alt-tab-macos
-      qq
+      spotify
     ]
   );
 

@@ -1,5 +1,4 @@
 {
-  lib,
   pkgs,
   inputs,
   vars,
@@ -92,13 +91,8 @@ in
     ++ (with inputs.llm-agents.packages.${system}; [
       opencode
       oh-my-opencode
-      (codex.overrideAttrs (prev: {
-        nativeBuildInputs =
-          prev.nativeBuildInputs
-          ++
-            # https://github.com/numtide/llm-agents.nix/issues/4402
-            lib.optionals pkgs.stdenv.isDarwin [ pkgs.rustPlatform.bindgenHook ];
-      }))
+      codex
+      claude-code
     ]);
 
   home.stateVersion = "25.11";
