@@ -65,8 +65,8 @@ jobs:
       fail-fast: false
     runs-on: ${{ matrix.os }}
     outputs:
-      result-macos: ${{ steps.build-macos.outcome == 'success' }}
-      result-linux: ${{ steps.build-linux.outcome == 'success' }}
+      result-macos: ${{ steps.build-outcome.outputs.result-macos }}
+      result-linux: ${{ steps.build-outcome.outputs.result-linux }}
     permissions:
       id-token: write
     steps:
@@ -82,20 +82,21 @@ jobs:
           echo "$PATCH" | git apply
       - uses: ./.github/actions/setup-nix
       - uses: ./.github/actions/nixos-build
-        id: build-macos
-        if: runner.os == 'macOS'
+        id: build
         continue-on-error: true
         with:
           niks3-server-url: ${{ secrets.NIKS3_SERVER_URL }}
-      - uses: ./.github/actions/nixos-build
-        id: build-linux
-        if: runner.os == 'Linux'
-        continue-on-error: true
-        with:
-          niks3-server-url: ${{ secrets.NIKS3_SERVER_URL }}
+      - name: Write Build Outcome
+        id: build-outcome
+        shell: bash
+        env:
+          BUILD_OUTCOME: ${{ steps.build.outcome }}
+          RUNNER_OS: ${{ runner.os }}
+        run: |
+          echo "result-$(echo "$RUNNER_OS" | tr '[:upper:]' '[:lower:]')=${BUILD_OUTCOME}" >> "$GITHUB_OUTPUT"
   commit:
     needs: [update, check]
-    if: needs.check.outputs.result-linux && needs.check.outputs.result-macos
+    if: needs.check.outputs.result-linux == 'success' && needs.check.outputs.result-macos == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: write

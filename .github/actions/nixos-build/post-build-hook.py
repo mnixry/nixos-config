@@ -1,10 +1,14 @@
 #! /nix/var/nix/profiles/default/bin/nix-shell
 #! nix-shell -i python3 -p python3Packages.requests
-from datetime import timedelta
+import argparse
 import logging
-from os import environ
-from subprocess import check_call
+import os
+import subprocess
+import tempfile
 import time
+from collections.abc import Mapping
+from datetime import timedelta
+from pathlib import Path
 from typing import Callable
 
 import requests
@@ -18,10 +22,6 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
-
-
-out_paths = [path.strip() for path in environ["OUT_PATHS"].split(None)]
-logger.info("Uploading %d paths: %r", len(out_paths), out_paths)
 
 
 def exponential_backoff[**P, R](
@@ -64,17 +64,67 @@ def request_oidc_token() -> str:
     return response.json()["value"]
 
 
-token = exponential_backoff(request_oidc_token)
-returncode = exponential_backoff(
-    check_call,
-    [
-        "niks3",
-        "push",
-        "--server-url",
-        NIKS3_SERVER_URL,
-        "--auth-token",
-        token,
-        *out_paths,
-    ],
-    env={**environ, "PATH": EXTRA_PATHS + ":" + environ.get("PATH", "")},
-)
+def _collect_extra_paths(env: Mapping[str, str]):
+    return {
+        **env,
+        "PATH": os.pathsep.join(
+            path
+            for path in (
+                EXTRA_PATHS.split(os.pathsep) + env.get("PATH", "").split(os.pathsep)
+            )
+            if path.strip()
+        ),
+    }
+
+
+def perform_push(token: str, env: Mapping[str, str]):
+    out_paths = [path.strip() for path in env["OUT_PATHS"].split()]
+    logger.info("Uploading %d paths: %r", len(out_paths), out_paths)
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        with open((path := Path(temp_dir) / "auth_token.txt"), "wt") as f:
+            f.write(token)
+        return subprocess.check_call(
+            [
+                "niks3",
+                "push",
+                f"--server-url={NIKS3_SERVER_URL}",
+                f"--auth-token-path={path}",
+                *out_paths,
+            ],
+            env=_collect_extra_paths(env),
+        )
+
+
+def perform_gc(token: str, env: Mapping[str, str]):
+    with tempfile.TemporaryDirectory() as temp_dir:
+        with open((path := Path(temp_dir) / "auth_token.txt"), "wt") as f:
+            f.write(token)
+        return subprocess.check_call(
+            [
+                "niks3",
+                "gc",
+                f"--server-url={NIKS3_SERVER_URL}",
+                f"--auth-token-path={path}",
+                "--older-than=168h",
+            ],
+            env=_collect_extra_paths(env),
+        )
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.set_defaults(
+        func=lambda args: exponential_backoff(
+            perform_push, exponential_backoff(request_oidc_token), os.environ
+        )
+    )
+    parser.add_subparsers(dest="action").add_parser(
+        "gc", help="Perform garbage collection"
+    ).set_defaults(
+        func=lambda args: exponential_backoff(
+            perform_gc, exponential_backoff(request_oidc_token), os.environ
+        )
+    )
+    args = parser.parse_args()
+    args.func(args)
