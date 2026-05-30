@@ -22,7 +22,6 @@
     shell = pkgs.fish;
   };
 
-  environment.defaultPackages = with pkgs; [ bitwarden-desktop ];
   security.pam.services."${vars.linux.user.name}".kwallet = {
     enable = true;
     package = pkgs.kdePackages.kwallet-pam;

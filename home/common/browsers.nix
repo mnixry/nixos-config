@@ -105,6 +105,9 @@
         // fontSettings
         // privacySettings
       );
+  }
+  // lib.optionalAttrs pkgs.stdenv.isLinux {
+    configPath = ".mozilla/firefox";
   };
 
   programs.chromium = lib.mkIf pkgs.stdenv.isLinux {

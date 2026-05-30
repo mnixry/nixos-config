@@ -170,7 +170,6 @@ in
         (mkDirMode ".pki" "0700")
         (mkDirMode ".local/share/kwalletd" "0700")
         (mkDirMode ".local/share/networkmanagement" "0700")
-        (mkDirMode ".config/Bitwarden" "0700")
         (mkDirMode ".local/share/password-store" "0700")
 
         # gnmome keyrings

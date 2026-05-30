@@ -35,15 +35,17 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks."*" = {
-      compression = true;
-      serverAliveInterval = 5;
-      serverAliveCountMax = 10;
-    };
-    matchBlocks."github.com" = {
-      hostname = "ssh.github.com";
-      port = 443;
-      user = "git";
+    settings = {
+      "*" = {
+        compression = true;
+        serverAliveInterval = 5;
+        serverAliveCountMax = 10;
+      };
+      "github.com" = {
+        hostname = "ssh.github.com";
+        port = 443;
+        user = "git";
+      };
     };
   };
 

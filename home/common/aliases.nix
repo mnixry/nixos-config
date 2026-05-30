@@ -45,6 +45,9 @@
 
     # nix
     nix-build-package = ''nix build --impure --expr "(import <nixpkgs> {}).callPackage ./package.nix {}" -L'';
+
+    # ssh
+    ssh-nk = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null";
   }
   // lib.optionalAttrs pkgs.stdenv.isLinux {
     journalctl-1h = ''journalctl -p err..alert --since "60 min ago"'';

@@ -35,7 +35,6 @@ let
   pythonPackages =
     ps: with ps; [
       pip
-      pipx
       ptpython
       virtualenv
 
