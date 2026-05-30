@@ -35,14 +35,8 @@
         "nix-command"
         "flakes"
       ];
-      substituters = [
-        "https://nix-cache.any-mix.eu.org"
-        "https://cache.garnix.io"
-      ];
-      trusted-public-keys = [
-        "nix-cache.any-mix.eu.org-1:1arBVKbTurqBX3Foe+tO8MihDz6qmVjNgnJ/lE3p1QI="
-        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-      ];
+      substituters = [ "https://nix-cache.any-mix.eu.org" ];
+      trusted-public-keys = [ "nix-cache.any-mix.eu.org-1:1arBVKbTurqBX3Foe+tO8MihDz6qmVjNgnJ/lE3p1QI=" ];
       narinfo-cache-negative-ttl = 60;
       auto-optimise-store = false;
       http-connections = 0;
