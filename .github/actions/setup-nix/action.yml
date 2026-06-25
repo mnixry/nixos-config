@@ -5,6 +5,9 @@ inputs:
     description: Whether to free space before building
     required: false
     default: "true"
+  github-token:
+    description: The GitHub token to use for caching
+    required: true
 runs:
   using: "composite"
   steps:
@@ -32,9 +35,10 @@ runs:
           /Users/runner/Library/Caches \
           /Users/runner/Library/Developer/CoreSimulator \
           /Users/runner/hostedtoolcache &
-    - uses: DeterminateSystems/nix-installer-action@main
+    - uses: NixOS/nix-installer-action@main
       with:
-        diagnostic-endpoint: ""
+        extra-conf: |
+          access-tokens = github.com=${{ inputs.github-token }}
     - uses: actions/cache@main
       with:
         path: ~/.cache/nix

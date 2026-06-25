@@ -34,6 +34,7 @@ jobs:
       - uses: ./.github/actions/setup-nix
         with:
           free-space: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Update Flake Lock
         id: update-lock
         run: |
@@ -81,6 +82,8 @@ jobs:
           git reset --hard "$BASE_SHA"
           echo "$PATCH" | git apply
       - uses: ./.github/actions/setup-nix
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: ./.github/actions/nixos-build
         id: build
         continue-on-error: true

@@ -29,6 +29,8 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - uses: ./.github/actions/setup-nix
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: ./.github/actions/nixos-build
         with:
           niks3-server-url: ${{ secrets.NIKS3_SERVER_URL }}

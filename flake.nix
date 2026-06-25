@@ -88,11 +88,9 @@
           "nix.custom.conf"
           (
             extraLibs.attrs.pick config'.nix.settings [
-              "experimental-features"
               "substituters"
               "trusted-public-keys"
               "trusted-substituters"
-              "use-cgroups"
               "keep-going"
               "always-allow-substitutes"
               "narinfo-cache-negative-ttl"

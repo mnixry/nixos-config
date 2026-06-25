@@ -7,20 +7,22 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Apply Nix Settings for Linux
+    - name: Apply Nix Settings
+      shell: bash
+      run: |
+        nix build .#nix-conf
+        mkdir -p ~/.config/nix
+        cat ./result | tee -a ~/.config/nix/nix.conf
+    - name: Restart Nix Daemon on Linux
       shell: bash
       if: runner.os == 'Linux'
       run: |
-        nix build .#nix-conf
-        cat ./result | sudo tee -a /etc/nix/nix.custom.conf
         sudo systemctl restart nix-daemon.service
-    - name: Apply Nix Settings for Darwin
+    - name: Restart Nix Daemon on macOS
       shell: bash
       if: runner.os == 'macOS'
       run: |
-        nix build .#nix-conf
-        cat ./result | sudo tee -a /etc/nix/nix.custom.conf
-        sudo launchctl kickstart -k system/systems.determinate.nix-daemon
+        sudo launchctl kickstart -k system/org.nixos.nix-daemon
     - name: Setup NikS3
       shell: bash
       run: |
