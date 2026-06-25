@@ -92,8 +92,6 @@
     noto-fonts-color-emoji
     noto-fonts-monochrome-emoji
     noto-fonts
-    # Persian Font
-    vazir-fonts
   ];
 
   # Basic system packages

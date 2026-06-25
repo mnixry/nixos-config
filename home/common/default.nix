@@ -90,10 +90,9 @@ in
     ]
     ++ (with inputs.llm-agents.packages.${system}; [
       opencode
-      oh-my-opencode
       codex
-      claude-code
+      omp
     ]);
 
-  home.stateVersion = "25.11";
+  home.stateVersion = "26.05";
 }

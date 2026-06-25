@@ -61,7 +61,7 @@
     # Linux-only tools (kernel/FHS/platform dependencies)
     ++ lib.optionals pkgs.stdenv.isLinux [
       # https://github.com/NixOS/nixpkgs/issues/514250
-      (pkgsStable.cutter.withPlugins builtins.attrValues)
+      (cutter.withPlugins builtins.attrValues)
       ida-pro
       ida-pro-mcp
       (burpsuite.override { inherit (jetbrains) jdk; })

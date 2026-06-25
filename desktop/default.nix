@@ -19,15 +19,12 @@
       nerd-fonts.monaspace
       sarasa-gothic
       # sans/serif families
-      # FIXME: https://github.com/NixOS/nixpkgs/pull/514577
-      pkgsStable.ibm-plex
+      ibm-plex
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
       noto-fonts-color-emoji
       noto-fonts-monochrome-emoji
       noto-fonts
-      # Persian Font
-      vazir-fonts
     ];
     fontconfig = {
       defaultFonts = {

@@ -65,7 +65,7 @@ in
 
   programs.pdm = {
     enable = true;
-    package = pkgs.pkgsStable.pdm;
+    package = pkgs.pdm;
     settings = {
       venv.backend = "venv";
     };
