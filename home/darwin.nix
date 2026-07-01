@@ -26,6 +26,7 @@
         };
       })
       alt-tab-macos
+      powertop-macos
       spotify
       raycast
     ]
@@ -91,6 +92,8 @@
         quick-terminal-animation-duration = "0.15";
         quick-terminal-autohide = true;
         quick-terminal-space-behavior = "move";
+
+        macos-option-as-alt = true;
       };
     };
 }

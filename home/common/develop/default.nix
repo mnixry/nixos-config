@@ -69,7 +69,7 @@
         { postInstall, ... }:
         {
           postInstall = postInstall + ''
-            substituteInPlace $out/share/applications/die.desktop \
+            substituteInPlace $out/share/applications/io.github.horsicq.detect-it-easy.desktop \
               --replace "MimeType=application/octet-stream;" ""
           '';
         }
