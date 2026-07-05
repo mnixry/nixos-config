@@ -25,7 +25,7 @@ let
     });
   kernelPackages = (pkgs.linuxPackagesFor (mkLTOKernel linuxKernel)).extend (
     lpself: lpsuper: {
-      inherit (pkgs.linuxPackagesFor linuxKernel) evdi nvidiaPackages;
+      inherit (pkgs.linuxPackagesFor linuxKernel) nvidiaPackages;
     }
   );
 in
