@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   inputs,
@@ -84,4 +85,42 @@
     enableFishIntegration = true;
     enableZshIntegration = true;
   };
+
+  programs.ghostty =
+    let
+      shaders = pkgs.fetchFromGitHub {
+        owner = "sahaj-b";
+        repo = "ghostty-cursor-shaders";
+        rev = "06d4e90fb5410e9c4d0b3131584060adddf89406";
+        hash = "sha256-G/UIr1bKnxn1AcHl/4FL/jou6b7M2VeREslYVELxdmw=";
+      };
+    in
+    {
+      enable = true;
+      package = if pkgs.stdenv.hostPlatform.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
+      settings = {
+        command = "${pkgs.fish}/bin/fish --login --interactive";
+        font-family = config.fonts.fontconfig.defaultFonts.monospace;
+        keybind = [
+          "global:cmd+backquote=toggle_quick_terminal"
+        ];
+        custom-shader = [
+          "${shaders}/cursor_warp.glsl"
+          "${shaders}/ripple_rectangle_cursor.glsl"
+        ];
+
+        background-opacity = 0.95;
+        background-blur = true;
+      }
+      // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+        quick-terminal-position = "top";
+        quick-terminal-size = "40%";
+        quick-terminal-screen = "main";
+        quick-terminal-animation-duration = "0.15";
+        quick-terminal-autohide = true;
+        quick-terminal-space-behavior = "move";
+
+        macos-option-as-alt = true;
+      };
+    };
 }
