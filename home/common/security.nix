@@ -1,9 +1,4 @@
-{
-  pkgs,
-  vars,
-  config,
-  ...
-}:
+{ pkgs, config, ... }:
 {
   programs.gpg = {
     enable = true;
@@ -22,14 +17,6 @@
 
     maxCacheTtl = 60 * 60 * 24; # 1 day
     maxCacheTtlSsh = 60 * 60 * 24; # 1 day
-  };
-
-  programs.git = {
-    enable = true;
-    settings.user = {
-      name = "${vars.git.name}";
-      email = "${vars.git.email}";
-    };
   };
 
   programs.ssh = {

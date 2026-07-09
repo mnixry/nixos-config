@@ -48,14 +48,16 @@
         arch = "host";
 
         vmType = "vz";
+
         mountType = "virtiofs";
+        mounts = [ ];
 
         cpu = 4;
         memory = 4;
         disk = 100;
 
         kubernetes.enabled = false;
-        portForwarder = "ssh";
+        portForwarder = "grpc";
       };
     };
   };
