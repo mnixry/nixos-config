@@ -84,15 +84,15 @@ in
       # system tools
       lsof
     ])
-    ++ [
-      inputs.pwndbg.packages.${system}.default
-      inputs.niks3.packages.${system}.default
-    ]
-    ++ (with inputs.llm-agents.packages.${system}; [
+    ++ (with pkgs.llm-agents; [
       opencode
       codex
       omp
-    ]);
+    ])
+    ++ [
+      inputs.pwndbg.packages.${system}.default
+      inputs.niks3.packages.${system}.default
+    ];
 
   home.stateVersion = "26.05";
 }

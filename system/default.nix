@@ -52,12 +52,14 @@
         "cgroups"
       ];
       substituters = lib.mkAfter [
-        "https://nix-cache.any-mix.eu.org"
         "https://cache.nixos-cuda.org"
+        "https://cache.numtide.com"
+        "https://nix-cache.any-mix.eu.org"
       ];
       trusted-public-keys = [
-        "nix-cache.any-mix.eu.org-1:1arBVKbTurqBX3Foe+tO8MihDz6qmVjNgnJ/lE3p1QI="
         "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+        "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+        "nix-cache.any-mix.eu.org-1:1arBVKbTurqBX3Foe+tO8MihDz6qmVjNgnJ/lE3p1QI="
       ];
       narinfo-cache-negative-ttl = 60;
       use-cgroups = true;

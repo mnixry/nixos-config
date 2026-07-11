@@ -65,6 +65,7 @@ let
 in
 {
   nixpkgs.overlays = [
+    inputs.llm-agents.overlays.default
     inputs.rust-overlay.overlays.default
     (final: prev: {
       pkgsNoConfig = import prev.path { inherit (prev.stdenv.hostPlatform) system; };
