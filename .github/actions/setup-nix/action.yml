@@ -15,6 +15,7 @@ runs:
       if: inputs.free-space == 'true' && runner.os == 'Linux'
       with:
         hatchet-protocol: rampage
+        witness-carnage: true
         mnt-safe-haven: 6144
     - name: Free Space on macOS
       shell: bash
@@ -34,15 +35,8 @@ runs:
           /Users/runner/Library/Android \
           /Users/runner/Library/Caches \
           /Users/runner/Library/Developer/CoreSimulator \
-          /Users/runner/hostedtoolcache &
+          /Users/runner/hostedtoolcache
     - uses: NixOS/nix-installer-action@main
       with:
         extra-conf: |
           access-tokens = github.com=${{ inputs.github-token }}
-    - uses: actions/cache@main
-      with:
-        path: ~/.cache/nix
-        key: nix-cache-${{ runner.os }}-${{ github.sha }}-${{ job.check_run_id }}
-        restore-keys: |
-          nix-cache-${{ runner.os }}-${{ github.sha }}-
-          nix-cache-${{ runner.os }}-
