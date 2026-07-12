@@ -2,9 +2,12 @@
   lib,
   pkgs,
   config,
+  inputs,
   ...
 }:
-
+let
+  inherit (pkgs.stdenv.hostPlatform) system;
+in
 {
   xdg.mimeApps.defaultApplicationPackages = lib.optionals pkgs.stdenv.isLinux [
     config.programs.firefox.package
@@ -13,7 +16,10 @@
   programs.firefox = {
     enable = true;
     package =
-      if pkgs.stdenv.isLinux then pkgs.firefox-devedition-bin else pkgs.pkgsNoConfig.firefox-devedition;
+      if pkgs.stdenv.isLinux then
+        inputs.flake-firefox-nightly.packages.${system}.firefox-devedition-bin
+      else
+        pkgs.pkgsNoConfig.firefox-devedition;
     nativeMessagingHosts = lib.optionals pkgs.stdenv.isLinux [
       pkgs.kdePackages.plasma-browser-integration
     ];

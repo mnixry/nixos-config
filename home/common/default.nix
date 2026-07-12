@@ -84,7 +84,8 @@ in
       # system tools
       lsof
     ])
-    ++ (with pkgs.llm-agents; [
+    ++ (with inputs.llm-agents.packages.${system}; [
+      kimi-code
       opencode
       codex
       omp

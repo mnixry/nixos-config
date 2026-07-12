@@ -65,12 +65,7 @@ let
 in
 {
   nixpkgs.overlays = [
-    inputs.llm-agents.overlays.default
     inputs.rust-overlay.overlays.default
-    (
-      final: prev:
-      lib.optionalAttrs prev.stdenv.isLinux (inputs.flake-firefox-nightly.overlays.default final prev)
-    )
     (final: prev: {
       pkgsNoConfig = import prev.path { inherit (prev.stdenv.hostPlatform) system; };
       pkgsStable = import inputs.nixpkgs-stable { inherit (prev.stdenv.hostPlatform) system; };
