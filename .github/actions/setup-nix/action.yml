@@ -35,7 +35,8 @@ runs:
           /Users/runner/Library/Android \
           /Users/runner/Library/Caches \
           /Users/runner/Library/Developer/CoreSimulator \
-          /Users/runner/hostedtoolcache
+          /Users/runner/hostedtoolcache \
+          || true
     - uses: NixOS/nix-installer-action@main
       with:
         extra-conf: |
