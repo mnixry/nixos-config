@@ -1,0 +1,33 @@
+name: Cache Garbage Collection
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+jobs:
+  gc:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    env:
+      NIKS3_SERVER_URL: ${{ secrets.NIKS3_SERVER_URL }}
+    steps:
+      - uses: actions/checkout@main
+      - uses: ./.github/actions/setup-nix
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          free-space: false
+      - name: Authorize NikS3
+        run: |
+          export NIKS3_AUTH_TOKEN_FILE=$(mktemp)
+          curl -fsSL "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=${NIKS3_SERVER_URL}" \
+            -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            | jq -r '.value' \
+            > "${NIKS3_AUTH_TOKEN_FILE}"
+          echo "NIKS3_AUTH_TOKEN_FILE=${NIKS3_AUTH_TOKEN_FILE}" | tee -a $GITHUB_ENV
+      - name: Garbage Collect
+        run: |
+          nix run "github:Mic92/niks3#niks3" -- \
+            gc --older-than 168h
