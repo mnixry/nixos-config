@@ -20,7 +20,7 @@
       name = "Papirus-Dark";
     };
     theme = {
-      package = pkgs.materia-theme;
+      package = pkgs.pkgsStable.materia-theme;
       name = "Materia-dark";
     };
     gtk3.extraCss =

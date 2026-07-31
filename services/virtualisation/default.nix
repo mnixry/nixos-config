@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, lib, ... }:
 {
   imports = [
     ./docker.nix
@@ -7,25 +7,10 @@
 
   boot.binfmt = {
     preferStaticEmulators = true;
-    emulatedSystems = [
-      "armv6l-linux"
-      "armv7l-linux"
-      "aarch64-linux"
-
-      "loongarch64-linux"
-
-      "mips-linux"
-      "mipsel-linux"
-      "mips64-linux"
-      "mips64-linuxabin32"
-      "mips64el-linux"
-      "mips64el-linuxabin32"
-
-      "riscv32-linux"
-      "riscv64-linux"
-
-      "wasm32-wasi"
-      "wasm64-wasi"
-    ];
+    emulatedSystems = lib.filter (
+      system:
+      pkgs.stdenv.hostPlatform.system != system
+      && (lib.systems.elaborate { inherit system; }).emulatorAvailable pkgs.pkgsStatic
+    ) (lib.attrNames (import "${pkgs.path}/nixos/lib/binfmt-magics.nix"));
   };
 }
