@@ -6,7 +6,6 @@
     yarn-berry
 
     biome
-    oxlint
     prettier
     eslint
   ];
