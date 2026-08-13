@@ -1,6 +1,9 @@
 name: NixOS Build
 description: Build NixOS system closure with caching
 inputs:
+  hostname:
+    description: Hostname whose configuration should be built
+    required: true
   niks3-server-url:
     description: The URL of the Niks3 server
     required: true
@@ -28,7 +31,9 @@ runs:
         sudo launchctl kickstart -k system/org.nixos.nix-daemon
     - name: Run Nix Build
       shell: bash
+      env:
+        HOSTNAME: ${{ inputs.hostname }}
       run: |
-        nix build ".#toplevel" \
+        nix build ".#${HOSTNAME}" \
           --fallback \
           --print-build-logs

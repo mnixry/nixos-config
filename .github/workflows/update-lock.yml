@@ -62,7 +62,11 @@ jobs:
     if: needs.update.outputs.lock_updated == 'true'
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        include:
+          - hostname: mix-laptop-21tl
+            os: ubuntu-latest
+          - hostname: mix-moonshot
+            os: macos-latest
       fail-fast: false
     runs-on: ${{ matrix.os }}
     outputs:
@@ -88,6 +92,7 @@ jobs:
         id: build
         continue-on-error: true
         with:
+          hostname: ${{ matrix.hostname }}
           niks3-server-url: ${{ secrets.NIKS3_SERVER_URL }}
       - name: Write Build Outcome
         id: build-outcome

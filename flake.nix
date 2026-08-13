@@ -2,6 +2,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
       flake = false;
@@ -13,6 +17,7 @@
     };
     nixpak = {
       url = "github:nixpak/nixpak";
+      inputs.flake-parts.follows = "flake-parts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ragenix = {
@@ -21,6 +26,7 @@
     };
     daeuniverse = {
       url = "github:daeuniverse/flake.nix";
+      inputs.flake-parts.follows = "flake-parts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     v2ray-rules-dat = {
@@ -41,6 +47,7 @@
     };
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
+      inputs.flake-parts.follows = "flake-parts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     rust-overlay = {
@@ -67,86 +74,8 @@
   };
 
   outputs =
-    { self, ... }@inputs:
-    let
-      inherit (inputs.nixpkgs) lib;
-      vars = import ./vars;
-      extraLibs = import ./libs { inherit lib; };
-      specialArgs = { inherit inputs vars extraLibs; };
-
-      nixosSystem = "${vars.linux.hostname}";
-      darwinSystem = "${vars.darwin.hostname}";
-
-      mkNixConf =
-        { pkgs', config' }:
-        (pkgs'.formats.nixConf rec {
-          inherit (config'.nix) package;
-          inherit (package) version;
-          checkConfig = false;
-        }).generate
-          "nix.custom.conf"
-          (
-            extraLibs.attrs.pick config'.nix.settings [
-              "substituters"
-              "trusted-public-keys"
-              "trusted-substituters"
-              "keep-going"
-              "always-allow-substitutes"
-              "narinfo-cache-negative-ttl"
-            ]
-          );
-
-      mkPackages =
-        { pkgs', config' }:
-        {
-          nix-conf = mkNixConf { inherit pkgs' config'; };
-          inherit (config'.system.build) toplevel;
-        };
-
-      nixosConfig = self.nixosConfigurations.${nixosSystem};
-      darwinConfig = self.darwinConfigurations.${darwinSystem};
-    in
-    {
-      nixosConfigurations.${nixosSystem} = lib.nixosSystem {
-        inherit specialArgs;
-        modules = [
-          ./system
-          ./services
-          ./desktop
-          ./preservation.nix
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "hm-backup";
-            home-manager.extraSpecialArgs = specialArgs;
-            home-manager.users."${vars.linux.user.name}" = import ./home;
-          }
-        ];
-      };
-
-      darwinConfigurations.${darwinSystem} = inputs.nix-darwin.lib.darwinSystem {
-        inherit specialArgs;
-        modules = [
-          ./darwin
-          ./desktop/packages
-          inputs.home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "hm-backup";
-            home-manager.extraSpecialArgs = specialArgs;
-            home-manager.users."${vars.darwin.user.name}" = import ./home/darwin.nix;
-          }
-        ];
-      };
-
-      packages = lib.genAttrs' [ nixosConfig darwinConfig ] (
-        { config, pkgs, ... }:
-        lib.nameValuePair (config.nixpkgs.hostPlatform.system) (mkPackages {
-          pkgs' = pkgs;
-          config' = config;
-        })
-      );
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [ ./parts ];
     };
 }

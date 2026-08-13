@@ -21,7 +21,11 @@ jobs:
     name: Check build
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        include:
+          - hostname: mix-laptop-21tl
+            os: ubuntu-latest
+          - hostname: mix-moonshot
+            os: macos-latest
       fail-fast: false
     runs-on: ${{ matrix.os }}
     permissions:
@@ -33,4 +37,5 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: ./.github/actions/nixos-build
         with:
+          hostname: ${{ matrix.hostname }}
           niks3-server-url: ${{ secrets.NIKS3_SERVER_URL }}
