@@ -24,14 +24,15 @@
     enableDefaultConfig = false;
     settings = {
       "*" = {
-        compression = true;
-        serverAliveInterval = 5;
-        serverAliveCountMax = 10;
+        Compression = true;
+        ServerAliveInterval = 5;
+        ServerAliveCountMax = 10;
+        SetEnv.TERM = "xterm-256color";
       };
       "github.com" = {
-        hostname = "ssh.github.com";
-        port = 443;
-        user = "git";
+        HostName = "ssh.github.com";
+        Port = 443;
+        User = "git";
       };
     };
   };

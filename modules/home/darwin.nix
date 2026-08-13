@@ -10,6 +10,7 @@
     [
       docker-client
       docker-compose
+      docker-credential-helpers
 
       # macOS softwares
       xcbuild
@@ -31,6 +32,7 @@
   programs.docker-cli = {
     enable = true;
     configDir = "${config.xdg.configHome}/docker";
+    settings.credsStore = "osxkeychain";
   };
 
   services.colima = {
