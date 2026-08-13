@@ -29,6 +29,7 @@
       kubeseal
 
       # Database tools
+      bendsql
       duckdb
       sqlite
 
