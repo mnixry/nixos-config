@@ -29,6 +29,10 @@ runs:
       if: runner.os == 'macOS'
       run: |
         sudo launchctl kickstart -k system/org.nixos.nix-daemon
+    - name: Check Formatting
+      shell: bash
+      run: |
+        nix fmt --print-build-logs -- --fail-on-change
     - name: Run Nix Build
       shell: bash
       env:

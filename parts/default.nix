@@ -5,5 +5,6 @@
     ../modules/flake/hosts.nix
     ./inventory.nix
     ./packages.nix
+    ./treefmt.nix
   ];
 }

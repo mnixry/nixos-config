@@ -39,7 +39,6 @@ in
           );
     in
     {
-      checks.${host.name} = config.system.build.toplevel;
       packages = {
         inherit nix-conf;
         inherit (config.system.build) toplevel;
