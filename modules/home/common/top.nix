@@ -10,7 +10,7 @@
     [
       iftop # network monitoring
     ]
-    ++ lib.optionals pkgs.stdenv.isLinux [
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
       iotop # io monitoring (Linux kernel IO accounting)
       nvtopPackages.full # gpu monitoring
     ];

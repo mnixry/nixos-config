@@ -27,7 +27,7 @@ let
 
   mkNixos =
     name: host:
-    inputs.nixpkgs.lib.nixosSystem {
+    inputs.nixpkgs-nixos.lib.nixosSystem {
       specialArgs = specialArgsFor name host;
       modules =
         flattenProfiles host.profiles.nixos

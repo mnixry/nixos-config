@@ -5,7 +5,7 @@
   ...
 }:
 let
-  inherit (pkgs.stdenv) isLinux isDarwin;
+  inherit (pkgs.stdenv.hostPlatform) isLinux isDarwin;
   inherit (config.xdg) configHome dataHome;
   sessionFile = "${dataHome}/aria2/session";
 

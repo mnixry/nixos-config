@@ -5,7 +5,7 @@
   ...
 }:
 {
-  xdg.mimeApps.defaultApplicationPackages = lib.optionals pkgs.stdenv.isLinux [
+  xdg.mimeApps.defaultApplicationPackages = lib.optionals pkgs.stdenv.hostPlatform.isLinux [
     config.programs.mpv.package
   ];
 

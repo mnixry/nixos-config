@@ -29,6 +29,14 @@
     ]
   );
 
+  # Home Manager defaults to macOS's built-in man on Darwin. Use mandoc so
+  # both man and the bat-extras batman wrapper can resolve Nix manual pages.
+  programs.man = {
+    package = pkgs.mandoc;
+    man-db.enable = false;
+    mandoc.enable = true;
+  };
+
   programs.docker-cli = {
     enable = true;
     configDir = "${config.xdg.configHome}/docker";

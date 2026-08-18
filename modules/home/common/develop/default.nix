@@ -60,7 +60,7 @@
       freelens-bin
     ]
     # Linux-only tools (kernel/FHS/platform dependencies)
-    ++ lib.optionals pkgs.stdenv.isLinux [
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
       # https://github.com/NixOS/nixpkgs/issues/514250
       (cutter.withPlugins builtins.attrValues)
       ida-pro

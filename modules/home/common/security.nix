@@ -13,7 +13,8 @@
     enableZshIntegration = true;
     enableBashIntegration = true;
 
-    pinentry.package = if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-qt;
+    pinentry.package =
+      if pkgs.stdenv.hostPlatform.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-qt;
 
     maxCacheTtl = 60 * 60 * 24; # 1 day
     maxCacheTtlSsh = 60 * 60 * 24; # 1 day

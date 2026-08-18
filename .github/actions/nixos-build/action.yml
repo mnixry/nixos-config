@@ -19,20 +19,11 @@ runs:
         nix build .#nix-conf
         mkdir -p ~/.config/nix
         cat ./result | tee -a ~/.config/nix/nix.conf
-    - name: Restart Nix Daemon on Linux
-      shell: bash
-      if: runner.os == 'Linux'
-      run: |
-        sudo systemctl restart nix-daemon.service
-    - name: Restart Nix Daemon on macOS
-      shell: bash
-      if: runner.os == 'macOS'
-      run: |
-        sudo launchctl kickstart -k system/org.nixos.nix-daemon
     - name: Check Formatting
       shell: bash
       run: |
-        nix fmt --print-build-logs -- --fail-on-change
+        nix fmt --print-build-logs -- \
+          --fail-on-change
     - name: Run Nix Build
       shell: bash
       env:

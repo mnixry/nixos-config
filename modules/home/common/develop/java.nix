@@ -6,7 +6,7 @@ in
   home.packages =
     with pkgs;
     [ defaultJdk ]
-    ++ lib.optionals stdenv.isLinux [
+    ++ lib.optionals stdenv.hostPlatform.isLinux [
       (jadx.overrideAttrs (
         # FIXME: jadx is relying on Gradle 8, which does not compatible with Jetbrains JDK (JDK 25)
         { installPhase, ... }:

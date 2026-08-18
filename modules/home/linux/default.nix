@@ -9,7 +9,7 @@
 
   xdg.mimeApps.enable = true;
 
-  home.sessionVariables = lib.optionalAttrs pkgs.stdenv.isLinux {
+  home.sessionVariables = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
     NIXOS_OZONE_WL = "1";
   };
 

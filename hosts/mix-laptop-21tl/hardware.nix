@@ -52,8 +52,8 @@
   };
   hardware.logitech.wireless = {
     enable = true;
-    enableGraphical = true;
   };
+  programs.solaar.enable = true;
 
   boot.initrd.availableKernelModules = [
     "xhci_pci"

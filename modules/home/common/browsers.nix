@@ -9,18 +9,18 @@ let
   inherit (pkgs.stdenv.hostPlatform) system;
 in
 {
-  xdg.mimeApps.defaultApplicationPackages = lib.optionals pkgs.stdenv.isLinux [
+  xdg.mimeApps.defaultApplicationPackages = lib.optionals pkgs.stdenv.hostPlatform.isLinux [
     config.programs.firefox.package
   ];
 
   programs.firefox = {
     enable = true;
     package =
-      if pkgs.stdenv.isLinux then
+      if pkgs.stdenv.hostPlatform.isLinux then
         inputs.flake-firefox-nightly.packages.${system}.firefox-devedition-bin
       else
         pkgs.pkgsNoConfig.firefox-devedition;
-    nativeMessagingHosts = lib.optionals pkgs.stdenv.isLinux [
+    nativeMessagingHosts = lib.optionals pkgs.stdenv.hostPlatform.isLinux [
       pkgs.kdePackages.plasma-browser-integration
     ];
     policies = {
@@ -113,11 +113,11 @@ in
         // privacySettings
       );
   }
-  // lib.optionalAttrs pkgs.stdenv.isLinux {
+  // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
     configPath = ".mozilla/firefox";
   };
 
-  programs.chromium = lib.mkIf pkgs.stdenv.isLinux {
+  programs.chromium = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     enable = true;
     package = pkgs.ungoogled-chromium;
     nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];

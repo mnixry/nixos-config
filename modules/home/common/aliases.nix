@@ -49,7 +49,7 @@
     # ssh
     ssh-nk = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null";
   }
-  // lib.optionalAttrs pkgs.stdenv.isLinux {
+  // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
     journalctl-1h = ''journalctl -p err..alert --since "60 min ago"'';
   };
 }

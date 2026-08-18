@@ -12,14 +12,14 @@
       man-pages
       man-pages-posix
     ]
-    ++ lib.optionals stdenv.isLinux [
+    ++ lib.optionals stdenv.hostPlatform.isLinux [
       (lib.hiPrio gcc_multi)
       libllvm
       clang_multi
       llvmPackages.bolt
       patchelf
     ]
-    ++ lib.optionals stdenv.isDarwin [
+    ++ lib.optionals stdenv.hostPlatform.isDarwin [
       (lib.hiPrio stdenv.cc)
       gcc
     ];
