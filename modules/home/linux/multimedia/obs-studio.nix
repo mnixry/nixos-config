@@ -21,7 +21,8 @@
       looking-glass-obs
       obs-vintage-filter
       obs-command-source
-      obs-move-transition
+      # https://github.com/NixOS/nixpkgs/pull/556032
+      # obs-move-transition
       obs-backgroundremoval
       # advanced-scene-switcher
       obs-pipewire-audio-capture
