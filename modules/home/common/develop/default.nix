@@ -18,6 +18,8 @@
       # Git tools
       git-filter-repo
       git-graph
+      glab
+      gh
 
       # Container & Cloud Native tools
       dive
@@ -29,9 +31,18 @@
       kubeseal
 
       # Database tools
-      bendsql
       duckdb
       sqlite
+
+      # Observability tools
+      bendsql
+      gcx
+      (grafana-loki.overrideAttrs {
+        subPackages = [ "cmd/logcli" ];
+      })
+      (tempo.overrideAttrs {
+        subPackages = [ "cmd/tempo-cli" ];
+      })
 
       # Performance tools
       pprof
@@ -45,6 +56,7 @@
       caddy
       openssl
       just
+
       # CTF & RE tools
       gtkwave
       binwalk
