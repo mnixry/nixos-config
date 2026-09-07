@@ -1,4 +1,7 @@
-{ vars, ... }: {
+{ pkgs, vars, ... }:
+{
+  home.packages = [ pkgs.jj-vine ];
+
   programs.git = {
     enable = true;
     settings.user = {
@@ -9,9 +12,18 @@
 
   programs.jujutsu = {
     enable = true;
-    settings.user = {
-      name = "${vars.git.name}";
-      email = "${vars.git.email}";
+    settings = {
+      user = {
+        name = "${vars.git.name}";
+        email = "${vars.git.email}";
+      };
+      aliases.vine = [
+        "util"
+        "exec"
+        "--"
+        "jj-vine"
+      ];
+      git.private-commits = "description('wip:*') | description('private:*')";
     };
   };
 

@@ -41,12 +41,19 @@
     enableBashIntegration = true;
     enableZshIntegration = true;
     enableTransience = true;
-    # custom settings
-    settings =
-      (fromTOML (builtins.readFile "${pkgs.starship}/share/starship/presets/nerd-font-symbols.toml"))
-      // {
-        shell.disabled = false;
+    presets = [ "nerd-font-symbols" ];
+    extraPackages = [ pkgs.jj-starship ];
+    settings = {
+      custom.jj = {
+        when = "jj-starship detect";
+        shell = [ "jj-starship" ];
+        format = "$output ";
       };
+      direnv.disabled = false;
+      git_branch.disabled = true;
+      git_status.disabled = true;
+      shell.disabled = false;
+    };
   };
 
   programs.direnv = {
