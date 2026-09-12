@@ -7,6 +7,7 @@
 {
   programs.go = {
     enable = true;
+    package = pkgs.go_latest;
     telemetry.mode = "off";
     env =
       lib.attrsets.mapAttrs (name: value: lib.getExe' pkgs.stdenv.cc value) {
