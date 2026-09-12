@@ -275,11 +275,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789150619,
-        "narHash": "sha256-Vsgv5atXkGWOOdLOL8oQLnZSGt1h140synPfFdwbyjU=",
+        "lastModified": 1789183968,
+        "narHash": "sha256-pEWnYdIF1pBMZwarp/rEPzl+Lknhm5hhjSfeLxH8nAA=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "e4345d5ae8aa1def34378d2a60ac5e6e4c8fd7c1",
+        "rev": "cd1c9e552f41894aeb5cc5cb353d5a1d61550357",
         "type": "github"
       },
       "original": {
@@ -368,11 +368,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789170928,
-        "narHash": "sha256-qP8miUSMFW/HLLtoz/wntX5rSEw563H5mcvXuHgmQOs=",
+        "lastModified": 1789203435,
+        "narHash": "sha256-4JN4aEgvHZHwQ7fnmoVY0yzp9YeujV1q+JhB+sw5KGs=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "95f48ce58bfb55a1a4d4d1ccdc4801b37cbb88c9",
+        "rev": "826bb638c516f3cb58c45bb23310c9ec6224e66a",
         "type": "github"
       },
       "original": {
@@ -618,11 +618,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1789149761,
-        "narHash": "sha256-i03DSOqe4YyiK0kHTrECjSTPjxcethq4ipKltyGsbrY=",
+        "lastModified": 1789208737,
+        "narHash": "sha256-77eg0QV4/jPCxI6kBwciF1RkDhPVJibU0TkUZ6RtDxA=",
         "owner": "pwndbg",
         "repo": "pwndbg",
-        "rev": "cd9948d27b2aaa8505981150644e7ad9c955d8ac",
+        "rev": "2c27956422fa80eef4f00f160d09f406a09567a1",
         "type": "github"
       },
       "original": {
@@ -779,11 +779,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789110695,
-        "narHash": "sha256-llh6ZJN8/G4QCED9m6nHEfWhz2ONOzkKyvWHivNqW7A=",
+        "lastModified": 1789196581,
+        "narHash": "sha256-yJr1Bt4fKkKIpPYbsKGqJ0VFdoDnURgRwuffmBQ2WzY=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "ab777f900c3de943e117eb4814ddff6f645b28ad",
+        "rev": "228ecefb6329d5a531b77b46b581a2f0c26ee056",
         "type": "github"
       },
       "original": {
@@ -900,11 +900,11 @@
     "v2ray-rules-dat": {
       "flake": false,
       "locked": {
-        "lastModified": 1789170551,
-        "narHash": "sha256-heLfD+d574fmhsQThXvMhnX/rHlKVipXXDPChqLZQ9A=",
+        "lastModified": 1789203203,
+        "narHash": "sha256-uob6/FRa+Gyf79fOYW7KGID4dYRq8xpW6+tx9HXMj/8=",
         "owner": "Loyalsoldier",
         "repo": "v2ray-rules-dat",
-        "rev": "2663ff64f8726fbddda306f14ff83ed06e479d6f",
+        "rev": "41e09c9bb3170e8b4a3be69e4fe8d77b14465e64",
         "type": "github"
       },
       "original": {
