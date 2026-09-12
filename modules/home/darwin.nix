@@ -25,7 +25,15 @@
       alt-tab-macos
       powertop-macos
       spotify
-      raycast
+      (raycast.overrideAttrs (old: {
+        # Remove the self-updater's launchd plists so a newer Raycast can
+        # never be installed and migrate the local databases ahead of the
+        # nix-pinned version.
+        postInstall = (old.postInstall or "") + ''
+          rm -f "$out/Applications/Raycast.app/Contents/Library/LaunchAgents/Updater.plist" \
+                "$out/Applications/Raycast.app/Contents/Library/LaunchDaemons/Updater-Daemon.plist"
+        '';
+      }))
     ]
   );
 
