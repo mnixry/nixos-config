@@ -130,4 +130,30 @@
         macos-option-as-alt = true;
       };
     };
+
+  programs.herdr = {
+    enable = true;
+    settings = {
+      onboarding = false;
+      update.version_check = false;
+
+      terminal = {
+        default_shell = lib.getExe config.programs.fish.package;
+        shell_mode = "auto";
+        new_cwd = "follow";
+      };
+
+      theme = {
+        name = "one-dark";
+        custom.panel_bg = "reset";
+      };
+
+      ui = {
+        agent_panel_sort = "priority";
+        toast.delivery = "herdr";
+        status_indicators = "symbols";
+        show_agent_labels_on_pane_borders = true;
+      };
+    };
+  };
 }
