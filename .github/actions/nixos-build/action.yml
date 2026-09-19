@@ -11,6 +11,7 @@ runs:
   using: "composite"
   steps:
     - uses: Mic92/niks3-action@main
+      id: niks3
       with:
         server-url: ${{ inputs.niks3-server-url }}
     - name: Apply Nix Settings
@@ -32,3 +33,14 @@ runs:
         nix build ".#${HOSTNAME}" \
           --fallback \
           --print-build-logs
+    - name: Pin System Toplevel
+      if: github.ref == 'refs/heads/main'
+      shell: bash
+      env:
+        HOSTNAME: ${{ inputs.hostname }}
+      run: |
+        "${{ steps.niks3.outputs.binary-dir }}/niks3" push \
+          --server-url "${{ inputs.niks3-server-url }}" \
+          --auth-token-script "${{ steps.niks3.outputs.auth-token-script }}" \
+          --pin "${HOSTNAME}" \
+          ./result

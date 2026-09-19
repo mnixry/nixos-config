@@ -9,10 +9,11 @@
         projectRootFile = ".git/config";
         programs.nixf-diagnose = {
           enable = true;
-          autoFix = false;
+          autoFix = true;
         };
         programs.nixfmt.enable = true;
         programs.yamlfmt.enable = true;
+        programs.actionlint.enable = true;
       };
 
       devShells.default = pkgs.mkShell {

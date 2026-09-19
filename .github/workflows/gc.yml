@@ -19,15 +19,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           free-space: false
-      - name: Authorize NikS3
-        run: |
-          export NIKS3_AUTH_TOKEN_FILE=$(mktemp)
-          curl -fsSL "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=${NIKS3_SERVER_URL}" \
-            -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
-            | jq -r '.value' \
-            > "${NIKS3_AUTH_TOKEN_FILE}"
-          echo "NIKS3_AUTH_TOKEN_FILE=${NIKS3_AUTH_TOKEN_FILE}" | tee -a $GITHUB_ENV
+      - uses: Mic92/niks3-action@main
+        id: niks3
+        with:
+          server-url: ${{ secrets.NIKS3_SERVER_URL }}
       - name: Garbage Collect
         run: |
-          nix run "github:Mic92/niks3#niks3" -- \
-            gc --older-than 168h
+          "${{ steps.niks3.outputs.binary-dir }}/niks3" gc \
+            --older-than 168h \
+            --auth-token-script "${{ steps.niks3.outputs.auth-token-script }}"
