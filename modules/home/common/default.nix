@@ -34,9 +34,7 @@ in
 {
   imports = extraLibs.scanPaths ./.;
 
-  home.username = "${username}";
-  home.homeDirectory =
-    if pkgs.stdenv.hostPlatform.isDarwin then "/Users/${username}" else "/home/${username}";
+  home = { inherit username; };
 
   programs.nh = {
     enable = true;
@@ -59,6 +57,7 @@ in
 
       # utils
       ripgrep
+      ast-grep
       jq
       yq-go
       eza
@@ -104,7 +103,6 @@ in
       kimi-code
       opencode
       codex
-      omp
     ])
     ++ [
       pwndbg

@@ -16,6 +16,10 @@
         httpx
         rich
 
+        pyyaml
+        tomli
+        pydantic
+
         sympy
         cryptography
         pycryptodome

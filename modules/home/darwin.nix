@@ -34,6 +34,7 @@
                 "$out/Applications/Raycast.app/Contents/Library/LaunchDaemons/Updater-Daemon.plist"
         '';
       }))
+      lark-cli
     ]
   );
 
