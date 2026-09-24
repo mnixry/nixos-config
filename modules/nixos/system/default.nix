@@ -14,14 +14,9 @@
     networkmanager = {
       enable = true;
       plugins = with pkgs; [
-        networkmanager-fortisslvpn
-        networkmanager-iodine
         networkmanager-l2tp
         networkmanager-openconnect
         networkmanager-openvpn
-        networkmanager-sstp
-        networkmanager-strongswan
-        networkmanager-vpnc
       ];
     };
     # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
