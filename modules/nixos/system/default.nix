@@ -1,13 +1,12 @@
 {
   lib,
   pkgs,
-  inputs,
   host,
   extraLibs,
   ...
 }:
 {
-  imports = extraLibs.scanPaths ./.;
+  imports = [ ../../common/nix.nix ] ++ extraLibs.scanPaths ./.;
 
   networking = {
     hostName = host.name;
@@ -29,50 +28,18 @@
   };
 
   nix = {
-    channel.enable = false;
-    # do garbage collection weekly to keep disk usage low
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 14d";
-    };
-    optimise.automatic = true;
+    gc.dates = "weekly";
     settings = {
-      keep-going = true;
-      always-allow-substitutes = false;
-      experimental-features = [
-        "nix-command"
-        "flakes"
+      experimental-features = lib.mkAfter [
         "auto-allocate-uids"
         "cgroups"
       ];
-      substituters = lib.mkAfter [
-        "https://cache.nixos-cuda.org"
-        "https://cache.numtide.com"
-        "https://nix-cache.any-mix.eu.org"
-      ];
+      substituters = lib.mkAfter [ "https://cache.nixos-cuda.org" ];
       trusted-public-keys = [
         "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
-        "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
-        "nix-cache.any-mix.eu.org-1:1arBVKbTurqBX3Foe+tO8MihDz6qmVjNgnJ/lE3p1QI="
       ];
-      narinfo-cache-negative-ttl = 60;
       use-cgroups = true;
       auto-allocate-uids = true;
-      auto-optimise-store = false;
-      http-connections = 0;
-    };
-    registry = {
-      "short" = {
-        from = {
-          id = "p";
-          type = "indirect";
-        };
-        to = {
-          type = "path";
-          path = inputs.self;
-        };
-      };
     };
     daemonCPUSchedPolicy = "batch";
   };

@@ -71,6 +71,7 @@ in
       pkgsStable = import inputs.nixpkgs-stable { inherit (prev.stdenv.hostPlatform) system; };
     })
     (final: prev: {
+      command-line-tools = prev.callPackage ./command-line-tools.nix { };
       ida-pro = prev.callPackage ./ida-pro.nix { inherit genuineDecrypt; };
       ida-pro-mcp = prev.callPackage ./ida-pro-mcp.nix { };
     })

@@ -1,10 +1,13 @@
 {
   pkgs,
   host,
-  inputs,
   ...
 }:
 {
+  imports = [ ../common/nix.nix ];
+
+  environment.variables.DEVELOPER_DIR = toString pkgs.command-line-tools;
+
   # Nixpkgs configuration
   nixpkgs = {
     config = {
@@ -14,50 +17,10 @@
     };
   };
 
-  # Nix configuration
-  nix = {
-    channel.enable = false;
-    gc = {
-      automatic = true;
-      interval = {
-        Weekday = 0;
-        Hour = 0;
-        Minute = 0;
-      };
-      options = "--delete-older-than 14d";
-    };
-    optimise.automatic = true;
-    settings = {
-      keep-going = true;
-      always-allow-substitutes = false;
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      substituters = [
-        "https://cache.numtide.com"
-        "https://nix-cache.any-mix.eu.org"
-      ];
-      trusted-public-keys = [
-        "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
-        "nix-cache.any-mix.eu.org-1:1arBVKbTurqBX3Foe+tO8MihDz6qmVjNgnJ/lE3p1QI="
-      ];
-      narinfo-cache-negative-ttl = 60;
-      auto-optimise-store = false;
-      http-connections = 0;
-    };
-    registry = {
-      "short" = {
-        from = {
-          id = "p";
-          type = "indirect";
-        };
-        to = {
-          type = "path";
-          path = inputs.self;
-        };
-      };
-    };
+  nix.gc.interval = {
+    Weekday = 0;
+    Hour = 0;
+    Minute = 0;
   };
 
   # User configuration
