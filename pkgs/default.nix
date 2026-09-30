@@ -65,6 +65,7 @@ let
 in
 {
   nixpkgs.overlays = [
+    inputs.brew-nix.overlays.default
     inputs.rust-overlay.overlays.default
     (final: prev: {
       pkgsNoConfig = import prev.path { inherit (prev.stdenv.hostPlatform) system; };
@@ -81,7 +82,6 @@ in
         feishu = wrapper prev ./nixpaks/feishu.nix;
         qq = wrapper prev ./nixpaks/qq.nix;
         wechat = wrapper prev ./nixpaks/wechat.nix;
-        spotify = wrapper prev ./nixpaks/spotify.nix;
         wpsoffice = wrapper prev ./nixpaks/wpsoffice.nix;
         wemeet = wrapper prev ./nixpaks/wemeet.nix;
       };

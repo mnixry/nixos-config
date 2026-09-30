@@ -19,7 +19,7 @@ in
       if pkgs.stdenv.hostPlatform.isLinux then
         inputs.flake-firefox-nightly.packages.${system}.firefox-devedition-bin
       else
-        pkgs.pkgsNoConfig.firefox-devedition;
+        pkgs.brewCasks."firefox@developer-edition";
     nativeMessagingHosts = lib.optionals pkgs.stdenv.hostPlatform.isLinux [
       pkgs.kdePackages.plasma-browser-integration
     ];
@@ -117,9 +117,15 @@ in
     configPath = ".mozilla/firefox";
   };
 
-  programs.chromium = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+  programs.chromium = {
     enable = true;
-    package = pkgs.ungoogled-chromium;
-    nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
+    package =
+      if pkgs.stdenv.hostPlatform.isLinux then
+        pkgs.ungoogled-chromium
+      else
+        pkgs.brewCasks.ungoogled-chromium;
+    nativeMessagingHosts = lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+      pkgs.kdePackages.plasma-browser-integration
+    ];
   };
 }

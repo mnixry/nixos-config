@@ -24,6 +24,48 @@
         "type": "github"
       }
     },
+    "brew-api": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790774385,
+        "narHash": "sha256-eBi4EQoZR3/9CtU5A/oJLZNNQd7ajGu9ptMzGRhu+I8=",
+        "owner": "BatteredBunny",
+        "repo": "brew-api",
+        "rev": "cf72568147fc0ee0da153ccedb593cbee1917fbf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BatteredBunny",
+        "repo": "brew-api",
+        "type": "github"
+      }
+    },
+    "brew-nix": {
+      "inputs": {
+        "brew-api": [
+          "brew-api"
+        ],
+        "nix-darwin": [
+          "nix-darwin"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788248927,
+        "narHash": "sha256-SwecqtpdObqSTsEW0Es5ZDUrZ1Rxu1DxCzfxxTzH5BQ=",
+        "owner": "BatteredBunny",
+        "repo": "brew-nix",
+        "rev": "16131ae4126c54b1502aa7eaf6573d7fbf16b656",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BatteredBunny",
+        "repo": "brew-nix",
+        "type": "github"
+      }
+    },
     "bun2nix": {
       "inputs": {
         "flake-parts": [
@@ -707,6 +749,8 @@
     },
     "root": {
       "inputs": {
+        "brew-api": "brew-api",
+        "brew-nix": "brew-nix",
         "daeuniverse": "daeuniverse",
         "flake-firefox-nightly": "flake-firefox-nightly",
         "flake-parts": "flake-parts",

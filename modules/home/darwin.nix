@@ -5,9 +5,8 @@
 }:
 {
   # Darwin-specific packages
-  home.packages = (
-    with pkgs;
-    [
+  home.packages =
+    (with pkgs; [
       docker-client
       docker-compose
       docker-credential-helpers
@@ -22,21 +21,27 @@
           hash = "sha256-wbuqcfYev+Xuko95CvYJY6nyAjZNY/eNLGs+xRBc9KA=";
         };
       })
-      alt-tab-macos
       powertop-macos
-      spotify
+      lark-cli
+    ])
+    ++ (with pkgs.brewCasks; [
+      alt-tab
+      bitwarden
+      pkgs.brewCasks."virtualbuddy@beta"
       (raycast.overrideAttrs (old: {
         # Remove the self-updater's launchd plists so a newer Raycast can
         # never be installed and migrate the local databases ahead of the
         # nix-pinned version.
-        postInstall = (old.postInstall or "") + ''
-          rm -f "$out/Applications/Raycast.app/Contents/Library/LaunchAgents/Updater.plist" \
-                "$out/Applications/Raycast.app/Contents/Library/LaunchDaemons/Updater-Daemon.plist"
+        # Appended to installPhase, not postInstall: brew-nix's custom
+        # installPhase never runs `runHook postInstall`, so a postInstall
+        # override would be silently ignored.
+        installPhase = old.installPhase + ''
+          rm -f \
+            "$out/Applications/Raycast.app/Contents/Library/LaunchAgents/Updater.plist" \
+            "$out/Applications/Raycast.app/Contents/Library/LaunchDaemons/Updater-Daemon.plist"
         '';
       }))
-      lark-cli
-    ]
-  );
+    ]);
 
   # Home Manager defaults to macOS's built-in man on Darwin. Use mandoc so
   # both man and the bat-extras batman wrapper can resolve Nix manual pages.
