@@ -4,7 +4,7 @@ let
   mkLTOKernel =
     kernel:
     kernel.override (prev: {
-      inherit (pkgs.pkgsLLVM) stdenv;
+      inherit (pkgs.pkgsLLVM.llvmPackages_latest) stdenv;
       buildLinux =
         attrs:
         prev.buildLinux (
