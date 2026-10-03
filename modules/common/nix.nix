@@ -19,12 +19,13 @@
         "flakes"
       ];
       substituters = lib.mkBefore [
-        "https://cache.numtide.com"
         "https://nix-cache.any-mix.eu.org"
+        "https://nix-cache.obfs.dev"
+        "https://cache.numtide.com"
       ];
-      trusted-public-keys = [
-        "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+      trusted-public-keys = lib.mkBefore [
         "nix-cache.any-mix.eu.org-1:1arBVKbTurqBX3Foe+tO8MihDz6qmVjNgnJ/lE3p1QI="
+        "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       ];
       narinfo-cache-negative-ttl = 60;
       auto-optimise-store = false;
