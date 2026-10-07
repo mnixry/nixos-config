@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   inputs,
   host,
@@ -30,6 +31,47 @@ let
     };
     groups = [ "gdb" ];
   };
+
+  claude-code = (
+    let
+      unsupportedCountries = "AF|BY|CN|CU|HK|IR|KP|MM|MO|RU|SY|VE|YE";
+      geoCheck = pkgs.writeShellApplication {
+        name = "geo-check";
+        runtimeInputs = with pkgs; [
+          curl
+          gnused
+        ];
+        text = ''
+          loc=$(curl -fsS --max-time 5 https://claude.ai/cdn-cgi/trace 2>/dev/null | sed -n 's/^loc=//p' || true)
+          case "$loc" in ${unsupportedCountries})
+              echo "Anthropic does not support your region ($loc)" >&2
+              exit 1
+              ;;
+          esac
+        '';
+      };
+    in
+    inputs.llm-agents.packages.${system}.claude-code.overrideAttrs (
+      { postFixup, ... }:
+      let
+        anchor = "--set DISABLE_INSTALLATION_CHECKS 1";
+      in
+      {
+        postFixup =
+          assert lib.assertMsg (lib.hasInfix anchor postFixup)
+            "upstream postFixup changed, re-check the injection anchor";
+          lib.replaceString anchor ''
+            ${anchor} \
+              --set DISABLE_TELEMETRY 1 \
+              --set CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC 1 \
+              --set DO_NOT_TRACK 1 \
+              --set DISABLE_GROWTHBOOK 1 \
+              --set DISABLE_ERROR_REPORTING 1 \
+              --run "${lib.getExe geoCheck} || exit 1" \
+          '' postFixup;
+      }
+    )
+  );
 in
 {
   imports = extraLibs.scanPaths ./.;
@@ -106,6 +148,7 @@ in
     ])
     ++ [
       pwndbg
+      claude-code
       inputs.niks3.packages.${system}.default
     ];
 
