@@ -10,7 +10,7 @@ in
   stateVersion = 5;
   homeStateVersion = "26.05";
 
-  user.name = "moonshot";
+  user.name = "mix";
 
   profiles = {
     darwin = with profiles.darwin; [ workstation ];
