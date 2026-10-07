@@ -22,7 +22,6 @@
       ];
       substituters = lib.mkBefore [
         "https://nix-cache.any-mix.eu.org"
-        "https://nix-cache.obfs.dev"
         "https://cache.numtide.com"
       ];
       trusted-public-keys = lib.mkBefore [
