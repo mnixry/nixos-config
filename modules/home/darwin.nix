@@ -14,20 +14,15 @@
       # macOS softwares
       xcbuild
       nano
-      (ice-bar.overrideAttrs rec {
-        version = "0.11.13-dev.2";
-        src = fetchurl {
-          url = "https://github.com/jordanbaird/Ice/releases/download/${version}/Ice.zip";
-          hash = "sha256-wbuqcfYev+Xuko95CvYJY6nyAjZNY/eNLGs+xRBc9KA=";
-        };
-      })
       powertop-macos
       lark-cli
     ])
     ++ (with pkgs.brewCasks; [
+      kate
       alt-tab
       bitwarden
       pkgs.brewCasks."virtualbuddy@beta"
+      pkgs.brewCasks."jordanbaird-ice@beta"
       (raycast.overrideAttrs (old: {
         # Remove the self-updater's launchd plists so a newer Raycast can
         # never be installed and migrate the local databases ahead of the
