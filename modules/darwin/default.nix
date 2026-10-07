@@ -17,10 +17,13 @@
     };
   };
 
-  nix.gc.interval = {
-    Weekday = 0;
-    Hour = 0;
-    Minute = 0;
+  nix = {
+    settings.sandbox = "relaxed";
+    gc.interval = {
+      Weekday = 0;
+      Hour = 0;
+      Minute = 0;
+    };
   };
 
   # User configuration

@@ -17,6 +17,8 @@
       experimental-features = [
         "nix-command"
         "flakes"
+        "ca-derivations"
+        "pipe-operators"
       ];
       substituters = lib.mkBefore [
         "https://nix-cache.any-mix.eu.org"
@@ -30,6 +32,7 @@
       narinfo-cache-negative-ttl = 60;
       auto-optimise-store = false;
       http-connections = 0;
+      max-substitution-jobs = 32;
     };
     registry.short = {
       from = {
