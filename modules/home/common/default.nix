@@ -145,6 +145,8 @@ in
       kimi-code
       opencode
       codex
+
+      mcp-remote
     ])
     ++ [
       pwndbg
