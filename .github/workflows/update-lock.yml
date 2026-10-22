@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   update:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       lock_updated: ${{ steps.update-lock.outputs.lock_updated }}
       base_sha: ${{ steps.update-lock.outputs.base_sha }}
@@ -64,7 +64,7 @@ jobs:
       matrix:
         include:
           - hostname: mix-laptop-21tl
-            os: ubuntu-latest
+            os: ubuntu-24.04
           - hostname: mix-moonshot
             os: macos-latest
       fail-fast: false
@@ -105,7 +105,7 @@ jobs:
   commit:
     needs: [update, check]
     if: needs.check.outputs.result-linux == 'success' && needs.check.outputs.result-macos == 'success'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
     steps:
