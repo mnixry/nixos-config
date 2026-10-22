@@ -1,10 +1,11 @@
 {
   pkgs,
   host,
+  extraLibs,
   ...
 }:
 {
-  imports = [ ../common/nix.nix ];
+  imports = extraLibs.scanPaths ./. ++ [ ../common/nix.nix ];
 
   environment.variables.DEVELOPER_DIR = toString pkgs.command-line-tools;
 
@@ -28,7 +29,11 @@
 
   # User configuration
   networking.hostName = host.name;
-  system.primaryUser = host.user.name;
+  system = {
+    primaryUser = host.user.name;
+    # https://github.com/NixOS/nix/issues/4119
+    systemBuilderArgs.__noChroot = true;
+  };
 
   users.users."${host.user.name}" = {
     home = "/Users/${host.user.name}";
