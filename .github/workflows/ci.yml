@@ -23,7 +23,7 @@ jobs:
       matrix:
         include:
           - hostname: mix-laptop-21tl
-            os: ubuntu-24.04
+            os: ubuntu-latest
           - hostname: mix-moonshot
             os: macos-latest
       fail-fast: false

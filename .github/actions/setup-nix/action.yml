@@ -11,32 +11,23 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: wimpysworld/nothing-but-nix@main
-      if: inputs.free-space == 'true' && runner.os == 'Linux'
+    - name: Free runner space
+      id: cleanup
+      if: inputs.free-space == 'true'
+      uses: justinthelaw/maximize-github-runner-space@main
       with:
-        hatchet-protocol: rampage
-        witness-carnage: true
-        mnt-safe-haven: 6144
-    - name: Free Space on macOS
+        cleanup-profile: max
+    - name: Prepare compressed Nix filesystem
+      if: inputs.free-space == 'true' && runner.os == 'Linux'
       shell: bash
-      if: inputs.free-space == 'true' && runner.os == 'macOS'
       run: |
-        sudo df -h
-        sudo mdutil -i off -a \
-          || echo "mdutil failed"
-        sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist \
-          || echo "launchctl unload failed"
-        sudo rm -rf \
-          /Applications/Xcode_* \
-          /Library/Developer/CoreSimulator \
-          /Library/Frameworks \
-          /Users/runner/.dotnet \
-          /Users/runner/.rustup \
-          /Users/runner/Library/Android \
-          /Users/runner/Library/Caches \
-          /Users/runner/Library/Developer/CoreSimulator \
-          /Users/runner/hostedtoolcache \
-          || true
+        sudo fallocate -l "$(( ${{ steps.cleanup.outputs.available-bytes-after }} - 6 * 1024 * 1024 * 1024 ))" /nix.img
+        sudo mkfs.btrfs --nodiscard -m single /nix.img
+        sudo mkdir -p /nix
+        sudo mount -o loop,ssd,noatime,nodiscard,compress-force=zstd /nix.img /nix
+        sudo mkdir -p /nix/tmp
+        sudo chmod 1777 /nix/tmp
+        echo "TMPDIR=/nix/tmp" >> "$GITHUB_ENV"
     - uses: NixOS/nix-installer-action@main
       with:
         extra-conf: |
