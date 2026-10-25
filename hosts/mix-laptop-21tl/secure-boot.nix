@@ -14,8 +14,6 @@
 
   boot = {
     initrd = {
-      systemd.enable = true;
-      luks.fido2Support = false;
       luks.devices."${host.hardware.luksName}" = {
         device = host.hardware.rootDevice;
         crypttabExtraOpts = [ "fido2-device=auto" ];
