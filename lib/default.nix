@@ -13,4 +13,10 @@
         ) (builtins.readDir path)
       )
     );
+  noChroot =
+    drv:
+    if (lib.isDerivation drv) && (drv.stdenv.hostPlatform.isDarwin) then
+      drv.overrideAttrs { __noChroot = true; }
+    else
+      drv;
 }
