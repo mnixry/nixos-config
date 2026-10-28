@@ -6,6 +6,7 @@
 !/.github/**/*
 
 !*.nix
+!*.nu
 !flake.lock
 
 !README.md
