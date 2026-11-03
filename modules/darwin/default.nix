@@ -27,7 +27,11 @@
   };
 
   nix = {
-    settings.sandbox = "relaxed";
+    settings = {
+      sandbox = "relaxed";
+      # https://github.com/NixOS/nix/issues/4119
+      extra-sandbox-paths = [ "/nix/store" ];
+    };
     gc.interval = {
       Weekday = 0;
       Hour = 0;
