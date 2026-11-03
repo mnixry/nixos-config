@@ -9,9 +9,6 @@
   services.gpg-agent = {
     enable = true;
     enableSshSupport = true;
-    enableFishIntegration = true;
-    enableZshIntegration = true;
-    enableBashIntegration = true;
 
     pinentry.package =
       if pkgs.stdenv.hostPlatform.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-qt;

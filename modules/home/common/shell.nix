@@ -8,7 +8,13 @@
 {
   imports = [ inputs.nix-index-database.homeModules.nix-index ];
 
-  home.shell.enableFishIntegration = true;
+  home.shell = {
+    enableShellIntegration = true;
+    enableFishIntegration = config.programs.fish.enable;
+    enableBashIntegration = config.programs.bash.enable;
+    enableZshIntegration = config.programs.zsh.enable;
+    enableNushellIntegration = config.programs.nushell.enable;
+  };
 
   programs.fish = {
     enable = true;
@@ -34,12 +40,20 @@
     syntaxHighlighting.enable = true;
   };
 
+  programs.nushell = {
+    enable = true;
+    loadSessionVariables = true;
+    settings = {
+      history = {
+        file_format = "sqlite";
+      };
+      show_banner = false;
+    };
+  };
+
   # starship - an customizable prompt for any shell
   programs.starship = {
     enable = true;
-    enableFishIntegration = true;
-    enableBashIntegration = true;
-    enableZshIntegration = true;
     enableTransience = true;
     presets = [ "nerd-font-symbols" ];
     extraPackages = [ pkgs.jj-starship ];
@@ -58,18 +72,12 @@
 
   programs.direnv = {
     enable = true;
-    enableBashIntegration = true;
-    enableFishIntegration = true;
-    enableZshIntegration = true;
     nix-direnv.enable = true;
     mise.enable = true;
   };
 
   programs.atuin = {
     enable = true;
-    enableBashIntegration = true;
-    enableFishIntegration = true;
-    enableZshIntegration = true;
     daemon.enable = true;
     settings = {
       sync_frequency = 0;
@@ -86,12 +94,7 @@
   };
 
   programs.tealdeer.enable = true;
-  programs.nix-index = {
-    enable = true;
-    enableBashIntegration = true;
-    enableFishIntegration = true;
-    enableZshIntegration = true;
-  };
+  programs.nix-index.enable = true;
 
   programs.ghostty =
     let

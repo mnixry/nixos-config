@@ -11,12 +11,17 @@
   };
   programs.eza.enable = true;
 
-  home.packages = with pkgs; [
-    xcp
-    libqalculate
-    gtrash
-    inxi
-  ];
+  home.packages =
+    with pkgs;
+    [
+      xcp
+      libqalculate
+      gtrash
+      inxi
+    ]
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+      iproute2mac
+    ];
 
   home.shellAliases = {
     # shell
@@ -28,7 +33,6 @@
     rm-restore = "gtrash restore";
     bc = "libqalculate";
     inxi = "inxi -Fz";
-    beep = ''echo -en "\007"'';
 
     man = "batman";
 
