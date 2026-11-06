@@ -4,9 +4,9 @@
   curl,
   jq,
 }:
-runCommandLocal "anthropic-as399358-prefixes"
+runCommandLocal "anthropic-prefixes"
   {
-    outputHash = "sha256-yX1WmQEUf6XiLtmxvk0iskPoqBbEm7fhvFWKfTgrz6M=";
+    outputHash = "sha256-dkhpu2XU86HNEInn3Q2a/r4xkNhy44ySCCt25RUpgQI=";
     nativeBuildInputs = [
       cacert
       curl
@@ -15,7 +15,6 @@ runCommandLocal "anthropic-as399358-prefixes"
   }
   ''
     set -euo pipefail
-    curl -fsS \
-      'https://stat.ripe.net/data/announced-prefixes/data.json?resource=AS399358&min_peers_seeing=1' |
-      jq -er '[.data.prefixes[].prefix] | unique | join("\n")' > "$out"
+    curl -fsSL 'https://platform.claude.com/docs/en/api/ip-addresses.md' |
+      jq -eRsr '[scan("[0-9a-fA-F.:]+/[0-9]+")] | unique | select(length > 0) | join("\n")' > "$out"
   ''
