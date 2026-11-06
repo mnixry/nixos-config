@@ -1,4 +1,13 @@
-{ pkgs, vars, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  vars,
+  ...
+}:
+let
+  difft = lib.getExe config.programs.difftastic.package;
+in
 {
   home.packages = [ pkgs.jj-vine ];
 
@@ -24,6 +33,28 @@
         "jj-vine"
       ];
       git.private-commits = "description('wip:*') | description('private:*')";
+    };
+  };
+
+  # Structural diff. Plain `git diff` keeps patch output for scripts;
+  # use `git difftool` or the d* aliases below for difft.
+  # `jj diff` uses difft by default; `jj diff --git` gives a patch.
+  programs.difftastic = {
+    enable = true;
+    git = {
+      enable = true;
+      mode = "difftool";
+    };
+    jujutsu.enable = true;
+  };
+
+  programs.git.settings = {
+    difftool.prompt = false;
+    pager.difftool = true;
+    alias = {
+      ddiff = "-c diff.external=${difft} diff";
+      dshow = "-c diff.external=${difft} show --ext-diff";
+      dlog = "-c diff.external=${difft} log -p --ext-diff";
     };
   };
 
