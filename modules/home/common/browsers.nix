@@ -27,6 +27,7 @@ in
       DisableFirefoxStudies = true;
       DisablePocket = true;
       DisableTelemetry = true;
+      DisableAppUpdate = true;
     };
     profiles.dev-edition-default.settings =
       let

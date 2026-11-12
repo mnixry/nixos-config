@@ -70,10 +70,18 @@
     };
   };
 
+  programs.mise = {
+    enable = true;
+    mutableSettings = true;
+  };
+
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
-    mise.enable = true;
+    mise = {
+      enable = true;
+      inherit (config.programs.mise) package;
+    };
   };
 
   programs.atuin = {
