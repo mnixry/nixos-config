@@ -21,6 +21,7 @@
       kate
       alt-tab
       bitwarden
+      snipaste
       pkgs.brewCasks."virtualbuddy@beta"
       pkgs.brewCasks."jordanbaird-ice@beta"
       (raycast.overrideAttrs (old: {
