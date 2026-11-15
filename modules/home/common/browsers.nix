@@ -116,6 +116,9 @@ in
   }
   // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
     configPath = ".mozilla/firefox";
+  }
+  // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+    darwinDefaultsId = "org.mozilla.firefoxdeveloperedition";
   };
 
   programs.chromium = {
