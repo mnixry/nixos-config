@@ -72,6 +72,7 @@
 
   programs.mise = {
     enable = true;
+    package = pkgs.mise-bin;
     mutableSettings = true;
   };
 

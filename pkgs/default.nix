@@ -76,6 +76,7 @@ in
       command-line-tools = prev.callPackage ./command-line-tools.nix { };
       ida-pro = prev.callPackage ./ida-pro.nix { inherit genuineDecrypt; };
       ida-pro-mcp = prev.callPackage ./ida-pro-mcp.nix { };
+      mise-bin = prev.callPackage ./mise-bin.nix { };
     })
     (final: prev: {
       nixpaks = {
